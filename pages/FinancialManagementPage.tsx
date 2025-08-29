@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+// FIX: Renamed InvestmentGuide component to avoid conflict with the imported type. The type is used here.
 import type { BudgetPlan, LoanAnalysis, InvestmentGuide } from '../types';
 import { generateBudgetPlan, analyzeStudentLoan, generateInvestmentGuide } from '../services/geminiService';
 
@@ -20,15 +21,18 @@ const BudgetPlanner: React.FC = () => {
     const [plan, setPlan] = useState<BudgetPlan | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
+    const [isSuccess, setIsSuccess] = useState(false);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsLoading(true);
         setError('');
         setPlan(null);
+        setIsSuccess(false);
         try {
             const result = await generateBudgetPlan(income, expenses, goal);
             setPlan(result);
+            setIsSuccess(true);
         } catch (err) {
             setError(err instanceof Error ? err.message : 'An unknown error occurred.');
         } finally {
@@ -49,6 +53,11 @@ const BudgetPlanner: React.FC = () => {
             </form>
             {isLoading && <p className="text-center animate-pulse">Our AI is crunching the numbers...</p>}
             {error && <p className="text-red-500 text-sm text-center">{error}</p>}
+            {isSuccess && !isLoading && (
+                <div className="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded-md mt-6" role="alert">
+                    <p className="font-bold">Success! Your budget plan is ready.</p>
+                </div>
+            )}
             {plan && (
                 <div className="bg-white p-6 rounded-lg shadow-sm mt-6 animate-fade-in space-y-6">
                     <h3 className="text-2xl font-bold text-gray-800 text-center">{plan.title}</h3>
@@ -85,15 +94,18 @@ const LoanAdvisor: React.FC = () => {
     const [analysis, setAnalysis] = useState<LoanAnalysis | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
+    const [isSuccess, setIsSuccess] = useState(false);
 
      const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsLoading(true);
         setError('');
         setAnalysis(null);
+        setIsSuccess(false);
         try {
             const result = await analyzeStudentLoan(amount, interest, tenure);
             setAnalysis(result);
+            setIsSuccess(true);
         } catch (err) {
             setError(err instanceof Error ? err.message : 'An unknown error occurred.');
         } finally {
@@ -114,6 +126,11 @@ const LoanAdvisor: React.FC = () => {
             </form>
              {isLoading && <p className="text-center animate-pulse">Our AI is performing the analysis...</p>}
              {error && <p className="text-red-500 text-sm text-center">{error}</p>}
+             {isSuccess && !isLoading && (
+                <div className="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded-md mt-6" role="alert">
+                    <p className="font-bold">Success! Your loan analysis is complete.</p>
+                </div>
+            )}
              {analysis && (
                  <div className="bg-white p-6 rounded-lg shadow-sm mt-6 animate-fade-in space-y-6">
                     <h3 className="text-2xl font-bold text-gray-800 text-center">{analysis.loanName}</h3>
@@ -140,6 +157,13 @@ const LoanAdvisor: React.FC = () => {
                              </ul>
                         </div>
                      </div>
+                    {analysis.recommendedBank && (
+                        <div className="p-4 bg-indigo-50 border-l-4 border-indigo-400 rounded-r-lg">
+                            <h4 className="font-semibold text-lg text-indigo-800">🏦 AI Bank Recommendation</h4>
+                            <p className="text-gray-800 mt-2 text-xl font-bold">{analysis.recommendedBank.name}</p>
+                            <p className="text-gray-700 mt-1 text-sm">{analysis.recommendedBank.reason}</p>
+                        </div>
+                    )}
                      <div className="p-4 bg-blue-50 border-l-4 border-blue-400 rounded-r-lg">
                         <h4 className="font-semibold text-lg text-blue-800">Expert Advice</h4>
                         <p className="text-gray-700 mt-2 text-sm">{analysis.advice}</p>
@@ -150,22 +174,25 @@ const LoanAdvisor: React.FC = () => {
     );
 };
 
-const InvestmentGuide: React.FC = () => {
+const InvestmentGuideTool: React.FC = () => {
     const [amount, setAmount] = useState('');
     const [horizon, setHorizon] = useState('');
     const [risk, setRisk] = useState('Low');
     const [guide, setGuide] = useState<InvestmentGuide | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
+    const [isSuccess, setIsSuccess] = useState(false);
     
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsLoading(true);
         setError('');
         setGuide(null);
+        setIsSuccess(false);
         try {
             const result = await generateInvestmentGuide(amount, horizon, risk);
             setGuide(result);
+            setIsSuccess(true);
         } catch (err) {
             setError(err instanceof Error ? err.message : 'An unknown error occurred.');
         } finally {
@@ -193,6 +220,11 @@ const InvestmentGuide: React.FC = () => {
             </form>
             {isLoading && <p className="text-center animate-pulse">Our AI is preparing your educational guide...</p>}
             {error && <p className="text-red-500 text-sm text-center">{error}</p>}
+            {isSuccess && !isLoading && (
+                <div className="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded-md mt-6" role="alert">
+                    <p className="font-bold">Success! Your investment guide has been generated.</p>
+                </div>
+            )}
             {guide && (
                  <div className="bg-white p-6 rounded-lg shadow-sm mt-6 animate-fade-in space-y-6">
                     <p className="text-center text-gray-600 italic">{guide.introduction}</p>
@@ -209,10 +241,12 @@ const InvestmentGuide: React.FC = () => {
                             {guide.nextSteps.map((step, i) => <li key={i}>{step}</li>)}
                         </ul>
                     </div>
-                     <div className="p-4 bg-yellow-50 border-l-4 border-yellow-400 rounded-r-lg text-yellow-800 text-sm">
-                        <p><strong>Disclaimer:</strong> {guide.disclaimer}</p>
+                     {/* FIX: Completed truncated code and added disclaimer display. */}
+                     <div className="p-4 bg-yellow-50 border border-yellow-300 text-yellow-800 rounded-lg text-sm">
+                        <h5 className="font-bold">Disclaimer</h5>
+                        <p>{guide.disclaimer}</p>
                      </div>
-                 </div>
+                </div>
             )}
         </div>
     );
@@ -221,40 +255,34 @@ const InvestmentGuide: React.FC = () => {
 const FinancialManagementPage: React.FC = () => {
     const [activeTab, setActiveTab] = useState('Budget Planner');
     const tabs = ['Budget Planner', 'Loan Advisor', 'Investment Guide'];
-
-    const renderContent = () => {
-        switch (activeTab) {
-            case 'Budget Planner': return <BudgetPlanner />;
-            case 'Loan Advisor': return <LoanAdvisor />;
-            case 'Investment Guide': return <InvestmentGuide />;
-            default: return null;
-        }
-    };
-
+    
     return (
-        <div className="min-h-screen bg-gray-100 py-12">
-            <div className="container mx-auto px-4 md:px-6 max-w-4xl">
-                <div className="text-center mb-10">
-                    <h1 className="text-4xl md:text-5xl font-bold text-gray-800">Financial Management Tools</h1>
+        <div className="bg-orange-50 min-h-screen py-12">
+            <div className="container mx-auto px-6 max-w-4xl">
+                <div className="text-center mb-12">
+                    <h1 className="text-4xl md:text-5xl font-bold text-gray-800">AI Financial Management Tools</h1>
                     <p className="text-gray-600 mt-4 text-lg">
-                        Your personal AI financial mentor for budgeting, loans, and investment education.
+                        Your personal AI advisor for budgeting, loans, and investments.
                     </p>
                 </div>
-                
+
                 <div className="bg-white rounded-lg shadow-md mb-8">
                     <div className="flex justify-center border-b">
                         {tabs.map(tab => (
-                             <TabButton key={tab} label={tab} isActive={activeTab === tab} onClick={() => setActiveTab(tab)} />
+                            <TabButton key={tab} label={tab} isActive={activeTab === tab} onClick={() => setActiveTab(tab)} />
                         ))}
                     </div>
                 </div>
 
-                <div>
-                    {renderContent()}
+                <div className="bg-white p-2 md:p-6 rounded-lg shadow-md">
+                    {activeTab === 'Budget Planner' && <BudgetPlanner />}
+                    {activeTab === 'Loan Advisor' && <LoanAdvisor />}
+                    {activeTab === 'Investment Guide' && <InvestmentGuideTool />}
                 </div>
             </div>
         </div>
     );
 };
 
+// FIX: Added default export for the component.
 export default FinancialManagementPage;

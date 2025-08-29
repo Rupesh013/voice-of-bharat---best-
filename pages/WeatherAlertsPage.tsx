@@ -75,6 +75,7 @@ const WeatherAlertsPage: React.FC = () => {
   const [weatherData, setWeatherData] = useState<WeatherAlert | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isSuccess, setIsSuccess] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -86,10 +87,12 @@ const WeatherAlertsPage: React.FC = () => {
     setIsLoading(true);
     setError(null);
     setWeatherData(null);
+    setIsSuccess(false);
 
     try {
       const result = await getWeatherAlertsAndAdvice(location, crops);
       setWeatherData(result);
+      setIsSuccess(true);
     } catch (err) {
       setError(err instanceof Error ? err.message : "An unknown error occurred.");
     } finally {
@@ -158,6 +161,13 @@ const WeatherAlertsPage: React.FC = () => {
             <strong className="font-bold">Error: </strong>
             <span className="block sm:inline">{error}</span>
           </div>
+        )}
+        
+        {isSuccess && !isLoading && (
+            <div className="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded-md mt-6" role="alert">
+                <p className="font-bold">Success!</p>
+                <p>Your weather advisory has been generated below.</p>
+            </div>
         )}
 
         {weatherData && <WeatherResult data={weatherData} />}

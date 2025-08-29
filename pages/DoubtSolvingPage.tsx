@@ -8,6 +8,7 @@ const DoubtSolvingPage: React.FC = () => {
     const [aiSolution, setAiSolution] = useState('');
     const [isAiLoading, setIsAiLoading] = useState(false);
     const [aiError, setAiError] = useState('');
+    const [aiIsSuccess, setAiIsSuccess] = useState(false);
 
     // Mentor Submission State
     const [mentorSubject, setMentorSubject] = useState('Physics');
@@ -20,9 +21,11 @@ const DoubtSolvingPage: React.FC = () => {
         setIsAiLoading(true);
         setAiError('');
         setAiSolution('');
+        setAiIsSuccess(false);
         try {
             const solution = await solveAcademicDoubt(aiDoubt);
             setAiSolution(solution);
+            setAiIsSuccess(true);
         } catch (err) {
             setAiError(err instanceof Error ? err.message : 'Failed to get AI solution. Please try again.');
         } finally {
@@ -87,6 +90,11 @@ const DoubtSolvingPage: React.FC = () => {
                             </button>
                         </div>
                         {aiError && <p className="text-red-500 text-sm mt-2 text-center">{aiError}</p>}
+                        {aiIsSuccess && !isAiLoading && (
+                            <div className="mt-4 bg-green-100 border-l-4 border-green-500 text-green-700 p-3 rounded-md text-sm">
+                                <p className="font-bold">Solution generated successfully!</p>
+                            </div>
+                        )}
                         {aiSolution && (
                             <div className="mt-6 p-4 bg-gray-50 border rounded-md max-h-80 overflow-y-auto">
                                 <h3 className="font-semibold text-gray-800 mb-2">AI Solution:</h3>

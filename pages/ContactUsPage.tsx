@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ICONS } from '../constants';
 
 interface ContactInfoItemProps {
@@ -21,10 +21,25 @@ const ContactInfoItem: React.FC<ContactInfoItemProps> = ({ Icon, title, content,
 );
 
 const ContactUsPage: React.FC = () => {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [message, setMessage] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    alert("Thank you for your message! We will get back to you soon.");
-    // In a real app, you would handle form submission here.
+    if (isSubmitting) return;
+
+    setIsSubmitting(true);
+    // Simulate an API call
+    setTimeout(() => {
+      setIsSubmitting(false);
+      setIsSuccess(true);
+      setName('');
+      setEmail('');
+      setMessage('');
+    }, 1000);
   };
 
   return (
@@ -83,25 +98,35 @@ const ContactUsPage: React.FC = () => {
                     {/* Contact Form */}
                     <div>
                         <h2 className="text-3xl font-bold text-gray-800 mb-6">Send us a Message</h2>
-                        <form onSubmit={handleSubmit} className="space-y-6">
-                            <div>
-                                <label htmlFor="name" className="block text-sm font-medium text-gray-700">Your Name</label>
-                                <input type="text" id="name" className="mt-1 block w-full bg-white border-gray-300 rounded-md shadow-sm p-3 focus:ring-orange-500 focus:border-orange-500 text-gray-900" required />
-                            </div>
-                             <div>
-                                <label htmlFor="email" className="block text-sm font-medium text-gray-700">Your Email</label>
-                                <input type="email" id="email" className="mt-1 block w-full bg-white border-gray-300 rounded-md shadow-sm p-3 focus:ring-orange-500 focus:border-orange-500 text-gray-900" required />
-                            </div>
-                             <div>
-                                <label htmlFor="message" className="block text-sm font-medium text-gray-700">Message</label>
-                                <textarea id="message" rows={5} className="mt-1 block w-full bg-white border-gray-300 rounded-md shadow-sm p-3 focus:ring-orange-500 focus:border-orange-500 text-gray-900" required></textarea>
-                            </div>
-                            <div>
-                                <button type="submit" className="w-full bg-orange-500 text-white font-semibold py-3 px-4 rounded-md hover:bg-orange-600 transition duration-300">
-                                    Send Message
+                        {isSuccess ? (
+                            <div className="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded-md" role="alert">
+                                <p className="font-bold">Your Message Has Been Sent!</p>
+                                <p>Thank you for reaching out. We will get back to you as soon as possible.</p>
+                                <button onClick={() => setIsSuccess(false)} className="mt-4 text-sm text-green-800 font-semibold hover:underline">
+                                    Send another message
                                 </button>
                             </div>
-                        </form>
+                        ) : (
+                            <form onSubmit={handleSubmit} className="space-y-6">
+                                <div>
+                                    <label htmlFor="name" className="block text-sm font-medium text-gray-700">Your Name</label>
+                                    <input type="text" id="name" value={name} onChange={e => setName(e.target.value)} className="mt-1 block w-full bg-white border-gray-300 rounded-md shadow-sm p-3 focus:ring-orange-500 focus:border-orange-500 text-gray-900" required />
+                                </div>
+                                 <div>
+                                    <label htmlFor="email" className="block text-sm font-medium text-gray-700">Your Email</label>
+                                    <input type="email" id="email" value={email} onChange={e => setEmail(e.target.value)} className="mt-1 block w-full bg-white border-gray-300 rounded-md shadow-sm p-3 focus:ring-orange-500 focus:border-orange-500 text-gray-900" required />
+                                </div>
+                                 <div>
+                                    <label htmlFor="message" className="block text-sm font-medium text-gray-700">Message</label>
+                                    <textarea id="message" value={message} onChange={e => setMessage(e.target.value)} rows={5} className="mt-1 block w-full bg-white border-gray-300 rounded-md shadow-sm p-3 focus:ring-orange-500 focus:border-orange-500 text-gray-900" required></textarea>
+                                </div>
+                                <div>
+                                    <button type="submit" disabled={isSubmitting} className="w-full bg-orange-500 text-white font-semibold py-3 px-4 rounded-md hover:bg-orange-600 transition duration-300 disabled:bg-orange-300">
+                                        {isSubmitting ? 'Sending...' : 'Send Message'}
+                                    </button>
+                                </div>
+                            </form>
+                        )}
                     </div>
                 </div>
             </div>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { processVoiceCommand } from '../services/geminiService';
+import { useLanguage } from '../contexts/LanguageContext';
 
 declare global {
   interface Window {
@@ -14,6 +15,7 @@ const VoiceControl: React.FC = () => {
     const [feedback, setFeedback] = useState('');
     const [displayTranscript, setDisplayTranscript] = useState('');
     
+    const { language } = useLanguage();
     const recognitionRef = useRef<any>(null);
     const navigate = useNavigate();
     const timeoutRef = useRef<number | null>(null);
@@ -23,7 +25,7 @@ const VoiceControl: React.FC = () => {
         if ('speechSynthesis' in window) {
             window.speechSynthesis.cancel();
             const utterance = new SpeechSynthesisUtterance(text);
-            utterance.lang = 'en-IN';
+            utterance.lang = `${language}-IN`;
             window.speechSynthesis.speak(utterance);
         } else {
             console.warn("Text-to-speech is not supported by your browser.");
@@ -36,7 +38,7 @@ const VoiceControl: React.FC = () => {
             const recognition = new SpeechRecognition();
             recognition.continuous = false;
             recognition.interimResults = true;
-            recognition.lang = 'en-IN';
+            recognition.lang = `${language}-IN`;
 
             recognition.onstart = () => {
                 finalTranscriptRef.current = '';
@@ -76,7 +78,7 @@ const VoiceControl: React.FC = () => {
 
             recognitionRef.current = recognition;
         }
-    }, []);
+    }, [language]);
 
     const handleCommand = async (command: string) => {
         setFeedback(`Processing: "${command}"`);

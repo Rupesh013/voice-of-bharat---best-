@@ -12,6 +12,7 @@ const ProjectIdeasPage: React.FC = () => {
     const [filter, setFilter] = useState<FilterType>('All');
     const [sort, setSort] = useState<SortType>('Votes');
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [showSuccessBanner, setShowSuccessBanner] = useState(false);
 
     const handleVote = (projectId: number) => {
         setProjects(projects.map(p =>
@@ -27,6 +28,8 @@ const ProjectIdeasPage: React.FC = () => {
             status: 'under_review',
         };
         setProjects([newProject, ...projects]);
+        setShowSuccessBanner(true);
+        setTimeout(() => setShowSuccessBanner(false), 5000);
     };
 
     const filteredAndSortedProjects = useMemo(() => {
@@ -63,6 +66,12 @@ const ProjectIdeasPage: React.FC = () => {
 
             {/* Main Content: Leaderboard */}
             <main className="container mx-auto px-6 py-12">
+                {showSuccessBanner && (
+                    <div className="mb-6 bg-green-900 border border-green-600 text-green-200 px-4 py-3 rounded-lg relative text-center" role="alert">
+                        <strong className="font-bold">Success!</strong>
+                        <span className="block sm:inline"> Your idea has been successfully submitted. You will get a response soon.</span>
+                    </div>
+                )}
                 <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
                     <h2 className="text-3xl font-bold">Project Leaderboard</h2>
                     <div className="flex flex-wrap gap-2">

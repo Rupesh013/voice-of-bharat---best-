@@ -1,5 +1,5 @@
 import { GoogleGenAI, Type } from "@google/genai";
-import type { ChatMessage, CropDiagnosis, FertilizerRecommendation, SchemeRecommendation, WeatherAlert, CropRecommendation, FinancialProduct, MarketPrice, ResumeData, CareerRoadmap, LearningPath, BudgetPlan, LoanAnalysis, InvestmentGuide } from '../types';
+import type { ChatMessage, CropDiagnosis, FertilizerRecommendation, SchemeRecommendation, WeatherAlert, CropRecommendation, FinancialProduct, MarketPrice, ResumeData, CareerRoadmap, LearningPath, BudgetPlan, LoanAnalysis, InvestmentGuide, JobSearchParams, Job, WageInfo } from '../types';
 import { ALL_APP_ROUTES } from '../constants';
 
 if (!process.env.API_KEY) {
@@ -9,6 +9,11 @@ if (!process.env.API_KEY) {
 const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
 const model = 'gemini-2.5-flash';
+
+const parseGeminiJson = (jsonStr: string): any => {
+    const cleanedJsonStr = jsonStr.replace(/```json\n?|```/g, '').trim();
+    return JSON.parse(cleanedJsonStr);
+};
 
 export async function* streamChatResponse(history: ChatMessage[], systemInstruction: string): AsyncGenerator<string> {
   const lastMessage = history[history.length - 1];
@@ -96,8 +101,7 @@ export async function diagnoseCropDisease(base64Image: string, mimeType: string)
       },
     });
     
-    const jsonStr = response.text.trim();
-    return JSON.parse(jsonStr);
+    return parseGeminiJson(response.text);
 
   } catch (error) {
     console.error("Error diagnosing crop disease:", error);
@@ -130,12 +134,88 @@ export async function recommendSchemes(userInput: string): Promise<SchemeRecomme
         responseSchema
       }
     });
-    return JSON.parse(response.text.trim());
+    return parseGeminiJson(response.text);
   } catch (error) {
     console.error("Error recommending schemes:", error);
     throw new Error("Failed to get scheme recommendations.");
   }
 }
+
+export async function getWorkerSchemeRecommendations(userInput: string): Promise<SchemeRecommendation[]> {
+  const prompt = `You are an expert on Indian government schemes for unorganized workers and laborers. Based on the user's situation, recommend up to 3 relevant schemes (like PM-SYM, E-Shram, Ayushman Bharat, etc.). For each, provide the scheme title, why it's a good fit, a key benefit, and the official link. User input: "${userInput}"`;
+  const responseSchema = {
+    type: Type.ARRAY,
+    items: {
+      type: Type.OBJECT,
+      properties: {
+        schemeTitle: { type: Type.STRING },
+        reason: { type: Type.STRING },
+        benefit: { type: Type.STRING },
+        link: { type: Type.STRING }
+      },
+      required: ['schemeTitle', 'reason', 'link']
+    }
+  };
+
+  try {
+    const response = await ai.models.generateContent({
+      model,
+      contents: prompt,
+      config: {
+        responseMimeType: "application/json",
+        responseSchema
+      }
+    });
+    return parseGeminiJson(response.text);
+  } catch (error) {
+    console.error("Error recommending worker schemes:", error);
+    throw new Error("Failed to get scheme recommendations for workers.");
+  }
+}
+
+export async function parseJobSearchQuery(query: string): Promise<JobSearchParams> {
+  const prompt = `You are an intelligent job search query parser for a hyperlocal job portal for laborers in India. Analyze the user's query and extract the job title/type of work, the location (city, state, or pincode), and any specific skills mentioned. Return the result as a JSON object. User query: "${query}"`;
+  const responseSchema = {
+    type: Type.OBJECT,
+    properties: {
+      jobTitle: { type: Type.STRING, description: "The type of job, e.g., 'Construction Helper', 'Delivery work'" },
+      location: { type: Type.STRING, description: "The city, state, or area mentioned, e.g., 'Mumbai', 'Delhi NCR'" },
+      skills: { type: Type.ARRAY, items: { type: Type.STRING }, description: "Any specific skills mentioned, e.g., 'driving', 'plumbing'" },
+    },
+  };
+  try {
+    const response = await ai.models.generateContent({
+      model,
+      contents: prompt,
+      config: {
+        responseMimeType: "application/json",
+        responseSchema,
+      }
+    });
+    return parseGeminiJson(response.text);
+  } catch (error) {
+    console.error("Error parsing job search query:", error);
+    throw new Error("Failed to understand your job search. Please try rephrasing.");
+  }
+}
+
+export async function getLaborRightsInfo(question: string): Promise<string> {
+  const systemInstruction = `You are a helpful AI assistant explaining labor rights to unorganized sector workers in India. Your audience may have low literacy. Explain concepts in very simple, clear, and encouraging language. Avoid legal jargon. Answer the user's question directly and concisely.`;
+  try {
+    const response = await ai.models.generateContent({
+      model,
+      contents: question,
+      config: {
+        systemInstruction,
+      },
+    });
+    return response.text;
+  } catch (error) {
+    console.error("Error getting labor rights info:", error);
+    throw new Error("I'm sorry, I couldn't process that question right now. Please try again.");
+  }
+}
+
 
 export async function generateProduceDescription(produceName: string): Promise<string> {
     const prompt = `Generate a short, appealing description for a farmer selling "${produceName}" on a direct-to-consumer marketplace. Highlight freshness and quality in 1-2 sentences.`;
@@ -162,7 +242,7 @@ export async function getFertilizerRecommendation(crop: string, soil: string, re
     };
      try {
         const response = await ai.models.generateContent({ model, contents: prompt, config: { responseMimeType: "application/json", responseSchema }});
-        return JSON.parse(response.text.trim());
+        return parseGeminiJson(response.text);
     } catch (error) {
         console.error("Error getting fertilizer recommendation:", error);
         throw new Error("Failed to get fertilizer recommendation.");
@@ -188,7 +268,7 @@ export async function getWeatherAlertsAndAdvice(location: string, crops: string)
     };
     try {
         const response = await ai.models.generateContent({ model, contents: prompt, config: { responseMimeType: "application/json", responseSchema }});
-        return JSON.parse(response.text.trim());
+        return parseGeminiJson(response.text);
     } catch (error) {
         console.error("Error getting weather alerts:", error);
         throw new Error("Failed to get weather alerts.");
@@ -208,7 +288,7 @@ export async function getCropRecommendation(location: string, soilType: string, 
     };
     try {
         const response = await ai.models.generateContent({ model, contents: prompt, config: { responseMimeType: "application/json", responseSchema }});
-        return JSON.parse(response.text.trim());
+        return parseGeminiJson(response.text);
     } catch (error) {
         console.error("Error getting crop recommendations:", error);
         throw new Error("Failed to get crop recommendations.");
@@ -228,7 +308,7 @@ export async function getFinancialProducts(details: { landSize: string; annualIn
     };
     try {
         const response = await ai.models.generateContent({ model, contents: prompt, config: { responseMimeType: "application/json", responseSchema }});
-        return JSON.parse(response.text.trim());
+        return parseGeminiJson(response.text);
     } catch (error) {
         console.error("Error getting financial products:", error);
         throw new Error("Failed to get financial products.");
@@ -252,7 +332,7 @@ export async function generateExperiencePoints(role: string, company: string): P
     const responseSchema = { type: Type.ARRAY, items: { type: Type.STRING } };
     try {
         const response = await ai.models.generateContent({ model, contents: prompt, config: { responseMimeType: "application/json", responseSchema }});
-        return JSON.parse(response.text.trim());
+        return parseGeminiJson(response.text);
     } catch (error) {
         console.error("Error generating experience points:", error);
         throw new Error("Failed to generate experience points.");
@@ -268,21 +348,40 @@ export async function generateCoverLetter(resume: ResumeData, jobTitle: string, 
 export async function generateCareerRoadmap(profile: Record<string, string>): Promise<CareerRoadmap> {
     const prompt = `Create a detailed career roadmap for a student with the following profile: ${JSON.stringify(profile)}. The roadmap should include a title, introduction, step-by-step guide with resources, potential entry-level roles, and salary expectations in India. Return as JSON.`;
     const responseSchema = {
-      type: Type.OBJECT, properties: {
+      type: Type.OBJECT,
+      properties: {
         title: { type: Type.STRING },
         introduction: { type: Type.STRING },
-        steps: { type: Type.ARRAY, items: { type: Type.OBJECT, properties: {
-          title: { type: Type.STRING },
-          description: { type: Type.STRING },
-          resources: { type: Type.ARRAY, items: { type: Type.OBJECT, properties: { name: { type: Type.STRING }, link: { type: Type.STRING } } } }
-        }}},
+        steps: {
+          type: Type.ARRAY,
+          items: {
+            type: Type.OBJECT,
+            properties: {
+              title: { type: Type.STRING },
+              description: { type: Type.STRING },
+              resources: {
+                type: Type.ARRAY,
+                items: {
+                  type: Type.OBJECT,
+                  properties: {
+                    name: { type: Type.STRING },
+                    link: { type: Type.STRING },
+                  },
+                  required: ["name", "link"],
+                },
+              },
+            },
+            required: ["title", "description", "resources"],
+          },
+        },
         potentialRoles: { type: Type.ARRAY, items: { type: Type.STRING } },
-        salaryExpectation: { type: Type.STRING }
-      }
+        salaryExpectation: { type: Type.STRING },
+      },
+      required: ["title", "introduction", "steps", "potentialRoles", "salaryExpectation"],
     };
     try {
         const response = await ai.models.generateContent({ model, contents: prompt, config: { responseMimeType: "application/json", responseSchema }});
-        return JSON.parse(response.text.trim());
+        return parseGeminiJson(response.text);
     } catch (error) {
         console.error("Error generating career roadmap:", error);
         throw new Error("Failed to generate career roadmap.");
@@ -357,8 +456,7 @@ export async function generateLearningPath(profile: { goal: string; skillLevel: 
                 responseSchema,
             }
         });
-        const jsonStr = response.text.trim();
-        return JSON.parse(jsonStr);
+        return parseGeminiJson(response.text);
     } catch (error) {
         console.error("Error generating learning path:", error);
         throw new Error("Failed to generate a personalized learning path. Please try refining your inputs.");
@@ -408,8 +506,7 @@ export async function generateBudgetPlan(income: string, expenses: string, goal:
                 responseSchema,
             }
         });
-        const jsonStr = response.text.trim();
-        return JSON.parse(jsonStr);
+        return parseGeminiJson(response.text);
     } catch (error) {
         console.error("Error generating budget plan:", error);
         throw new Error("Failed to generate a budget plan. Please try again.");
@@ -423,7 +520,8 @@ export async function analyzeStudentLoan(amount: string, interest: string, tenur
         - Annual Interest Rate: ${interest}
         - Loan Tenure: ${tenure}
 
-        Provide a clear analysis including an estimated EMI, total interest, and total repayment. List the main pros and cons of taking such a loan. Conclude with neutral, helpful advice for the student.
+        Provide a clear analysis including an estimated EMI, total interest, and total repayment. List the main pros and cons. Conclude with neutral, helpful advice.
+        Additionally, based on these parameters, recommend a specific, real Indian bank (like SBI, HDFC, ICICI, etc.) that is suitable for this type of loan. Provide the bank's name and a short reason for the recommendation.
     `;
     const responseSchema: any = {
       type: Type.OBJECT,
@@ -443,7 +541,15 @@ export async function analyzeStudentLoan(amount: string, interest: string, tenur
         },
         pros: { type: Type.ARRAY, items: { type: Type.STRING }, description: "List of potential advantages." },
         cons: { type: Type.ARRAY, items: { type: Type.STRING }, description: "List of potential disadvantages or risks." },
-        advice: { type: Type.STRING, description: "General advice regarding the loan." }
+        advice: { type: Type.STRING, description: "General advice regarding the loan." },
+        recommendedBank: {
+          type: Type.OBJECT,
+          properties: {
+            name: { type: Type.STRING, description: "The name of the recommended Indian bank." },
+            reason: { type: Type.STRING, description: "A brief reason why this bank is recommended." }
+          },
+          required: ["name", "reason"]
+        }
       },
       required: ["loanName", "summary", "details", "pros", "cons", "advice"]
     };
@@ -457,8 +563,7 @@ export async function analyzeStudentLoan(amount: string, interest: string, tenur
                 responseSchema,
             }
         });
-        const jsonStr = response.text.trim();
-        return JSON.parse(jsonStr);
+        return parseGeminiJson(response.text);
     } catch (error) {
         console.error("Error analyzing student loan:", error);
         throw new Error("Failed to analyze the loan. Please check your inputs.");
@@ -506,8 +611,7 @@ export async function generateInvestmentGuide(amount: string, horizon: string, r
                 responseSchema,
             }
         });
-        const jsonStr = response.text.trim();
-        return JSON.parse(jsonStr);
+        return parseGeminiJson(response.text);
     } catch (error) {
         console.error("Error generating investment guide:", error);
         throw new Error("Failed to generate an investment guide.");
@@ -530,47 +634,122 @@ export async function getSeniorCitizenAIResponse(prompt: string, systemInstructi
   }
 }
 
+export async function matchJobsToProfile(profile: { skills: string, location: string, experience: string }): Promise<Job[]> {
+  const prompt = `You are an AI job matching engine for Indian laborers. Based on the worker's profile, generate 3 realistic, example job listings that would be a good fit. Include title, a fictional employer, location, job type, a realistic wage, and a fictional contact number. Profile: Skills: ${profile.skills}, Location: ${profile.location}, Experience: ${profile.experience}.`;
+  const responseSchema = {
+    type: Type.ARRAY,
+    items: {
+      type: Type.OBJECT,
+      properties: {
+        title: { type: Type.STRING },
+        company: { type: Type.STRING },
+        location: { type: Type.STRING },
+        type: { type: Type.STRING, enum: ['Daily Wage', 'Skilled', 'Full-time', 'Part-time'] },
+        wage: { type: Type.STRING },
+        contact: { type: Type.STRING }
+      },
+      required: ['title', 'company', 'location', 'type', 'wage', 'contact']
+    }
+  };
+  try {
+    const response = await ai.models.generateContent({
+      model,
+      contents: prompt,
+      config: { responseMimeType: "application/json", responseSchema }
+    });
+    return parseGeminiJson(response.text);
+  } catch (error) {
+    console.error("Error matching jobs:", error);
+    throw new Error("Failed to find job matches. Please try again.");
+  }
+}
+
+export async function calculateWagesAndEntitlements(skill: string, city: string): Promise<WageInfo> {
+  const prompt = `You are an expert on Indian labor laws. For a worker with the skill "${skill}" in the city "${city}", calculate or estimate the official minimum wage (per day or month). Also, list 2-3 key entitlements they should know about (like PF, ESI, overtime rules). Be concise and clear.`;
+  const responseSchema = {
+    type: Type.OBJECT,
+    properties: {
+      skill: { type: Type.STRING },
+      city: { type: Type.STRING },
+      minimumWage: { type: Type.STRING },
+      entitlements: { type: Type.ARRAY, items: { type: Type.STRING } },
+    },
+    required: ['skill', 'city', 'minimumWage', 'entitlements']
+  };
+  try {
+    const response = await ai.models.generateContent({
+      model,
+      contents: prompt,
+      config: { responseMimeType: "application/json", responseSchema }
+    });
+    return parseGeminiJson(response.text);
+  } catch (error) {
+    console.error("Error calculating wages:", error);
+    throw new Error("Could not calculate wage information. Please check your inputs.");
+  }
+}
+
+// FIX: The file was truncated. This completes the function with best practices.
 export async function processVoiceCommand(command: string): Promise<{ action: 'navigate' | 'speak' | 'unknown', path: string, responseText: string }> {
   
   const validRoutes = ALL_APP_ROUTES.map(r => `path: ${r.path}, description: ${(r as any).description ?? (r as any).title}`).join('\n');
 
-  const systemInstruction = `You are a voice assistant for a web application called "Voice of Bharat". Your task is to be a helpful guide.
-  
-  Available navigation paths are:
-  ${validRoutes}
-  
-  Based on the user's command, you must determine the correct action.
-  - If the command is a clear navigation request (e.g., "Go to farmers", "Open crop doctor"), return action "navigate", the corresponding path, and a confirmation message in responseText (e.g., "Navigating to the farmers page.").
-  - If the user asks a general question related to the app's services (farming, scholarships, government schemes, etc.), answer it concisely. Return action "speak" and the answer in responseText.
-  - If the command is unclear, ambiguous, or you cannot fulfill the request, return action "unknown" and a polite message in responseText explaining that you couldn't understand or help.
-  
-  You MUST respond ONLY with a valid JSON object in the specified format. The responseText should be natural and conversational.`;
+  const systemInstruction = `You are a voice assistant for a web application called "Voice of Bharat". Your task is to interpret a user's voice command and determine the correct action.
 
-  const responseSchema = {
-    type: Type.OBJECT,
-    properties: {
-      action: { type: Type.STRING, enum: ['navigate', 'speak', 'unknown'] },
-      path: { type: Type.STRING, description: "The path to navigate to. Should be empty if action is not 'navigate'." },
-      responseText: { type: Type.STRING, description: "The text for the assistant to speak back to the user." }
-    },
-    required: ['action', 'responseText']
-  };
+The available pages in the application are:
+${validRoutes}
+
+Based on the user's command, you must decide one of three actions:
+1.  'navigate': If the user wants to go to a specific page.
+2.  'speak': If the user is asking a general question, greeting, or making small talk.
+3.  'unknown': If you cannot understand the command.
+
+You must respond with a JSON object that follows the provided schema. The 'responseText' should be a confirmation message to speak back to the user.
+
+Examples:
+- User command: "go to the farmers page" -> responds with JSON for action: "navigate", path: "/farmers", responseText: "Navigating to the farmers page."
+- User command: "hello how are you" -> responds with JSON for action: "speak", path: "", responseText: "I'm doing well, thank you for asking! How can I help you?"
+- User command: "what is the weather" -> responds with JSON for action: "speak", path: "", responseText: "I can help you navigate the app, but I can't check the weather."
+- User command: "garble garble" -> responds with JSON for action: "unknown", path: "", responseText: "Sorry, I didn't understand that. Please try again."
+`;
+
+    const responseSchema = {
+        type: Type.OBJECT,
+        properties: {
+            action: {
+                type: Type.STRING,
+                enum: ['navigate', 'speak', 'unknown'],
+                description: "The action to take: navigate, speak, or unknown."
+            },
+            path: {
+                type: Type.STRING,
+                description: "The navigation path if action is 'navigate', otherwise an empty string."
+            },
+            responseText: {
+                type: Type.STRING,
+                description: "The text to speak back to the user as confirmation or response."
+            },
+        },
+        required: ['action', 'path', 'responseText'],
+    };
 
   try {
-    const response = await ai.models.generateContent({
-      model,
-      contents: `User command: "${command}"`,
-      config: {
-        systemInstruction,
-        responseMimeType: "application/json",
-        responseSchema,
-      }
-    });
-    const jsonStr = response.text.trim();
-    const parsed = JSON.parse(jsonStr);
-    return { path: '', ...parsed };
+      const response = await ai.models.generateContent({
+        model,
+        contents: command,
+        config: {
+          systemInstruction,
+          responseMimeType: "application/json",
+          responseSchema,
+        }
+      });
+      return parseGeminiJson(response.text);
   } catch (error) {
-    console.error("Error processing voice command:", error);
-    return { action: 'unknown', path: '', responseText: "I'm having trouble connecting right now. Please try again." };
+      console.error("Error processing voice command:", error);
+      return {
+          action: 'unknown',
+          path: '',
+          responseText: "I'm having trouble understanding you right now. Please try again."
+      };
   }
 }

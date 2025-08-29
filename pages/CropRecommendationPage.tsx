@@ -37,12 +37,14 @@ const CropRecommendationPage: React.FC = () => {
     const [recommendations, setRecommendations] = useState<CropRecommendation[] | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [isSuccess, setIsSuccess] = useState(false);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsLoading(true);
         setError(null);
         setRecommendations(null);
+        setIsSuccess(false);
         try {
             const result = await getCropRecommendation(
                 location,
@@ -54,6 +56,7 @@ const CropRecommendationPage: React.FC = () => {
                 environmentalFactors
             );
             setRecommendations(result);
+            setIsSuccess(true);
         } catch (err) {
             setError(err instanceof Error ? err.message : "An unknown error occurred.");
         } finally {
@@ -163,6 +166,14 @@ const CropRecommendationPage: React.FC = () => {
 
                 {isLoading && <p className="text-center mt-6 animate-pulse">Our AI is analyzing your farm's potential...</p>}
                 {error && <div className="bg-red-100 text-red-700 p-4 rounded-md mt-6">{error}</div>}
+                
+                {isSuccess && !isLoading && (
+                    <div className="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded-md mt-6" role="alert">
+                        <p className="font-bold">Success!</p>
+                        <p>Your crop recommendations are ready below.</p>
+                    </div>
+                )}
+                
                 {recommendations && (
                     <div className="mt-8">
                          <h2 className="text-2xl font-bold text-center mb-6">Top 3 Crop Recommendations</h2>

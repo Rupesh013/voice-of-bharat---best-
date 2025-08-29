@@ -9,6 +9,7 @@ const CropDoctorPage: React.FC = () => {
   const [diagnosis, setDiagnosis] = useState<CropDiagnosis | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isSuccess, setIsSuccess] = useState(false);
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -19,6 +20,7 @@ const CropDoctorPage: React.FC = () => {
         setImage(reader.result as string);
         setDiagnosis(null);
         setError(null);
+        setIsSuccess(false);
       };
       reader.readAsDataURL(file);
     }
@@ -30,12 +32,14 @@ const CropDoctorPage: React.FC = () => {
     setIsLoading(true);
     setError(null);
     setDiagnosis(null);
+    setIsSuccess(false);
 
     try {
       // The base64 string from FileReader includes the data URI prefix, which needs to be removed.
       const base64String = image.split(',')[1];
       const result = await diagnoseCropDisease(base64String, file.type);
       setDiagnosis(result);
+      setIsSuccess(true);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An unknown error occurred.');
     } finally {
@@ -49,6 +53,7 @@ const CropDoctorPage: React.FC = () => {
     setDiagnosis(null);
     setError(null);
     setIsLoading(false);
+    setIsSuccess(false);
   };
   
   const DiagnosisResult = ({ diagnosis }: { diagnosis: CropDiagnosis }) => (
@@ -137,6 +142,13 @@ const CropDoctorPage: React.FC = () => {
             <strong className="font-bold">Error: </strong>
             <span className="block sm:inline">{error}</span>
           </div>
+        )}
+        
+        {isSuccess && !isLoading && (
+            <div className="bg-green-100 border-l-4 border-green-500 text-green-700 px-4 py-3 rounded-lg relative mt-6" role="alert">
+                <strong className="font-bold">Success! </strong>
+                <span className="block sm:inline">Diagnosis complete. See the results below.</span>
+            </div>
         )}
 
         {diagnosis && <DiagnosisResult diagnosis={diagnosis} />}

@@ -83,6 +83,7 @@ const FertilizerOptimizerPage: React.FC = () => {
   const [recommendation, setRecommendation] = useState<FertilizerRecommendation | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isSuccess, setIsSuccess] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -94,10 +95,12 @@ const FertilizerOptimizerPage: React.FC = () => {
     setIsLoading(true);
     setError(null);
     setRecommendation(null);
+    setIsSuccess(false);
 
     try {
       const result = await getFertilizerRecommendation(crop, soil, region, soilDetails, weather);
       setRecommendation(result);
+      setIsSuccess(true);
     } catch (err) {
       setError(err instanceof Error ? err.message : "An unknown error occurred.");
     } finally {
@@ -176,6 +179,13 @@ const FertilizerOptimizerPage: React.FC = () => {
             <strong className="font-bold">Error: </strong>
             <span className="block sm:inline">{error}</span>
           </div>
+        )}
+        
+        {isSuccess && !isLoading && (
+            <div className="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded-md mt-6" role="alert">
+                <p className="font-bold">Success!</p>
+                <p>Your custom fertilizer plan has been generated below.</p>
+            </div>
         )}
 
         {recommendation && <RecommendationDisplay recommendation={recommendation} />}

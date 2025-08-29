@@ -351,6 +351,10 @@ export interface LoanAnalysis {
   pros: string[];
   cons: string[];
   advice: string;
+  recommendedBank?: {
+    name: string;
+    reason: string;
+  };
 }
 
 export interface InvestmentGuide {
@@ -363,4 +367,38 @@ export interface InvestmentGuide {
   }[];
   nextSteps: string[];
   disclaimer: string;
+}
+
+export interface JobSearchParams {
+  jobTitle?: string;
+  location?: string;
+  skills?: string[];
+}
+
+export interface Job {
+  title: string;
+  company: string;
+  location: string;
+  type: 'Daily Wage' | 'Skilled' | 'Full-time' | 'Part-time';
+  wage: string;
+  contact: string;
+}
+
+export interface WorkerProfile {
+  skills: string[];
+  location: string;
+  experience: string;
+}
+
+export interface WageInfo {
+  skill: string;
+  city: string;
+  minimumWage: string;
+  entitlements: string[];
+}
+
+export interface CourseRecommendation {
+  courseName: string;
+  platform: string;
+  link: string;
 }

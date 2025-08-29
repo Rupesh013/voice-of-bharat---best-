@@ -139,65 +139,86 @@ export const SECTIONS = [
 ];
 
 export const FARMER_FEATURES = [
-  { title: 'AI Crop Doctor', description: 'Diagnose crop diseases from an image.', path: '/farmers/crop-doctor', Icon: ICONS.Farmer },
-  { title: 'Direct Market Access', description: 'Sell produce directly to buyers, no middlemen.', path: '/farmers/direct-market', Icon: ICONS.MarketChat },
-  { title: 'Fertilizer Optimizer', description: 'Get AI-based fertilizer recommendations.', path: '/farmers/fertilizer-optimizer', Icon: ICONS.Lightbulb },
-  { title: 'Assured Contract Farming', description: 'Secure your income with transparent contracts.', path: '/farmers/contract-farming', Icon: ICONS.Worker },
-  { title: 'Weather Alerts & Advisory', description: 'AI-powered local forecasts and crop advice.', path: '/farmers/weather-alerts', Icon: ICONS.Rupee },
-  { title: 'AI Crop Recommender', description: 'Discover the most profitable crops for your land.', path: '/farmers/crop-recommendation', Icon: ICONS.Student },
-  { title: 'Financial Needs Analysis', description: 'Find suitable loans, schemes, and insurance.', path: '/farmers/financial-needs', Icon: ICONS.HeartPlus },
-  { title: 'Expert Farming Guides', description: 'Access a knowledge base for best practices.', path: '/farmers/expert-guides', Icon: ICONS.Expert },
-  { title: 'Live Market Prices', description: 'Track mandi prices and get AI insights.', path: '/farmers/market-prices', Icon: ICONS.Entrepreneur },
+  { titleKey: 'features.farmer.cropDoctor.title', descriptionKey: 'features.farmer.cropDoctor.description', path: '/farmers/crop-doctor', Icon: ICONS.Farmer },
+  { titleKey: 'features.farmer.marketAccess.title', descriptionKey: 'features.farmer.marketAccess.description', path: '/farmers/direct-market', Icon: ICONS.MarketChat },
+  { titleKey: 'features.farmer.fertilizer.title', descriptionKey: 'features.farmer.fertilizer.description', path: '/farmers/fertilizer-optimizer', Icon: ICONS.Lightbulb },
+  { titleKey: 'features.farmer.contractFarming.title', descriptionKey: 'features.farmer.contractFarming.description', path: '/farmers/contract-farming', Icon: ICONS.Worker },
+  { titleKey: 'features.farmer.weatherAlerts.title', descriptionKey: 'features.farmer.weatherAlerts.description', path: '/farmers/weather-alerts', Icon: ICONS.Rupee },
+  { titleKey: 'features.farmer.cropRecommender.title', descriptionKey: 'features.farmer.cropRecommender.description', path: '/farmers/crop-recommendation', Icon: ICONS.Student },
+  { titleKey: 'features.farmer.financialNeeds.title', descriptionKey: 'features.farmer.financialNeeds.description', path: '/farmers/financial-needs', Icon: ICONS.HeartPlus },
+  { titleKey: 'features.farmer.expertGuides.title', descriptionKey: 'features.farmer.expertGuides.description', path: '/farmers/expert-guides', Icon: ICONS.Expert },
+  { titleKey: 'features.farmer.marketPrices.title', descriptionKey: 'features.farmer.marketPrices.description', path: '/farmers/market-prices', Icon: ICONS.Entrepreneur },
 ];
 
 
 export const CATEGORIZED_SCHEMES = [
     {
-        category: 'Income Support',
+        categoryKey: 'data.schemes.incomeSupport.category',
         schemes: [
             {
                 title: 'Pradhan Mantri Kisan Samman Nidhi (PM-KISAN)',
-                benefit: '₹6,000 per year directly to your bank account in three installments.',
-                eligibility: 'All landholding farmer families.',
-                applyProcess: ['Visit the official PM-KISAN portal.', 'Click on "New Farmer Registration".', 'Enter your Aadhaar number and other details.', 'Upload land records and submit.'],
+                benefitKey: 'data.schemes.incomeSupport.pmkisan.benefit',
+                eligibilityKey: 'data.schemes.incomeSupport.pmkisan.eligibility',
+                applyProcessKeys: [
+                    'data.schemes.incomeSupport.pmkisan.apply1',
+                    'data.schemes.incomeSupport.pmkisan.apply2',
+                    'data.schemes.incomeSupport.pmkisan.apply3',
+                    'data.schemes.incomeSupport.pmkisan.apply4',
+                ],
                 link: 'https://pmkisan.gov.in/'
             },
             {
                 title: 'Kisan Credit Card (KCC)',
-                benefit: 'Provides short-term formal credit for crops, animal husbandry, and fisheries at a low interest rate.',
-                eligibility: 'Farmers, sharecroppers, tenant farmers.',
-                applyProcess: ['Approach your nearest bank branch.', 'Fill out the KCC application form.', 'Submit land documents, identity, and address proof.'],
+                benefitKey: 'data.schemes.incomeSupport.kcc.benefit',
+                eligibilityKey: 'data.schemes.incomeSupport.kcc.eligibility',
+                applyProcessKeys: [
+                    'data.schemes.incomeSupport.kcc.apply1',
+                    'data.schemes.incomeSupport.kcc.apply2',
+                    'data.schemes.incomeSupport.kcc.apply3',
+                ],
                 link: 'https://www.sbi.co.in/web/agri-rural/agriculture-banking/crop-finance/kisan-credit-card'
             }
         ]
     },
     {
-        category: 'Crop Insurance',
+        categoryKey: 'data.schemes.cropInsurance.category',
         schemes: [
             {
                 title: 'Pradhan Mantri Fasal Bima Yojana (PMFBY)',
-                benefit: 'Insurance cover and financial support to farmers in the event of failure of any of the notified crops as a result of natural calamities, pests & diseases.',
-                eligibility: 'All farmers growing notified crops in notified areas.',
-                applyProcess: ['Contact your nearest bank, insurance company, or CSC.', 'Fill the form with details of crops sown.', 'Pay the premium amount (very low for farmers).'],
+                benefitKey: 'data.schemes.cropInsurance.pmfby.benefit',
+                eligibilityKey: 'data.schemes.cropInsurance.pmfby.eligibility',
+                applyProcessKeys: [
+                    'data.schemes.cropInsurance.pmfby.apply1',
+                    'data.schemes.cropInsurance.pmfby.apply2',
+                    'data.schemes.cropInsurance.pmfby.apply3',
+                ],
                 link: 'https://pmfby.gov.in/'
             }
         ]
     },
     {
-        category: 'Fertilizers & Equipment',
+        categoryKey: 'data.schemes.fertilizers.category',
         schemes: [
             {
                 title: 'Soil Health Card Scheme',
-                benefit: 'Get a detailed report of your soil\'s nutrient status and recommendations on fertilizer dosage.',
-                eligibility: 'All farmers.',
-                applyProcess: ['Contact your local agriculture office or Krishi Vigyan Kendra.', 'They will collect soil samples from your farm.', 'You will receive the card with recommendations.'],
+                benefitKey: 'data.schemes.fertilizers.soilHealth.benefit',
+                eligibilityKey: 'data.schemes.fertilizers.soilHealth.eligibility',
+                applyProcessKeys: [
+                    'data.schemes.fertilizers.soilHealth.apply1',
+                    'data.schemes.fertilizers.soilHealth.apply2',
+                    'data.schemes.fertilizers.soilHealth.apply3',
+                ],
                 link: 'https://soilhealth.dac.gov.in/'
             },
             {
                 title: 'Subsidy on Agricultural Machinery (SMAM)',
-                benefit: 'Receive subsidies for purchasing modern agricultural equipment like tractors, tillers, and harvesters.',
-                eligibility: 'Farmers, Farmer Producer Organizations (FPOs).',
-                applyProcess: ['Register on the Direct Benefit Transfer in Agriculture portal.', 'Select the machinery you want to buy.', 'Apply for the subsidy through the portal.'],
+                benefitKey: 'data.schemes.fertilizers.smam.benefit',
+                eligibilityKey: 'data.schemes.fertilizers.smam.eligibility',
+                applyProcessKeys: [
+                    'data.schemes.fertilizers.smam.apply1',
+                    'data.schemes.fertilizers.smam.apply2',
+                    'data.schemes.fertilizers.smam.apply3',
+                ],
                 link: 'https://agrimachinery.nic.in/'
             }
         ]
@@ -240,18 +261,18 @@ export const MOCK_EXPERT_GUIDES: ExpertGuide[] = [
 ];
 
 export const STUDENT_FEATURES = [
-  { title: 'Scholarships & Coaching', description: 'Find scholarships, free coaching, and study abroad info.', path: '/students/scholarships', Icon: ICONS.Student },
-  { title: 'Resume & Cover Letter', description: 'AI-powered builder to create professional resumes.', path: '/students/resume-builder', Icon: ICONS.Worker },
-  { title: 'Career Roadmaps', description: 'Get a personalized career path with AI guidance.', path: '/students/career-roadmaps', Icon: ICONS.Entrepreneur },
-  { title: 'Personalized Learning Paths', description: 'AI-driven study plans tailored to your goals and skill level.', path: '/students/learning-paths', Icon: ICONS.PersonalizedPath },
-  { title: 'Financial Management Tools', description: 'AI-powered budgeting, loan advice, and investment education.', path: '/students/financial-management', Icon: ICONS.FinancialManagement },
-  { title: 'Coding & Development', description: 'Master LeetCode, GitHub, and build your profile.', path: '/students/coding-toolkit', Icon: ICONS.GitHub },
-  { title: 'AI Doubt Solver', description: 'Get instant solutions to your academic questions.', path: '/students/doubt-solving', Icon: ICONS.Lightbulb },
-  { title: 'Innovation Portal', description: 'Submit project ideas, get votes, and find funding.', path: '/students/project-ideas', Icon: ICONS.Trophy },
-  { title: 'Student Earning Hub', description: 'Discover ways to earn, invest, and save money.', path: '/students/earning-hub', Icon: ICONS.Rupee },
-  { title: 'Smart App Directory', description: 'A curated list of essential apps for students.', path: '/students/smart-apps', Icon: ICONS.Farmer },
-  { title: 'Free Learning Hub', description: 'Access free courses from top Indian & global platforms.', path: '/students/free-resources', Icon: ICONS.Expert },
-  { title: 'Internships & Placements', description: 'Your guide to landing top internships and jobs.', path: '/students/internships-placements', Icon: ICONS.MarketChat },
+  { titleKey: 'features.student.scholarships.title', descriptionKey: 'features.student.scholarships.description', path: '/students/scholarships', Icon: ICONS.Student },
+  { titleKey: 'features.student.resume.title', descriptionKey: 'features.student.resume.description', path: '/students/resume-builder', Icon: ICONS.Worker },
+  { titleKey: 'features.student.roadmaps.title', descriptionKey: 'features.student.roadmaps.description', path: '/students/career-roadmaps', Icon: ICONS.Entrepreneur },
+  { titleKey: 'features.student.learningPaths.title', descriptionKey: 'features.student.learningPaths.description', path: '/students/learning-paths', Icon: ICONS.PersonalizedPath },
+  { titleKey: 'features.student.financialManagement.title', descriptionKey: 'features.student.financialManagement.description', path: '/students/financial-management', Icon: ICONS.FinancialManagement },
+  { titleKey: 'features.student.coding.title', descriptionKey: 'features.student.coding.description', path: '/students/coding-toolkit', Icon: ICONS.GitHub },
+  { titleKey: 'features.student.doubtSolver.title', descriptionKey: 'features.student.doubtSolver.description', path: '/students/doubt-solving', Icon: ICONS.Lightbulb },
+  { titleKey: 'features.student.innovation.title', descriptionKey: 'features.student.innovation.description', path: '/students/project-ideas', Icon: ICONS.Trophy },
+  { titleKey: 'features.student.earning.title', descriptionKey: 'features.student.earning.description', path: '/students/earning-hub', Icon: ICONS.Rupee },
+  { titleKey: 'features.student.smartApps.title', descriptionKey: 'features.student.smartApps.description', path: '/students/smart-apps', Icon: ICONS.Farmer },
+  { titleKey: 'features.student.freeLearning.title', descriptionKey: 'features.student.freeLearning.description', path: '/students/free-resources', Icon: ICONS.Expert },
+  { titleKey: 'features.student.internships.title', descriptionKey: 'features.student.internships.description', path: '/students/internships-placements', Icon: ICONS.MarketChat },
 ];
 
 export const MOCK_SCHOLARSHIPS: Scholarship[] = [
@@ -269,10 +290,10 @@ export const REFERRAL_PARTNERS = [
 
 // Women Empowerment Constants
 export const WOMEN_EMPOWERMENT_FEATURES = [
-  { title: 'Safety & Legal Aid', description: 'Emergency helplines and legal support.', anchor: 'safety', Icon: ICONS.Shield },
-  { title: 'Health & Wellness', description: 'Access to health schemes and information.', anchor: 'health', Icon: ICONS.HeartPlus },
-  { title: 'Skilling & Career', description: 'Programs for skill development and jobs.', anchor: 'skilling', Icon: ICONS.Lightbulb },
-  { title: 'Financial Independence', description: 'Schemes for financial support & literacy.', anchor: 'finance', Icon: ICONS.Rupee },
+  { titleKey: 'features.women.safety.title', descriptionKey: 'features.women.safety.description', anchor: 'safety', Icon: ICONS.Shield },
+  { titleKey: 'features.women.health.title', descriptionKey: 'features.women.health.description', anchor: 'health', Icon: ICONS.HeartPlus },
+  { titleKey: 'features.women.skilling.title', descriptionKey: 'features.women.skilling.description', anchor: 'skilling', Icon: ICONS.Lightbulb },
+  { titleKey: 'features.women.finance.title', descriptionKey: 'features.women.finance.description', anchor: 'finance', Icon: ICONS.Rupee },
 ];
 
 export const WOMEN_SAFETY_RESOURCES = [

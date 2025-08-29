@@ -24,15 +24,18 @@ const FinancialNeedsPage: React.FC = () => {
     const [products, setProducts] = useState<FinancialProduct[] | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [isSuccess, setIsSuccess] = useState(false);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsLoading(true);
         setError(null);
         setProducts(null);
+        setIsSuccess(false);
         try {
             const result = await getFinancialProducts({ landSize, annualIncome, goal });
             setProducts(result);
+            setIsSuccess(true);
         } catch (err) {
             setError(err instanceof Error ? err.message : "An unknown error occurred.");
         } finally {
@@ -78,6 +81,13 @@ const FinancialNeedsPage: React.FC = () => {
                 {isLoading && <p className="text-center mt-6 animate-pulse">Our AI is finding the best options for you...</p>}
                 {error && <div className="bg-red-100 text-red-700 p-4 rounded-md mt-6">{error}</div>}
                 
+                {isSuccess && !isLoading && (
+                    <div className="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded-md mt-6" role="alert">
+                        <p className="font-bold">Success!</p>
+                        <p>We've found some financial products that might be a good fit for you.</p>
+                    </div>
+                )}
+
                 {products && (
                     <div className="mt-8">
                         <h2 className="text-2xl font-bold text-center mb-6">Recommended Financial Products</h2>

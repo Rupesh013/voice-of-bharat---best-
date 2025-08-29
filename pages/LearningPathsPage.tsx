@@ -60,6 +60,7 @@ const LearningPathsPage: React.FC = () => {
     const [learningPath, setLearningPath] = useState<LearningPath | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [isSuccess, setIsSuccess] = useState(false);
     
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { id, value } = e.target;
@@ -71,9 +72,11 @@ const LearningPathsPage: React.FC = () => {
         setIsLoading(true);
         setError(null);
         setLearningPath(null);
+        setIsSuccess(false);
         try {
             const result = await generateLearningPath(formData);
             setLearningPath(result);
+            setIsSuccess(true);
         } catch (err) {
             setError(err instanceof Error ? err.message : "An unknown error occurred.");
         } finally {
@@ -127,6 +130,12 @@ const LearningPathsPage: React.FC = () => {
                 </div>
                  {isLoading && <p className="text-center mt-6 animate-pulse text-lg text-gray-700">Our AI is designing your personalized curriculum...</p>}
                  {error && <div className="bg-red-100 text-red-700 p-4 rounded-md mt-6">{error}</div>}
+                 {isSuccess && !isLoading && (
+                    <div className="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded-md mt-6" role="alert">
+                        <p className="font-bold">Success!</p>
+                        <p>Your personalized learning path has been generated below.</p>
+                    </div>
+                )}
                  {learningPath && <LearningPathDisplay path={learningPath} />}
             </div>
         </div>

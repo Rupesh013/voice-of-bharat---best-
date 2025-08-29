@@ -4,7 +4,9 @@ import { translations } from '../i18n/locales';
 export const useTranslation = () => {
     const { language } = useLanguage();
 
-    const t = (key: string): string => {
+    // FIX: Updated `t` function to accept an optional `options` object for string interpolation.
+    // This allows replacing placeholders like `{year}` in translation strings.
+    const t = (key: string, options?: { [key: string]: string | number }): string => {
         const keys = key.split('.');
         
         const findTranslation = (langObject: any) => {
@@ -24,7 +26,16 @@ export const useTranslation = () => {
             translatedText = findTranslation(translations['en']);
         }
         
-        return translatedText || key;
+        let resultString = translatedText || key;
+
+        if (options && typeof resultString === 'string') {
+            Object.keys(options).forEach(optionKey => {
+                const regex = new RegExp(`{${optionKey}}`, 'g');
+                resultString = resultString.replace(regex, String(options[optionKey]));
+            });
+        }
+        
+        return resultString;
     };
 
     return { t, language };

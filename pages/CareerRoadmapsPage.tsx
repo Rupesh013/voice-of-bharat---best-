@@ -61,6 +61,7 @@ const CareerRoadmapsPage: React.FC = () => {
     const [roadmap, setRoadmap] = useState<CareerRoadmap | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [isSuccess, setIsSuccess] = useState(false);
     
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { id, value } = e.target;
@@ -72,9 +73,11 @@ const CareerRoadmapsPage: React.FC = () => {
         setIsLoading(true);
         setError(null);
         setRoadmap(null);
+        setIsSuccess(false);
         try {
             const result = await generateCareerRoadmap(formData);
             setRoadmap(result);
+            setIsSuccess(true);
         } catch (err) {
             setError(err instanceof Error ? err.message : "An unknown error occurred.");
         } finally {
@@ -145,6 +148,12 @@ const CareerRoadmapsPage: React.FC = () => {
                 </div>
                  {isLoading && <p className="text-center mt-6 animate-pulse">Our AI is charting your career path...</p>}
                  {error && <div className="bg-red-100 text-red-700 p-4 rounded-md mt-6">{error}</div>}
+                 {isSuccess && !isLoading && (
+                    <div className="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded-md mt-6" role="alert">
+                        <p className="font-bold">Success!</p>
+                        <p>Your career roadmap has been generated below.</p>
+                    </div>
+                )}
                  {roadmap && <RoadmapDisplay roadmap={roadmap} />}
             </div>
         </div>
