@@ -530,29 +530,30 @@ export async function getSeniorCitizenAIResponse(prompt: string, systemInstructi
   }
 }
 
-export async function processVoiceCommand(command: string): Promise<{ action: 'navigate' | 'unknown', path: string }> {
+export async function processVoiceCommand(command: string): Promise<{ action: 'navigate' | 'speak' | 'unknown', path: string, responseText: string }> {
   
-  // FIX: Cast route object to `any` to bypass TypeScript's overly strict union type checking for properties that are known to exist.
   const validRoutes = ALL_APP_ROUTES.map(r => `path: ${r.path}, description: ${(r as any).description ?? (r as any).title}`).join('\n');
 
-  const systemInstruction = `You are a voice command interpreter for a web application called "Voice of Bharat". Your task is to understand the user's spoken command and map it to a navigation action. The user is an Indian citizen and may use colloquial phrases.
+  const systemInstruction = `You are a voice assistant for a web application called "Voice of Bharat". Your task is to be a helpful guide.
   
   Available navigation paths are:
   ${validRoutes}
   
-  Based on the user's command, you must determine the correct path to navigate to.
-  - If the command clearly maps to one of the paths, return an action "navigate" and the corresponding path. For example, if the user says "fasal doctor", map it to the crop doctor page ('/farmers/crop-doctor'). If they say "take me to the students page" map to '/students'.
-  - If the command is unclear, ambiguous, or does not correspond to any navigation action (like a general question), return an action "unknown" and an empty path.
+  Based on the user's command, you must determine the correct action.
+  - If the command is a clear navigation request (e.g., "Go to farmers", "Open crop doctor"), return action "navigate", the corresponding path, and a confirmation message in responseText (e.g., "Navigating to the farmers page.").
+  - If the user asks a general question related to the app's services (farming, scholarships, government schemes, etc.), answer it concisely. Return action "speak" and the answer in responseText.
+  - If the command is unclear, ambiguous, or you cannot fulfill the request, return action "unknown" and a polite message in responseText explaining that you couldn't understand or help.
   
-  You MUST respond ONLY with a valid JSON object in the specified format.`;
+  You MUST respond ONLY with a valid JSON object in the specified format. The responseText should be natural and conversational.`;
 
   const responseSchema = {
     type: Type.OBJECT,
     properties: {
-      action: { type: Type.STRING, enum: ['navigate', 'unknown'] },
-      path: { type: Type.STRING, description: "The path to navigate to, e.g., '/farmers/crop-doctor'. Should be empty if action is 'unknown'." }
+      action: { type: Type.STRING, enum: ['navigate', 'speak', 'unknown'] },
+      path: { type: Type.STRING, description: "The path to navigate to. Should be empty if action is not 'navigate'." },
+      responseText: { type: Type.STRING, description: "The text for the assistant to speak back to the user." }
     },
-    required: ['action', 'path']
+    required: ['action', 'responseText']
   };
 
   try {
@@ -566,9 +567,10 @@ export async function processVoiceCommand(command: string): Promise<{ action: 'n
       }
     });
     const jsonStr = response.text.trim();
-    return JSON.parse(jsonStr);
+    const parsed = JSON.parse(jsonStr);
+    return { path: '', ...parsed };
   } catch (error) {
     console.error("Error processing voice command:", error);
-    return { action: 'unknown', path: '' };
+    return { action: 'unknown', path: '', responseText: "I'm having trouble connecting right now. Please try again." };
   }
 }

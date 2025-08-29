@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { processVoiceCommand } from '../services/geminiService';
 
-// Add SpeechRecognition types for browsers that support it
 declare global {
   interface Window {
     SpeechRecognition: any;
@@ -12,50 +11,66 @@ declare global {
 
 const VoiceControl: React.FC = () => {
     const [isListening, setIsListening] = useState(false);
-    const [transcript, setTranscript] = useState('');
     const [feedback, setFeedback] = useState('');
+    const [displayTranscript, setDisplayTranscript] = useState('');
+    
     const recognitionRef = useRef<any>(null);
     const navigate = useNavigate();
     const timeoutRef = useRef<number | null>(null);
+    const finalTranscriptRef = useRef('');
+
+    const speak = (text: string) => {
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'en-IN';
+            window.speechSynthesis.speak(utterance);
+        } else {
+            console.warn("Text-to-speech is not supported by your browser.");
+        }
+    };
 
     useEffect(() => {
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         if (SpeechRecognition) {
             const recognition = new SpeechRecognition();
-            recognition.continuous = false; // Stop after a pause
+            recognition.continuous = false;
             recognition.interimResults = true;
-            recognition.lang = 'en-IN'; // Set to Indian English
+            recognition.lang = 'en-IN';
 
             recognition.onstart = () => {
+                finalTranscriptRef.current = '';
+                setDisplayTranscript('');
                 setIsListening(true);
                 setFeedback('Listening...');
-                setTranscript('');
             };
 
             recognition.onresult = (event: any) => {
-                let interimTranscript = '';
-                let finalTranscript = '';
+                let interim = '';
                 for (let i = event.resultIndex; i < event.results.length; ++i) {
                     if (event.results[i].isFinal) {
-                        finalTranscript += event.results[i][0].transcript;
+                        finalTranscriptRef.current += event.results[i][0].transcript;
                     } else {
-                        interimTranscript += event.results[i][0].transcript;
+                        interim += event.results[i][0].transcript;
                     }
                 }
-                setTranscript(finalTranscript || interimTranscript);
+                setDisplayTranscript(finalTranscriptRef.current + interim);
             };
 
             recognition.onend = () => {
                 setIsListening(false);
-                setFeedback('');
-                if (timeoutRef.current) {
-                    clearTimeout(timeoutRef.current);
+                if (finalTranscriptRef.current.trim()) {
+                    handleCommand(finalTranscriptRef.current);
+                } else {
+                    setFeedback(''); // Clear "Listening..." if nothing was said
                 }
             };
             
             recognition.onerror = (event: any) => {
                 console.error('Speech recognition error', event.error);
-                setFeedback('Sorry, there was an error. Please try again.');
+                const errorMsg = 'Sorry, there was an error with speech recognition.';
+                setFeedback(errorMsg);
+                speak(errorMsg);
                 setIsListening(false);
             };
 
@@ -63,41 +78,42 @@ const VoiceControl: React.FC = () => {
         }
     }, []);
 
-    // Effect to process the final transcript
-    useEffect(() => {
-        if (!isListening && transcript.trim()) {
-            handleCommand(transcript);
-        }
-    }, [isListening, transcript]);
-
     const handleCommand = async (command: string) => {
         setFeedback(`Processing: "${command}"`);
+        setDisplayTranscript(command);
         try {
             const result = await processVoiceCommand(command);
+            speak(result.responseText);
+            setFeedback(result.responseText);
+            setDisplayTranscript('');
+
             if (result.action === 'navigate' && result.path) {
-                setFeedback(`Navigating to ${result.path}...`);
-                navigate(result.path);
-            } else {
-                setFeedback(`Sorry, I didn't understand that. Please try again.`);
+                setTimeout(() => navigate(result.path), 1000); 
             }
         } catch (error) {
             console.error(error);
-            setFeedback('Could not process the command.');
+            const errorMessage = "I'm sorry, I could not process the command.";
+            setFeedback(errorMessage);
+            speak(errorMessage);
         } finally {
-            // Clear feedback after a few seconds
             if (timeoutRef.current) clearTimeout(timeoutRef.current);
-            timeoutRef.current = window.setTimeout(() => setFeedback(''), 4000);
+            timeoutRef.current = window.setTimeout(() => {
+                setFeedback('');
+            }, 5000);
         }
     };
 
     const toggleListening = () => {
         if (!recognitionRef.current) {
-            setFeedback('Voice recognition is not supported by your browser.');
+            const errorMsg = 'Voice recognition is not supported by your browser.';
+            setFeedback(errorMsg);
+            speak(errorMsg);
             return;
         }
         if (isListening) {
             recognitionRef.current.stop();
         } else {
+            window.speechSynthesis.cancel();
             recognitionRef.current.start();
         }
     };
@@ -119,10 +135,10 @@ const VoiceControl: React.FC = () => {
                     </svg>
                 </button>
             </div>
-            {(isListening || feedback) && (
-                <div className="fixed bottom-28 right-1/2 translate-x-1/2 z-40 bg-gray-800 text-white px-6 py-3 rounded-lg shadow-xl text-center">
+            {(feedback) && (
+                <div className="fixed bottom-28 right-1/2 translate-x-1/2 z-40 bg-gray-800 text-white px-6 py-3 rounded-lg shadow-xl text-center transition-opacity duration-300">
                     <p className="font-semibold">{feedback}</p>
-                    {isListening && <p className="text-gray-300 mt-1 italic">{transcript}</p>}
+                    {isListening && <p className="text-gray-300 mt-1 italic">{displayTranscript}</p>}
                 </div>
             )}
         </>
