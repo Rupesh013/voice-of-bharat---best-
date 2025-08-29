@@ -9,9 +9,9 @@ import type {
 } from './types';
 
 export const NAV_LINKS = [
-  { name: 'Home', path: '/' },
-  { name: 'About Us', path: '/about' },
-  { name: 'Contact', path: '/contact' },
+  { key: 'home', path: '/' },
+  { key: 'about', path: '/about' },
+  { key: 'contact', path: '/contact' },
 ];
 
 export const ICONS = {
@@ -130,12 +130,12 @@ export const ICONS = {
 };
 
 export const SECTIONS = [
-  { title: 'Students', description: 'Scholarships, career guidance, and skill development.', path: '/students', Icon: ICONS.Student },
-  { title: 'Women Empowerment', description: 'Schemes, safety resources, and support networks.', path: '/women-empowerment', Icon: ICONS.Women },
-  { title: 'Farmers', description: 'Crop insurance, market prices, and modern farming tools.', path: '/farmers', Icon: ICONS.Farmer },
-  { title: 'Workers & Laborers', description: 'Find jobs, social security, and know your rights.', path: '/workers', Icon: ICONS.Worker },
-  { title: 'Senior Citizens', description: 'Pension schemes, healthcare, and support services.', path: '/senior-citizens', Icon: ICONS.Senior },
-  { title: 'Entrepreneurs', description: 'Tools and resources to start and grow your business.', path: '/entrepreneurs', Icon: ICONS.Entrepreneur },
+  { key: 'students', path: '/students', Icon: ICONS.Student },
+  { key: 'women', path: '/women-empowerment', Icon: ICONS.Women },
+  { key: 'farmers', path: '/farmers', Icon: ICONS.Farmer },
+  { key: 'workers', path: '/workers', Icon: ICONS.Worker },
+  { key: 'seniors', path: '/senior-citizens', Icon: ICONS.Senior },
+  { key: 'entrepreneurs', path: '/entrepreneurs', Icon: ICONS.Entrepreneur },
 ];
 
 export const FARMER_FEATURES = [
@@ -466,3 +466,16 @@ export const WOMEN_APPS: SmartApp[] = [
 export const ENVIRONMENT_APPS: SmartApp[] = [
     { name: 'Sameer', purpose: 'Air quality monitoring by CPCB', appLink: 'https://cpcb.nic.in/SAMEER-app.php' },
 ];
+
+// New constant for voice navigation
+const allRoutesRaw = [
+  ...NAV_LINKS.map(l => ({ path: l.path, title: l.key, description: `Navigate to the ${l.key} page.` })),
+  ...SECTIONS,
+  ...FARMER_FEATURES,
+  ...STUDENT_FEATURES,
+  { title: 'Privacy Policy', path: '/privacy', description: 'The privacy policy for the application.' },
+];
+
+export const ALL_APP_ROUTES = allRoutesRaw.filter((route, index, self) =>
+    route.path && index === self.findIndex((r) => r.path === route.path)
+);

@@ -34,6 +34,8 @@ import FreeResourcesPage from './pages/FreeResourcesPage';
 import InternshipsPlacementsPage from './pages/InternshipsPlacementsPage';
 import LearningPathsPage from './pages/LearningPathsPage';
 import FinancialManagementPage from './pages/FinancialManagementPage';
+import VoiceControl from './components/VoiceControl';
+import { LanguageProvider } from './contexts/LanguageContext';
 
 const AppLayout: React.FC = () => {
   const location = useLocation();
@@ -81,15 +83,18 @@ const AppLayout: React.FC = () => {
       </main>
       <Footer />
       {showGlobalAssistant && <AiAssistant />}
+      <VoiceControl />
     </div>
   );
 };
 
 const App: React.FC = () => {
   return (
-    <HashRouter>
-      <AppLayout />
-    </HashRouter>
+    <LanguageProvider>
+      <HashRouter>
+        <AppLayout />
+      </HashRouter>
+    </LanguageProvider>
   );
 };
 

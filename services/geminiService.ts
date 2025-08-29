@@ -1,5 +1,6 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import type { ChatMessage, CropDiagnosis, FertilizerRecommendation, SchemeRecommendation, WeatherAlert, CropRecommendation, FinancialProduct, MarketPrice, ResumeData, CareerRoadmap, LearningPath, BudgetPlan, LoanAnalysis, InvestmentGuide } from '../types';
+import { ALL_APP_ROUTES } from '../constants';
 
 if (!process.env.API_KEY) {
   throw new Error("API_KEY environment variable is not set.");
@@ -511,4 +512,63 @@ export async function generateInvestmentGuide(amount: string, horizon: string, r
         console.error("Error generating investment guide:", error);
         throw new Error("Failed to generate an investment guide.");
     }
+}
+
+export async function getSeniorCitizenAIResponse(prompt: string, systemInstruction: string): Promise<string> {
+  try {
+    const response = await ai.models.generateContent({
+      model,
+      contents: prompt,
+      config: {
+        systemInstruction: systemInstruction,
+      },
+    });
+    return response.text;
+  } catch (error) {
+    console.error("Error getting AI response for senior citizens:", error);
+    throw new Error("I'm sorry, I couldn't process that request right now. Please try again.");
+  }
+}
+
+export async function processVoiceCommand(command: string): Promise<{ action: 'navigate' | 'unknown', path: string }> {
+  
+  // FIX: Cast route object to `any` to bypass TypeScript's overly strict union type checking for properties that are known to exist.
+  const validRoutes = ALL_APP_ROUTES.map(r => `path: ${r.path}, description: ${(r as any).description ?? (r as any).title}`).join('\n');
+
+  const systemInstruction = `You are a voice command interpreter for a web application called "Voice of Bharat". Your task is to understand the user's spoken command and map it to a navigation action. The user is an Indian citizen and may use colloquial phrases.
+  
+  Available navigation paths are:
+  ${validRoutes}
+  
+  Based on the user's command, you must determine the correct path to navigate to.
+  - If the command clearly maps to one of the paths, return an action "navigate" and the corresponding path. For example, if the user says "fasal doctor", map it to the crop doctor page ('/farmers/crop-doctor'). If they say "take me to the students page" map to '/students'.
+  - If the command is unclear, ambiguous, or does not correspond to any navigation action (like a general question), return an action "unknown" and an empty path.
+  
+  You MUST respond ONLY with a valid JSON object in the specified format.`;
+
+  const responseSchema = {
+    type: Type.OBJECT,
+    properties: {
+      action: { type: Type.STRING, enum: ['navigate', 'unknown'] },
+      path: { type: Type.STRING, description: "The path to navigate to, e.g., '/farmers/crop-doctor'. Should be empty if action is 'unknown'." }
+    },
+    required: ['action', 'path']
+  };
+
+  try {
+    const response = await ai.models.generateContent({
+      model,
+      contents: `User command: "${command}"`,
+      config: {
+        systemInstruction,
+        responseMimeType: "application/json",
+        responseSchema,
+      }
+    });
+    const jsonStr = response.text.trim();
+    return JSON.parse(jsonStr);
+  } catch (error) {
+    console.error("Error processing voice command:", error);
+    return { action: 'unknown', path: '' };
+  }
 }

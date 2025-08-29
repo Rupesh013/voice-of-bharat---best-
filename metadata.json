@@ -1,5 +1,7 @@
 {
   "name": "Voice of Bharat best",
   "description": "A digital empowerment platform to enable inclusive access to government schemes, education, health, and welfare services for Indian citizens, especially in rural areas, using voice technology.",
-  "requestFramePermissions": []
+  "requestFramePermissions": [
+    "microphone"
+  ]
 }
