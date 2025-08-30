@@ -1,5 +1,7 @@
+
+
 import { GoogleGenAI, Type } from "@google/genai";
-import type { ChatMessage, CropDiagnosis, FertilizerRecommendation, SchemeRecommendation, WeatherAlert, CropRecommendation, FinancialProduct, MarketPrice, ResumeData, CareerRoadmap, LearningPath, BudgetPlan, LoanAnalysis, InvestmentGuide, JobSearchParams, Job, WageInfo } from '../types';
+import type { ChatMessage, CropDiagnosis, FertilizerRecommendation, SchemeRecommendation, WeatherAlert, CropRecommendation, FinancialProduct, MarketPrice, ResumeData, CareerRoadmap, LearningPath, BudgetPlan, LoanAnalysis, InvestmentGuide, JobSearchParams, Job, WageInfo, AIUpdateResult, GroundingSource, AIOfferResult } from '../types';
 import { ALL_APP_ROUTES } from '../constants';
 
 if (!process.env.API_KEY) {
@@ -686,6 +688,162 @@ export async function calculateWagesAndEntitlements(skill: string, city: string)
   } catch (error) {
     console.error("Error calculating wages:", error);
     throw new Error("Could not calculate wage information. Please check your inputs.");
+  }
+}
+
+export async function getWomenSafetyInfo(query: string): Promise<string> {
+    const systemInstruction = `You are a calm, supportive AI assistant for women in India named 'Shakti Assistant'. Provide clear, simple, and safe advice for sensitive situations like harassment, domestic violence, or cybercrime. Prioritize providing official helpline numbers (like 181, 112, 1091). Do NOT give legal advice; instead, strongly advise users to contact the police or a lawyer for legal matters. Keep responses concise and easy to understand.`;
+    try {
+        const response = await ai.models.generateContent({ model, contents: query, config: { systemInstruction }});
+        return response.text;
+    } catch (error) {
+        console.error("Error in getWomenSafetyInfo:", error);
+        throw new Error("I'm sorry, I couldn't process that request right now. Please try again.");
+    }
+}
+
+export async function getWomenHealthInfo(query: string): Promise<string> {
+    const systemInstruction = `You are a helpful and empathetic AI health advisor for women named 'Swasthya Saheli'. Answer general health questions simply and clearly, covering topics like nutrition, menstrual health, and wellness. IMPORTANT: ALWAYS begin your response with a prominent disclaimer in a new line: 'DISCLAIMER: I am an AI assistant and not a medical professional. Please consult a qualified doctor for any health concerns.' After the disclaimer, provide the helpful, general information.`;
+    try {
+        const response = await ai.models.generateContent({ model, contents: query, config: { systemInstruction } });
+        return response.text;
+    } catch (error) {
+        console.error("Error in getWomenHealthInfo:", error);
+        throw new Error("I'm sorry, I couldn't process that request right now. Please try again.");
+    }
+}
+
+export async function suggestWomenSchemes(profile: { state: string; }): Promise<SchemeRecommendation[]> {
+    const prompt = `You are an expert on Indian government schemes for women. Based on the user's state, suggest up to 3 highly relevant schemes. For each, provide the scheme title, a brief reason for the recommendation, a key benefit, and a link if available. Profile: State - "${profile.state}"`;
+    const responseSchema = {
+        type: Type.ARRAY,
+        items: {
+            type: Type.OBJECT,
+            properties: {
+                schemeTitle: { type: Type.STRING },
+                reason: { type: Type.STRING },
+                benefit: { type: Type.STRING },
+                link: { type: Type.STRING }
+            },
+            required: ['schemeTitle', 'reason']
+        }
+    };
+    try {
+        const response = await ai.models.generateContent({
+            model,
+            contents: prompt,
+            config: { responseMimeType: "application/json", responseSchema }
+        });
+        return parseGeminiJson(response.text);
+    } catch (error) {
+        console.error("Error in suggestWomenSchemes:", error);
+        throw new Error("Failed to suggest schemes. Please try again.");
+    }
+}
+
+export async function findFamilyBenefits(householdInfo: string): Promise<SchemeRecommendation[]> {
+    const prompt = `You are an expert on Indian family welfare schemes. Based on the following household information, suggest up to 3 relevant schemes for women, children, or seniors in the family. Provide the scheme title, a brief reason for the recommendation, a key benefit, and a link if available. Household Information: "${householdInfo}"`;
+    const responseSchema = {
+        type: Type.ARRAY,
+        items: {
+            type: Type.OBJECT,
+            properties: {
+                schemeTitle: { type: Type.STRING },
+                reason: { type: Type.STRING },
+                benefit: { type: Type.STRING },
+                link: { type: Type.STRING }
+            },
+            required: ['schemeTitle', 'reason']
+        }
+    };
+    try {
+        const response = await ai.models.generateContent({
+            model,
+            contents: prompt,
+            config: { responseMimeType: "application/json", responseSchema }
+        });
+        return parseGeminiJson(response.text);
+    } catch (error) {
+        console.error("Error in findFamilyBenefits:", error);
+        throw new Error("Failed to find family benefits. Please try again.");
+    }
+}
+
+export async function getRealTimeUpdates(topic: string): Promise<AIUpdateResult> {
+  const prompt = `You are an AI news assistant for the "Voice of Bharat" platform. Provide a concise summary of the latest news and updates in India related to "${topic}". The information should be recent and relevant. Then, list the key source titles and URLs. Your response should be a simple text summary.`;
+
+  try {
+    const response = await ai.models.generateContent({
+      model,
+      contents: prompt,
+      config: {
+        tools: [{ googleSearch: {} }],
+      },
+    });
+
+    const summary = response.text;
+    const rawChunks = response.candidates?.[0]?.groundingMetadata?.groundingChunks || [];
+
+    // FIX: The Gemini API's GroundingChunk type has optional properties.
+    // We must filter and map the raw chunks to match our strict GroundingSource type.
+    const sources: GroundingSource[] = rawChunks
+      .filter(chunk => chunk.web && chunk.web.uri && chunk.web.title)
+      .map(chunk => ({
+        web: {
+          uri: chunk.web!.uri!,
+          title: chunk.web!.title!,
+        },
+      }));
+
+    if (!summary && sources.length === 0) {
+      return {
+        summary: "I couldn't find any recent updates on that topic. Please try a different search.",
+        sources: []
+      };
+    }
+    
+    return { summary, sources };
+  } catch (error) {
+    console.error("Error getting real-time updates:", error);
+    throw new Error("Failed to fetch real-time updates. The service might be temporarily unavailable.");
+  }
+}
+
+export async function getRealTimeOffers(topic: string): Promise<AIOfferResult> {
+  const prompt = `You are an AI assistant for the "Voice of Bharat" platform. Find the latest and most relevant offers, discounts, or subsidies in India related to "${topic}". Summarize the offer details, eligibility, and how to avail it. Then, list the key source titles and URLs. Your response should be a simple text summary.`;
+
+  try {
+    const response = await ai.models.generateContent({
+      model,
+      contents: prompt,
+      config: {
+        tools: [{ googleSearch: {} }],
+      },
+    });
+
+    const summary = response.text;
+    const rawChunks = response.candidates?.[0]?.groundingMetadata?.groundingChunks || [];
+
+    const sources: GroundingSource[] = rawChunks
+      .filter(chunk => chunk.web && chunk.web.uri && chunk.web.title)
+      .map(chunk => ({
+        web: {
+          uri: chunk.web!.uri!,
+          title: chunk.web!.title!,
+        },
+      }));
+
+    if (!summary && sources.length === 0) {
+      return {
+        summary: "I couldn't find any recent offers on that topic. Please try a different search term, like 'student laptop discounts' or 'startup cloud credits'.",
+        sources: []
+      };
+    }
+    
+    return { summary, sources };
+  } catch (error) {
+    console.error("Error getting real-time offers:", error);
+    throw new Error("Failed to fetch real-time offers. The service might be temporarily unavailable.");
   }
 }
 

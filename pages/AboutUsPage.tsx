@@ -35,7 +35,7 @@ const FeatureItem: React.FC<{ icon: string; title: string; description: string; 
 const AboutUsPage: React.FC = () => {
   const teamMembers = [
     { name: 'M. Rupesh Reddy', role: 'Full-stack development, AI integration, vision lead, team lead' },
-    { name: 'P. Chanukya', role: 'Backend developer, security and database systems' },
+    { name: 'Chanukya', role: 'Backend developer, security and database systems' },
     { name: 'Teja', role: 'UI/UX designer and frontend implementation' },
     { name: 'Karthik', role: 'Firebase, cloud services, and real-time integration' },
     { name: 'Rizzwan', role: 'Voice AI, NLP modules, multilingual support' },
@@ -135,7 +135,7 @@ const AboutUsPage: React.FC = () => {
       <div className="bg-gray-800 text-white text-center py-10">
         <h3 className="text-2xl font-semibold mb-2">🙌 Powered By</h3>
         <p className="text-lg font-bold tracking-wider">
-          Mucheli Rupesh Reddy, P. Chanukya, Teja, Rizzwan, Karthik
+          Mucheli Rupesh Reddy, Chanukya, Teja, Rizzwan, Karthik
         </p>
         <p className="text-gray-400 mt-2">
           Final Year Diploma Students – Computer Science<br />

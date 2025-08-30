@@ -397,8 +397,39 @@ export interface WageInfo {
   entitlements: string[];
 }
 
-export interface CourseRecommendation {
-  courseName: string;
-  platform: string;
+export interface Update {
+  id: number;
+  category: 'Students' | 'Women' | 'Farmers' | 'Workers' | 'Seniors' | 'Entrepreneurs' | 'General';
+  title: string;
+  summary: string;
+  date: string;
+  pinned?: boolean;
   link: string;
 }
+
+export interface GroundingSource {
+    web: {
+        uri: string;
+        title: string;
+    }
+}
+
+export interface AIUpdateResult {
+  summary: string;
+  sources: GroundingSource[];
+}
+
+export interface Offer {
+  id: number;
+  category: 'Students' | 'Women' | 'Farmers' | 'Workers' | 'Seniors' | 'Entrepreneurs' | 'General';
+  title: string;
+  provider: string;
+  description: string;
+  eligibility: string;
+  redeemMethod: string;
+  expiry?: string;
+  link: string;
+  type: 'Deal' | 'Subsidy' | 'Grant' | 'Freebie' | 'Info';
+}
+
+export type AIOfferResult = AIUpdateResult;

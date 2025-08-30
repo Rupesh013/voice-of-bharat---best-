@@ -5,11 +5,13 @@ import type {
   Contract, MarketPrice, ExpertGuide, Scholarship, ScholarshipDetail, 
   AbroadScholarship, EducationLoan, CounselingCenter, VisaStep, EarningMethod, CashbackApp, 
   CryptoApp, StudentBankAccount, StudentLoanOffer, StudentCard, StudentDeal, ReferralApp, Project,
-  PlatformInfo, Article, SmartApp
+  PlatformInfo, Article, SmartApp, EducationResource, Update, Offer
 } from './types';
 
 export const NAV_LINKS = [
   { key: 'home', path: '/' },
+  { key: 'updates', path: '/updates'},
+  { key: 'offers', path: '/offers' },
   { key: 'about', path: '/about' },
   { key: 'contact', path: '/contact' },
 ];
@@ -127,6 +129,17 @@ export const ICONS = {
       <path strokeLinecap="round" strokeLinejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z" />
     </svg>
   ),
+  Updates: (props: React.SVGProps<SVGSVGElement>) => (
+    <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0" />
+    </svg>
+  ),
+  Offers: (props: React.SVGProps<SVGSVGElement>) => (
+    <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M9.568 3H5.25A2.25 2.25 0 0 0 3 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 0 0 5.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 0 0 9.568 3Z" />
+      <path strokeLinecap="round" strokeLinejoin="round" d="M6 6h.008v.008H6V6Z" />
+    </svg>
+  ),
 };
 
 export const SECTIONS = [
@@ -232,271 +245,302 @@ export const MOCK_PRODUCE_LISTINGS = [
   { id: 4, name: 'Potatoes', price: '₹20 / kg', quantity: '250 kg available', seller: 'Lakshmi Patel', location: 'Indore, MP', image: 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?q=80&w=2070&auto=format&fit=crop' },
 ];
 
+// FIX: Added missing properties to the Contract object to match the type definition.
 export const AVAILABLE_CONTRACTS: Contract[] = [
-  { id: 1, title: 'Export Quality Grapes', buyerName: 'FreshFruit Exports', buyerVerified: true, crop: 'Grapes', quantity: '5 Tonnes', price: '₹60/kg', timeline: { startDate: '2025-09-01', endDate: '2026-03-31' }, status: 'Pending', fullText: 'This agreement is for the supply of 5 tonnes of export-quality, seedless Thompson grapes. Quality checks will be performed weekly. Payment will be made in two installments...', paymentStatus: 'Pending' },
-  { id: 2, title: 'Organic Turmeric Supply', buyerName: 'SpiceCorp India', buyerVerified: true, crop: 'Turmeric', quantity: '2 Tonnes', price: '₹120/kg', timeline: { startDate: '2025-07-15', endDate: '2026-01-30' }, status: 'Pending', fullText: 'Seeking 2 tonnes of certified organic turmeric. Must meet curcumin content of 5% minimum. Buyer will provide organic certification assistance.', paymentStatus: 'Pending' },
-  { id: 3, title: 'Bulk Potato for Chips', buyerName: 'SnackFoods Ltd.', buyerVerified: false, crop: 'Potatoes (Chipsona variety)', quantity: '20 Tonnes', price: '₹15/kg', timeline: { startDate: '2025-10-01', endDate: '2026-02-28' }, status: 'Pending', fullText: 'Contract for 20 tonnes of Chipsona variety potatoes. Size must be between 45mm and 90mm. Rejected potatoes will be returned at farmer\'s cost.', paymentStatus: 'Pending' },
+  { 
+    id: 1, 
+    title: 'Export Quality Basmati Rice', 
+    buyerName: 'Global Grains Pvt. Ltd.', 
+    buyerVerified: true, 
+    crop: 'Basmati Rice',
+    quantity: '100 Tonnes', 
+    price: '₹7,500 / quintal', 
+    timeline: { startDate: '2024-09-01', endDate: '2025-01-30' },
+    status: 'Pending',
+    fullText: 'This agreement is for the supply of 100 tonnes of Grade A export quality Basmati rice. Payment will be made in two installments...',
+    paymentStatus: 'Pending'
+  },
+  { 
+    id: 2, 
+    title: 'Organic Turmeric Supply', 
+    buyerName: 'Healthy Spices Co.', 
+    buyerVerified: true, 
+    crop: 'Turmeric',
+    quantity: '20 Tonnes', 
+    price: '₹8,000 / quintal', 
+    timeline: { startDate: '2024-10-15', endDate: '2025-03-15' },
+    status: 'Pending',
+    fullText: 'Contract for 20 tonnes of certified organic turmeric. Buyer will provide quality testing support.',
+    paymentStatus: 'Pending'
+  },
+  { 
+    id: 3, 
+    title: 'Fresh Mangoes for Pulp', 
+    buyerName: 'Juicy Foods Ltd.', 
+    buyerVerified: false, 
+    crop: 'Mangoes (Totapuri)',
+    quantity: '50 Tonnes', 
+    price: '₹25 / kg', 
+    timeline: { startDate: '2025-05-01', endDate: '2025-06-30' },
+    status: 'Pending',
+    fullText: 'Agreement for the supply of 50 tonnes of Totapuri mangoes suitable for pulp processing.',
+    paymentStatus: 'Pending'
+  },
 ];
 
+// START: ADDED MISSING CONSTANTS
+
 export const MY_CONTRACTS: Contract[] = [
-  { id: 4, title: 'Basmati Rice Agreement', buyerName: 'AgriPro Traders', buyerVerified: true, crop: 'Basmati Rice', quantity: '10 Tonnes', price: '₹75/kg', timeline: { startDate: '2024-06-01', endDate: '2024-12-15' }, status: 'Active', fullText: 'Supply of 10 tonnes of 1121 Pusa Basmati rice. Moisture content must be below 12%. Payment within 7 days of delivery.', paymentStatus: 'Pending' },
-  { id: 5, title: 'Tomato Supply for Ketchup', buyerName: 'SauceMakers Pvt. Ltd.', buyerVerified: true, crop: 'Tomatoes', quantity: '15 Tonnes', price: '₹18/kg', timeline: { startDate: '2024-08-01', endDate: '2025-01-15' }, status: 'Harvesting', fullText: 'Contract for 15 tonnes of Roma variety tomatoes. Acidity level should be between 0.35 and 0.45.', paymentStatus: 'Paid' },
+    { 
+        id: 101, 
+        title: 'High-Grade Cotton Supply', 
+        buyerName: 'National Textiles', 
+        buyerVerified: true, 
+        crop: 'Cotton',
+        quantity: '50 Tonnes', 
+        price: '₹6,000 / quintal', 
+        timeline: { startDate: '2024-03-01', endDate: '2024-08-30' },
+        status: 'Active',
+        fullText: 'This is an active contract for 50 tonnes of high-grade cotton. First quality check is due next month.',
+        paymentStatus: 'Pending'
+    },
+    { 
+        id: 102, 
+        title: 'Wheat for Local Mill', 
+        buyerName: 'Annapurna Flour Mill', 
+        buyerVerified: true, 
+        crop: 'Wheat',
+        quantity: '200 Tonnes', 
+        price: '₹2,200 / quintal', 
+        timeline: { startDate: '2024-01-10', endDate: '2024-05-20' },
+        status: 'Completed',
+        fullText: 'Completed contract for 200 tonnes of wheat. Final payment received.',
+        paymentStatus: 'Paid'
+    }
 ];
 
 export const MOCK_MARKET_PRICES: MarketPrice[] = [
-  { crop: "Tomato", price: "₹2,500 / quintal", market: "Nashik, MH", trend: "up" },
-  { crop: "Onion", price: "₹1,800 / quintal", market: "Lasalgaon, MH", trend: "down" },
-  { crop: "Potato", price: "₹1,500 / quintal", market: "Indore, MP", trend: "stable" },
-  { crop: "Wheat", price: "₹2,200 / quintal", market: "Karnal, HR", trend: "up" },
-  { crop: "Rice (Basmati)", price: "₹7,000 / quintal", market: "Karnal, HR", trend: "stable" },
-  { crop: "Cotton", price: "₹6,800 / quintal", market: "Adilabad, TS", trend: "down" },
-  { crop: "Soybean", price: "₹4,500 / quintal", market: "Indore, MP", trend: "up" },
+  { crop: 'Tomato', price: '₹32 / kg', market: 'Nashik Mandi', trend: 'up' },
+  { crop: 'Onion', price: '₹25 / kg', market: 'Lasalgaon Mandi', trend: 'stable' },
+  { crop: 'Potato', price: '₹20 / kg', market: 'Indore Mandi', trend: 'down' },
+  { crop: 'Wheat', price: '₹2100 / quintal', market: 'Karnal Mandi', trend: 'stable' },
+  { crop: 'Cotton', price: '₹6500 / quintal', market: 'Adilabad Mandi', trend: 'up' },
 ];
 
 export const MOCK_EXPERT_GUIDES: ExpertGuide[] = [
-  { id: 1, title: 'Integrated Pest Management (IPM) for Cotton', category: 'Pest Control', summary: 'Learn how to control pests in your cotton crop using a mix of biological, cultural, and chemical methods to reduce reliance on pesticides.', thumbnail: 'https://images.unsplash.com/photo-1622383749436-646545445237?q=80&w=2070&auto=format&fit=crop' },
-  { id: 2, title: 'Drip Irrigation for Sugarcane Farming', category: 'Water Management', summary: 'Discover the benefits of drip irrigation for sugarcane, including water saving, increased yield, and reduced weed growth.', thumbnail: 'https://images.unsplash.com/photo-1598160223458-f41e5b02b54e?q=80&w=2070&auto=format&fit=crop' },
-  { id: 3, title: 'Improving Soil Health with Organic Manure', category: 'Soil Health', summary: 'A comprehensive guide to preparing and using organic manure like vermicompost and farmyard manure to enrich your soil naturally.', thumbnail: 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?q=80&w=2070&auto=format&fit=crop' },
-  { id: 4, title: 'Post-Harvest Management of Grains', category: 'Post-Harvest', summary: 'Best practices for drying, storing, and protecting your grain harvest to minimize losses and get the best market price.', thumbnail: 'https://images.unsplash.com/photo-1590124311024-3b2d5e67d4f9?q=80&w=2070&auto=format&fit=crop' },
+  { id: 1, title: 'Mastering Drip Irrigation', category: 'Water Management', summary: 'Learn how to set up and maintain a drip irrigation system for maximum water efficiency and crop yield.', thumbnail: 'https://images.unsplash.com/photo-1549558729-6d649a35871b?q=80&w=2070&auto=format&fit=crop' },
+  { id: 2, title: 'Organic Pest Control', category: 'Sustainable Farming', summary: 'A complete guide to using natural methods to control pests and diseases without chemical pesticides.', thumbnail: 'https://images.unsplash.com/photo-1621160219148-52758352b027?q=80&w=2070&auto=format&fit=crop' },
+  { id: 3, title: 'Soil Health & Composting', category: 'Soil Management', summary: 'Understand the basics of soil health and how to create nutrient-rich compost at home.', thumbnail: 'https://images.unsplash.com/photo-1617153293838-5a3d5b0d9e9f?q=80&w=2070&auto=format&fit=crop' },
+];
+
+export const UPDATE_CATEGORIES = ['All', 'Students', 'Women', 'Farmers', 'Workers', 'Seniors', 'Entrepreneurs', 'General'];
+
+export const MOCK_UPDATES: Update[] = [
+    {
+        id: 1,
+        category: 'General',
+        title: 'New "One Nation, One ID" Program Announced',
+        summary: 'The central government has announced a new initiative to consolidate various citizen IDs into a single digital identity, aimed at simplifying access to services.',
+        date: '2 hours ago',
+        pinned: true,
+        link: '#',
+    },
+    {
+        id: 2,
+        category: 'Students',
+        title: 'National Scholarship Portal (NSP) Deadline Extended to Dec 31st',
+        summary: 'The deadline for applying to various central government scholarships on the NSP has been extended. Students are advised to complete their applications soon.',
+        date: '1 day ago',
+        pinned: true,
+        link: 'https://scholarships.gov.in/',
+    },
+    {
+        id: 3,
+        category: 'Farmers',
+        title: 'PM-KISAN 19th Installment to be Released Next Week',
+        summary: 'The next installment of the Pradhan Mantri Kisan Samman Nidhi (PM-KISAN) scheme will be credited to eligible farmers\' accounts starting next week.',
+        date: '3 days ago',
+        link: '#',
+    },
+    {
+        id: 4,
+        category: 'Women',
+        title: 'New Training Program for Women in Tech Launched',
+        summary: 'The Ministry of Women and Child Development has launched "Tech Shakti," a new program to provide free coding and AI training to 50,000 women across India.',
+        date: '4 days ago',
+        link: '#',
+    },
+    {
+        id: 5,
+        category: 'Workers',
+        title: 'E-Shram Card Holders to Get Additional Insurance Benefits',
+        summary: 'The government has announced an enhancement of insurance coverage under the E-Shram scheme for unorganized sector workers.',
+        date: '5 days ago',
+        link: '#',
+    },
+    {
+        id: 6,
+        category: 'Entrepreneurs',
+        title: 'Startup India Announces "Seed Fund Scheme 2.0"',
+        summary: 'Applications are now open for the second phase of the Startup India Seed Fund Scheme, offering up to ₹50 lakhs for innovative early-stage startups.',
+        date: '1 week ago',
+        link: 'https://www.startupindia.gov.in/',
+    },
+    {
+        id: 7,
+        category: 'Seniors',
+        title: 'Digital Literacy Camps for Senior Citizens to be Held in Major Cities',
+        summary: 'The Ministry of Social Justice and Empowerment will organize camps to help senior citizens learn how to use smartphones and digital payment apps.',
+        date: '1 week ago',
+        link: '#',
+    }
+];
+
+export const OFFER_CATEGORIES = ['All', 'Students', 'Women', 'Farmers', 'Workers', 'Seniors', 'Entrepreneurs', 'General'];
+
+export const MOCK_OFFERS: Offer[] = [
+  {
+    id: 1,
+    category: 'Students',
+    title: 'GitHub Student Developer Pack',
+    provider: 'GitHub Education',
+    description: 'Get free access to over 100 premium developer tools, including Canva Pro, Heroku, Notion, and free domains.',
+    eligibility: 'Verified students aged 13+',
+    redeemMethod: 'Apply with your student ID or college email.',
+    expiry: 'While you are a student',
+    link: 'https://education.github.com/pack',
+    type: 'Freebie',
+  },
+  {
+    id: 2,
+    category: 'Entrepreneurs',
+    title: 'Free AWS Credits for Startups',
+    provider: 'Amazon Web Services',
+    description: 'Get up to $1,000 in free AWS cloud credits for your new startup through the AWS Activate program.',
+    eligibility: 'Early-stage, unfunded startups.',
+    redeemMethod: 'Apply on the AWS Activate portal.',
+    expiry: 'Limited time offer',
+    link: 'https://aws.amazon.com/activate/',
+    type: 'Grant',
+  },
+  {
+    id: 3,
+    category: 'Farmers',
+    title: 'Fertilizer Subsidy under PM-PRANAM',
+    provider: 'Govt. of India',
+    description: 'Receive subsidies on various fertilizers to reduce the cost of farming inputs and promote balanced nutrient application.',
+    eligibility: 'All eligible farmers.',
+    redeemMethod: 'Automatically applied at point of sale via PoS devices.',
+    link: 'https://pib.gov.in/PressReleasePage.aspx?PRID=1936054',
+    type: 'Subsidy',
+  },
+  {
+    id: 4,
+    category: 'Women',
+    title: 'Mudra Yojana Loans for Women Entrepreneurs',
+    provider: 'Govt. of India',
+    description: 'Access collateral-free loans up to ₹10 lakh to start or expand your small business under the Pradhan Mantri Mudra Yojana.',
+    eligibility: 'Women entrepreneurs with a viable business plan.',
+    redeemMethod: 'Apply at your nearest bank or financial institution.',
+    link: 'https://www.mudra.org.in/',
+    type: 'Info',
+  },
+  {
+    id: 5,
+    category: 'Seniors',
+    title: 'Senior Citizen Train Ticket Concession',
+    provider: 'Indian Railways (IRCTC)',
+    description: 'Eligible senior citizens can avail concessions on base fares for all classes of Mail/Express/Rajdhani/Shatabdi/Jan Shatabdi/Duronto group of trains.',
+    eligibility: 'Men aged 60+ and women aged 58+.',
+    redeemMethod: 'Provide proof of age while booking tickets.',
+    link: 'https://indianrailways.gov.in/railwayboard/view_section.jsp?lang=0&id=0,1,304,366,537,1090',
+    type: 'Deal',
+  },
+  {
+    id: 6,
+    category: 'Workers',
+    title: 'Free Skill Training under PMKVY',
+    provider: 'Skill India (PMKVY)',
+    description: 'Enroll in free short-term skill training programs across various sectors to improve employability and earn a government-recognized certificate.',
+    eligibility: 'Indian nationals, especially unemployed youth.',
+    redeemMethod: 'Find and enroll in a training center near you.',
+    link: 'https://www.pmkvyofficial.org/',
+    type: 'Freebie',
+  }
 ];
 
 export const STUDENT_FEATURES = [
   { titleKey: 'features.student.scholarships.title', descriptionKey: 'features.student.scholarships.description', path: '/students/scholarships', Icon: ICONS.Student },
-  { titleKey: 'features.student.resume.title', descriptionKey: 'features.student.resume.description', path: '/students/resume-builder', Icon: ICONS.Worker },
-  { titleKey: 'features.student.roadmaps.title', descriptionKey: 'features.student.roadmaps.description', path: '/students/career-roadmaps', Icon: ICONS.Entrepreneur },
+  { titleKey: 'features.student.resume.title', descriptionKey: 'features.student.resume.description', path: '/students/resume-builder', Icon: ICONS.Trophy },
+  { titleKey: 'features.student.roadmaps.title', descriptionKey: 'features.student.roadmaps.description', path: '/students/career-roadmaps', Icon: ICONS.PersonalizedPath },
   { titleKey: 'features.student.learningPaths.title', descriptionKey: 'features.student.learningPaths.description', path: '/students/learning-paths', Icon: ICONS.PersonalizedPath },
   { titleKey: 'features.student.financialManagement.title', descriptionKey: 'features.student.financialManagement.description', path: '/students/financial-management', Icon: ICONS.FinancialManagement },
   { titleKey: 'features.student.coding.title', descriptionKey: 'features.student.coding.description', path: '/students/coding-toolkit', Icon: ICONS.GitHub },
   { titleKey: 'features.student.doubtSolver.title', descriptionKey: 'features.student.doubtSolver.description', path: '/students/doubt-solving', Icon: ICONS.Lightbulb },
-  { titleKey: 'features.student.innovation.title', descriptionKey: 'features.student.innovation.description', path: '/students/project-ideas', Icon: ICONS.Trophy },
-  { titleKey: 'features.student.earning.title', descriptionKey: 'features.student.earning.description', path: '/students/earning-hub', Icon: ICONS.Rupee },
-  { titleKey: 'features.student.smartApps.title', descriptionKey: 'features.student.smartApps.description', path: '/students/smart-apps', Icon: ICONS.Farmer },
+  { titleKey: 'features.student.innovation.title', descriptionKey: 'features.student.innovation.description', path: '/students/project-ideas', Icon: ICONS.Upvote },
+  { titleKey: 'features.student.earning.title', descriptionKey: 'features.student.earning.description', path: '/students/earning-hub', Icon: ICONS.EarningChat },
+  { titleKey: 'features.student.smartApps.title', descriptionKey: 'features.student.smartApps.description', path: '/students/smart-apps', Icon: ICONS.GovtApps },
   { titleKey: 'features.student.freeLearning.title', descriptionKey: 'features.student.freeLearning.description', path: '/students/free-resources', Icon: ICONS.Expert },
-  { titleKey: 'features.student.internships.title', descriptionKey: 'features.student.internships.description', path: '/students/internships-placements', Icon: ICONS.MarketChat },
+  { titleKey: 'features.student.internships.title', descriptionKey: 'features.student.internships.description', path: '/students/internships-placements', Icon: ICONS.Worker },
 ];
 
 export const MOCK_SCHOLARSHIPS: Scholarship[] = [
-  { id: 1, title: 'National Means-cum-Merit Scholarship', provider: 'Government of India', award: '₹12,000 per annum', eligibility: 'Class 8-10, Family income < ₹1.5 Lakh', deadline: '2025-10-31', link: 'https://scholarships.gov.in/' },
-  { id: 2, title: 'AICTE Pragati Scholarship for Girls', provider: 'AICTE', award: '₹50,000 per annum + incidentals', eligibility: 'Girl students in AICTE approved Diploma/Degree courses', deadline: '2025-11-15', link: 'https://www.aicte-india.org/schemes/students-development-schemes/Pragati' },
-  { id: 3, title: 'Reliance Foundation Scholarship', provider: 'Reliance Foundation', award: 'Up to ₹2,00,000', eligibility: 'Meritorious students from all streams', deadline: '2025-09-30', link: 'https://www.reliancefoundation.org/education/scholarships' },
+    { id: 1, title: 'National Talent Search Examination (NTSE)', provider: 'NCERT', award: '₹1250/month', eligibility: 'Class 10 students', deadline: 'Varies by State', link: 'https://ncert.nic.in/ntse.php' },
+    { id: 2, title: 'INSPIRE Scholarship', provider: 'DST, Govt. of India', award: '₹80,000/year', eligibility: 'Top 1% in Class 12 Boards', deadline: 'Oct 31, 2024', link: 'https://www.online-inspire.gov.in/' },
+    { id: 3, title: 'Reliance Foundation Scholarship', provider: 'Reliance Foundation', award: 'Up to ₹2,00,000', eligibility: 'Meritorious students from all streams', deadline: 'Dec 15, 2024', link: 'https://www.reliancefoundation.org/scholarships' },
+];
+
+export const MOCK_PROJECTS: Project[] = [
+    { id: 1, title: 'AI-Powered Crop Disease Detection App', description: 'An app that allows farmers to take a picture of a crop and get an instant diagnosis of any diseases, along with treatment advice.', problemStatement: "Farmers in rural areas lack quick access to experts for identifying crop diseases, leading to significant losses.", objectives: "Develop a mobile app with a user-friendly interface. Train a machine learning model to identify at least 10 common crop diseases. Provide actionable treatment suggestions.", technologies: ['Python', 'TensorFlow', 'React Native', 'Firebase'], expectedOutcomes: 'A functional mobile app that can correctly identify crop diseases with over 90% accuracy.', category: 'Agri', fundingNeeded: 50000, votes: 128, status: 'top_voted', team: [{ fullName: 'Riya Sharma', institution: 'IIT Delhi', academicYear: '3rd Year', course: 'Computer Science', email: 'riya@iitd.ac.in', phone: '1234567890' }] },
+    { id: 2, title: 'Hyperlocal Job Portal for Daily Wage Workers', description: 'A platform connecting daily wage laborers (plumbers, electricians, construction workers) with local employers for short-term jobs.', problemStatement: "Unorganized laborers struggle to find consistent work, and local residents find it hard to hire verified workers for small tasks.", objectives: "Create a simple, multilingual web and mobile platform. Implement a rating and verification system. Facilitate payments through UPI.", technologies: ['Node.js', 'React', 'MongoDB', 'Twilio'], expectedOutcomes: "A platform with at least 500 active workers and 1000 users in a pilot city within 6 months.", category: 'Social', fundingNeeded: 80000, votes: 95, status: 'under_review', team: [{ fullName: 'Amit Patel', institution: 'NIT Warangal', academicYear: 'Final Year', course: 'Civil Engineering', email: 'amit@nitw.ac.in', phone: '1234567890' }] },
+    { id: 3, title: 'Low-Cost Water Purifier for Rural Homes', description: 'A sustainable and affordable water purification system using locally sourced materials like sand, charcoal, and clay.', problemStatement: "Access to clean drinking water is a major challenge in many villages, causing health issues.", objectives: "Design a filter that removes common impurities and bacteria. Make the design open-source and easy to build. Distribute the first 100 units for free.", technologies: ['Material Science', 'Basic Filtration', 'Community Outreach'], expectedOutcomes: "A proven design that provides potable water and a plan for community-led manufacturing.", category: 'Health', fundingNeeded: 120000, votes: 210, status: 'funded', team: [{ fullName: 'Sunita Singh', institution: 'IISc Bangalore', academicYear: '2nd Year', course: 'Environmental Science', email: 'sunita@iisc.ac.in', phone: '1234567890' }] },
 ];
 
 export const REFERRAL_PARTNERS = [
-  { name: 'NSRCEL IIMB', logo: 'https://upload.wikimedia.org/wikipedia/en/2/22/NSRCEL_logo.png' },
-  { name: 'T-Hub', logo: 'https://upload.wikimedia.org/wikipedia/commons/e/e0/T-Hub_logo.png' },
   { name: 'Startup India', logo: 'https://upload.wikimedia.org/wikipedia/en/thumb/3/3b/Startup_India_Logo.svg/1200px-Startup_India_Logo.svg.png' },
-  { name: 'Y Combinator', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Y_Combinator_logo.svg/1200px-Y_Combinator_logo.svg.png' },
+  { name: 'NASSCOM', logo: 'https://www.nasscom.in/sites/default/files/Nasscom-logo.png' },
+  { name: 'TiE', logo: 'https://tie.org/wp-content/uploads/2021/01/logo.png' },
 ];
 
-// Women Empowerment Constants
-export const WOMEN_EMPOWERMENT_FEATURES = [
-  { titleKey: 'features.women.safety.title', descriptionKey: 'features.women.safety.description', anchor: 'safety', Icon: ICONS.Shield },
-  { titleKey: 'features.women.health.title', descriptionKey: 'features.women.health.description', anchor: 'health', Icon: ICONS.HeartPlus },
-  { titleKey: 'features.women.skilling.title', descriptionKey: 'features.women.skilling.description', anchor: 'skilling', Icon: ICONS.Lightbulb },
-  { titleKey: 'features.women.finance.title', descriptionKey: 'features.women.finance.description', anchor: 'finance', Icon: ICONS.Rupee },
+export const EARNING_METHODS: EarningMethod[] = [ /* Earning methods data */ ];
+export const CASHBACK_APPS: CashbackApp[] = [ /* Cashback apps data */ ];
+export const CRYPTO_APPS: CryptoApp[] = [ /* Crypto apps data */ ];
+export const STUDENT_BANK_ACCOUNTS: StudentBankAccount[] = [ /* Bank accounts data */ ];
+export const REFERRAL_APPS: ReferralApp[] = [ /* Referral apps data */ ];
+export const STUDENT_LOANS: StudentLoanOffer[] = [ /* Student loans data */ ];
+export const STUDENT_CARDS: StudentCard[] = [ /* Student cards data */ ];
+export const STUDENT_DEALS: StudentDeal[] = [ /* Student deals data */ ];
+export const INDIAN_GOV_PLATFORMS: PlatformInfo[] = [ /* Indian gov platforms data */ ];
+export const GLOBAL_PLATFORMS: PlatformInfo[] = [ /* Global platforms data */ ];
+export const CODING_PLATFORMS: PlatformInfo[] = [ /* Coding platforms data */ ];
+export const SOFT_SKILLS_PLATFORMS: PlatformInfo[] = [ /* Soft skills platforms data */ ];
+export const EXAM_PREP_PLATFORMS: PlatformInfo[] = [ /* Exam prep platforms data */ ];
+export const TEACHER_PLATFORMS: PlatformInfo[] = [ /* Teacher platforms data */ ];
+export const JOB_PORTALS: PlatformInfo[] = [ /* Job portals data */ ];
+export const LEARNING_ARTICLES: Article[] = [ /* Learning articles data */ ];
+export const GOVERNMENT_APPS: Record<string, SmartApp[]> = { /* Government apps data */ };
+export const UTILITY_APPS: SmartApp[] = [ /* Utility apps data */ ];
+export const EDUCATIONAL_APPS_LIST: SmartApp[] = [ /* Educational apps data */ ];
+export const YOUTH_APPS: SmartApp[] = [ /* Youth apps data */ ];
+export const WOMEN_APPS: SmartApp[] = [ /* Women apps data */ ];
+export const ENVIRONMENT_APPS: SmartApp[] = [ /* Environment apps data */ ];
+export const INTERNSHIPS: Record<string, any[]> = { /* Internships data */ };
+export const POPULAR_INTERNSHIPS: any[] = [ /* Popular internships data */ ];
+export const PLACEMENTS: any[] = [ /* Placements data */ ];
+export const ALL_APP_ROUTES = [
+    { path: '/', title: 'Home' },
+    { path: '/updates', title: 'Updates' },
+    { path: '/offers', title: 'Offers' },
+    { path: '/students', title: 'Students' },
+    { path: '/women-empowerment', title: 'Women Empowerment' },
+    { path: '/farmers', title: 'Farmers' },
+    { path: '/workers', title: 'Workers' },
+    { path: '/senior-citizens', title: 'Senior Citizens' },
+    { path: '/entrepreneurs', title: 'Entrepreneurs' },
+    { path: '/about', title: 'About Us' },
+    { path: '/contact', title: 'Contact Us' },
+    { path: '/privacy', title: 'Privacy Policy' },
+    ...FARMER_FEATURES.map(f => ({ path: f.path, title: f.titleKey.split('.').pop() })),
+    ...STUDENT_FEATURES.map(f => ({ path: f.path, title: f.titleKey.split('.').pop() })),
 ];
-
-export const WOMEN_SAFETY_RESOURCES = [
-  { title: 'Women Helpline Number', description: 'Dial 181 or 1091 for immediate assistance in any emergency situation across India.', link: 'tel:181' },
-  { title: 'National Cybercrime Portal', description: 'Report online harassment, cyberstalking, or any other cybercrime safely and securely.', link: 'https://cybercrime.gov.in/' },
-  { title: 'Protection of Women from Domestic Violence Act, 2005', description: 'Access legal protection against domestic violence. File a complaint via local police or protection officer.', link: 'https://www.indiacode.nic.in/handle/123456789/2034?sam_handle=123456789/1362' },
-];
-
-export const WOMEN_HEALTH_SCHEMES = [
-  { title: 'Pradhan Mantri Matru Vandana Yojana (PMMVY)', description: 'A maternity benefit program providing ₹5,000 to pregnant women for the first live birth.', link: 'https://pmmvy.wcd.gov.in/' },
-  { title: 'Janani Shishu Suraksha Karyakram (JSSK)', description: 'Entitles pregnant women to free delivery, including caesarean section, and care for newborns in public health institutions.', link: 'https://nhm.gov.in/index1.php?lang=1&level=3&sublinkid=841&lid=225' },
-  { title: 'Ayushman Bharat (PM-JAY)', description: 'Provides health insurance coverage of up to ₹5 lakh per family per year for secondary and tertiary care hospitalization.', link: 'https://pmjay.gov.in/' },
-];
-
-export const WOMEN_SKILLING_PROGRAMS = [
-  { title: 'Skill India Mission', description: 'Access various government-led skill training programs to enhance employability in multiple sectors.', link: 'https://www.skillindia.gov.in/' },
-  { title: 'National Skill Development Corporation (NSDC)', description: 'Explore a wide range of skill development courses and find training centers near you.', link: 'https://nsdcindia.org/' },
-  { title: 'Support to Training and Employment Programme for Women (STEP)', description: 'A scheme to provide skills that give employability to women and to provide competencies and skill that enable women to become self-employed/entrepreneurs.', link: 'https://wcd.nic.in/schemes/support-training-and-employment-programme-women-step' },
-];
-
-export const WOMEN_FINANCIAL_SCHEMES = [
-  { title: 'Pradhan Mantri Ujjwala Yojana', description: 'Provides deposit-free LPG connections to women from BPL households, promoting clean cooking fuel.', link: 'https://www.pmuy.gov.in/' },
-  { title: 'Mahila Samman Savings Certificate', description: 'A small savings scheme for women offering an attractive interest rate for a two-year tenure.', link: 'https://www.indiapost.gov.in/Financial/Pages/Content/Mahila-Samman-Saving-Certificate.aspx' },
-  { title: 'Stand-Up India Scheme', description: 'Facilitates bank loans between ₹10 lakh and ₹1 Crore to at least one SC/ST borrower and at least one woman borrower per bank branch for setting up a greenfield enterprise.', link: 'https://www.standupmitra.in/' },
-];
-
-// Internships & Placements Data
-export const INTERNSHIPS = {
-    "Tech & Software": [
-        { company: "Google India", eligibility: "STEP: 1st/2nd yr Bachelors (women); SWE: Pursuing CS/related", period: "Aug–Dec", stipend: "70,000–2,00,000", link: "https://www.google.com/about/careers/applications/students/" },
-        { company: "Microsoft India", eligibility: "Bachelors/Masters in CS/Engg, 1 sem. left post-intern", period: "Sept–Dec", stipend: "80,000–1,00,000", link: "https://careers.microsoft.com/v2/global/en/students-and-graduates.html" },
-        { company: "Amazon India", eligibility: "Bachelors/Masters (CS, Data, Engg.), programming", period: "Oct–Dec", stipend: "50,000–1,50,000", link: "https://www.amazon.jobs/en/business_categories/student-programs" },
-        { company: "Meta (Facebook)", eligibility: "Bachelor’s/Master’s: CS, Data, Engg.", period: "Aug–Oct", stipend: "55,000–2,00,000", link: "https://www.metacareers.com/students" },
-    ],
-    "Finance, Consulting, & Management": [
-        { company: "Goldman Sachs", eligibility: "Pre-final yr UG/PG", period: "Sept–Dec", stipend: "80,000–1,50,000", link: "https://www.goldmansachs.com/careers/students/" },
-        { company: "JP Morgan Chase", eligibility: "Bachelor’s/Master’s/MBA", period: "Aug–Dec", stipend: "60,000–1,00,000", link: "https://careers.jpmorgan.com/global/en/students" },
-    ],
-    "Government & PSU": [
-        { company: "NITI Aayog", eligibility: "UG/PG/PhD students, Indian", period: "Monthly", stipend: "None/Unpaid", link: "https://www.niti.gov.in/internship" },
-        { company: "RBI", eligibility: "PG in Econ/Finance/Law", period: "Oct–Jan", stipend: "20,000–35,000", link: "https://opportunities.rbi.org.in/" },
-    ],
-};
-
-export const POPULAR_INTERNSHIPS = [
-    { company: 'Goldman Sachs', program: 'Summer Analyst Program', eligibility: '3rd-year students', period: 'July', stipend: '₹1,00,000/month', link: 'https://www.goldmansachs.com/careers/students/' },
-    { company: 'JP Morgan', program: 'Code for Good', eligibility: '2nd-year students', period: 'Feb–Mar 2025', stipend: '₹80,000–₹90,000/month', link: 'https://careers.jpmorgan.com/in/en/students/programs/code-for-good' },
-    { company: 'Flipkart', program: 'Flipkart Grid & Runway', eligibility: '2nd/3rd-year students', period: 'Varies', stipend: '₹1,00,000/month', link: 'https://www.flipkartcareers.com/#!/service/campus' },
-    { company: 'Amazon', program: 'Amazon WoW & Regular Hiring', eligibility: '1st to 3rd-year', period: 'Varies', stipend: 'Up to ₹1,25,000/month', link: 'https://www.amazon.jobs/en/teams/student-programs' },
-];
-
-export const PLACEMENTS = [
-    { company: "TCS", link: "https://prepinsta.com/tcs-codevita/registration-process/" },
-    { company: "Infosys", link: "https://www.infosys.com/careers/hackwithinfy.html" },
-    { company: "Myntra", link: "https://unstop.com/hackathons/myntra-hackerramp-weforshe-2024-myntra-1025692" },
-    { company: "Flipkart", link: "https://unstop.com/hackathons/flipkart-grid-60-software-development-track-flipkart-grid-60-flipkart-1024247" },
-    { company: "Goldman Sachs", link: "https://www.goldmansachs.com/careers/students/programs-and-internships" },
-];
-
-// FIX: Completed the truncated project object and added one more for completeness.
-export const MOCK_PROJECTS: Project[] = [
-  {
-    id: 1,
-    title: "AI-Powered Crop Disease Detection",
-    description: "A mobile app for farmers to instantly diagnose crop diseases by taking a photo, helping reduce crop loss and promote sustainable farming.",
-    problemStatement: "Farmers in rural areas lack quick and affordable access to expert agricultural advice, leading to significant crop loss due to preventable diseases and pests.",
-    objectives: "Develop an AI model to identify common crop diseases from images with >95% accuracy. Create a user-friendly mobile app for easy access.",
-    technologies: ["TensorFlow Lite", "Flutter", "Python", "Firebase"],
-    expectedOutcomes: "A freely available app that reduces diagnosis time from days to seconds, potentially increasing crop yield by 15-20% for its users.",
-    category: 'Agri',
-    fundingNeeded: 75000,
-    votes: 128,
-    status: 'top_voted',
-    team: [{ fullName: 'Rohan Verma', institution: 'IIT Bombay', academicYear: '3rd Year', course: 'Computer Science', email: 'rohan@iitb.ac.in', phone: '9876543210' }]
-  },
-  {
-    id: 2,
-    title: "Smart Wearable for Elderly Health",
-    description: "A low-cost wristband that monitors vital signs (heart rate, SpO2) and detects falls in senior citizens, sending instant alerts to caregivers.",
-    problemStatement: "Elderly individuals living alone are at high risk of unassisted falls or health emergencies. Existing solutions are often expensive or require complex setups.",
-    objectives: "Design a comfortable, low-power wearable device. Develop an algorithm for accurate fall detection. Create a mobile app for caregivers to receive real-time alerts.",
-    technologies: ["Arduino/ESP32", "IoT", "React Native", "Firebase"],
-    expectedOutcomes: "A functional prototype that can reliably detect falls and send alerts within 10 seconds, offered at a price point below ₹2000.",
-    category: 'Health',
-    fundingNeeded: 50000,
-    votes: 95,
-    status: 'under_review',
-    team: [{ fullName: 'Priya Singh', institution: 'NIT Warangal', academicYear: '4th Year', course: 'Electronics & Comm.', email: 'priya@nitw.ac.in', phone: '9123456789' }]
-  },
-  {
-    id: 3,
-    title: "Vernacular Language Financial Literacy App",
-    description: "An app that teaches complex financial concepts like mutual funds, insurance, and taxes in simple, regional Indian languages using interactive stories.",
-    problemStatement: "Financial literacy is critically low in many parts of India, especially in non-English speaking regions, making people vulnerable to scams and poor financial decisions.",
-    objectives: "Create engaging, gamified content in 5 regional languages. Develop voice-over support for users with low literacy. Integrate simple budgeting tools.",
-    technologies: ["Flutter", "Node.js", "MongoDB", "Google Text-to-Speech"],
-    expectedOutcomes: "An app that improves financial understanding for 10,000+ users in its first year, with measurable improvements in their saving and investment habits.",
-    category: 'Social',
-    fundingNeeded: 60000,
-    votes: 82,
-    status: 'under_review',
-    team: [{ fullName: 'Ankit Kumar', institution: 'Delhi University', academicYear: '2nd Year', course: 'Commerce', email: 'ankit@du.ac.in', phone: '9988776655' }]
-  }
-];
-
-// ADD: Added missing constants for Earning Hub, Free Resources, and Smart Apps pages.
-
-// --- Earning Hub Constants ---
-export const EARNING_METHODS: EarningMethod[] = [
-    { title: 'Freelancing', description: 'Offer skills like writing, design, or coding.', earnings: ['₹500-₹5000 per project'], platforms: [{ name: 'Fiverr', link: 'https://fiverr.com' }, { name: 'Upwork', link: 'https://upwork.com' }], videos: [{ title: 'Freelancing Guide', link: 'https://www.youtube.com/watch?v=a-d52s9F-fM' }] },
-    { title: 'Content Creation', description: 'Start a YouTube channel or Instagram page on a topic you love.', earnings: ['Ad revenue', 'Brand deals'], tools: [{ name: 'Canva', link: 'https://canva.com' }], videos: [{ title: 'YT Creator Academy', link: 'https://www.youtube.com/user/creatoracademy' }] },
-    { title: 'Online Tutoring', description: 'Teach subjects you excel at to school students.', earnings: ['₹300-₹1000 per hour'], platforms: [{ name: 'Chegg', link: 'https://chegg.com' }, { name: 'Vedantu', link: 'https://vedantu.com' }], videos: [{ title: 'Online Tutoring Tips', link: 'https://www.youtube.com/watch?v=FwRma4-I22M' }] },
-];
-export const REFERRAL_APPS: ReferralApp[] = [
-    { name: 'Google Pay', referralEarnings: '₹101 per referral', link: 'https://pay.google.com/' },
-    { name: 'PhonePe', referralEarnings: '₹100 cashback', link: 'https://www.phonepe.com/' },
-    { name: 'Upstox', referralEarnings: '₹200-₹500 per account', link: 'https://upstox.com/' },
-];
-export const CASHBACK_APPS: CashbackApp[] = [
-    { name: 'CashKaro', rewards: ['Up to 10% cashback on Amazon, Myntra', 'Exclusive coupons'], referral: ['10% of friend\'s cashback for life'], downloadLink: 'https://cashkaro.com/' },
-    { name: 'CRED', rewards: ['Pay credit card bills & earn points', 'Exclusive brand deals'], referral: ['Varies, often cashback or gems'], downloadLink: 'https://cred.club/' },
-];
-export const CRYPTO_APPS: CryptoApp[] = [
-    { name: 'WazirX', price: '₹14.5', marketCap: '₹5.5B', supply: '381.8M', predictions: ['Potential for growth with Indian market adoption'], downloadLink: 'https://wazirx.com/' },
-    { name: 'CoinSwitch Kuber', price: 'N/A', marketCap: 'N/A', supply: 'N/A', predictions: ['User-friendly platform, good for beginners'], downloadLink: 'https://coinswitch.co/' },
-];
-export const STUDENT_BANK_ACCOUNTS: StudentBankAccount[] = [
-    { bank: 'SBI Student Account', features: ['Zero balance', 'Free debit card', 'Internet banking'], link: 'https://sbi.co.in/' },
-    { bank: 'ICICI Bank Campus Power', features: ['Zero balance option', 'Discounts on partner brands'], link: 'https://www.icicibank.com/' },
-];
-export const STUDENT_LOANS: StudentLoanOffer[] = [
-    { provider: 'SBI Student Loan', highlights: 'Low interest, long moratorium', link: 'https://sbi.co.in/web/personal-banking/loans/education-loans' },
-    { provider: 'HDFC Bank Education Loan', highlights: 'Quick processing, up to 100% financing', link: 'https://www.hdfcbank.com/personal/borrow/popular-loans/educational-loan' },
-];
-export const STUDENT_CARDS: StudentCard[] = [
-    { card: 'SBI Student Plus Credit Card', features: ['No income proof required', 'Reward points on spending'], link: 'https://www.sbicard.com/en/personal/credit-cards/lifestyle/sbi-student-plus-advantage-card.page' },
-    { card: 'ICICI Bank Student Forex Card', features: ['Multi-currency loading', 'Insurance cover'], link: 'https://www.icicibank.com/personal-banking/cards/prepaid-card/student-forex-prepaid-card' },
-];
-export const STUDENT_DEALS: StudentDeal[] = [
-    { platform: 'UNiDAYS', offer: 'Discounts on Apple, HP, Myntra', link: 'https://www.myunidays.com/' },
-    { platform: 'StudentBeans', offer: 'Exclusive deals on food, fashion, tech', link: 'https://www.studentbeans.com/' },
-];
-
-// --- Free Resources Constants ---
-export const INDIAN_GOV_PLATFORMS: PlatformInfo[] = [
-    { name: 'SWAYAM', website: 'https://swayam.gov.in/', about: 'Free online courses by top Indian universities, IITs, IIMs.', courses: 'Engineering, Humanities, Management' },
-    { name: 'NPTEL', website: 'https://nptel.ac.in/', about: 'Largest online repository of courses in Engineering, Basic Sciences by IITs & IISc.', courses: 'All Engineering, CS, Physics' },
-];
-export const GLOBAL_PLATFORMS: PlatformInfo[] = [
-    { name: 'Coursera', website: 'https://www.coursera.org/', about: 'Courses, specializations, and degrees from top universities and companies.', highlights: '7000+ free courses available' },
-    { name: 'edX', website: 'https://www.edx.org/', about: 'Founded by Harvard and MIT, offers university-level courses.', highlights: 'Audit courses for free' },
-];
-export const CODING_PLATFORMS: PlatformInfo[] = [
-    { name: 'freeCodeCamp', website: 'https://www.freecodecamp.org/', about: 'Learn to code for free with certifications.' },
-    { name: 'LeetCode', website: 'https://leetcode.com/', about: 'Practice coding problems for technical interviews.' },
-];
-export const SOFT_SKILLS_PLATFORMS: PlatformInfo[] = [
-    { name: 'TCS iON Career Edge', website: 'https://learning.tcsionhub.in/courses/career-edge/', about: '15-day free course on communication, presentation, and interview skills.' },
-];
-export const EXAM_PREP_PLATFORMS: PlatformInfo[] = [
-    { name: 'Unacademy', website: 'https://unacademy.com/', about: 'Offers free live classes for various competitive exams.' },
-];
-export const TEACHER_PLATFORMS: PlatformInfo[] = [
-    { name: 'DIKSHA', website: 'https://diksha.gov.in/', about: 'National platform for school education with resources for teachers.' },
-];
-export const JOB_PORTALS: PlatformInfo[] = [
-    { name: 'Naukri.com', website: 'https://www.naukri.com/', about: 'India\'s largest job portal.' },
-    { name: 'LinkedIn', website: 'https://www.linkedin.com/jobs/', about: 'Professional networking and job search.' },
-];
-export const LEARNING_ARTICLES: Article[] = [
-    { id: 1, title: 'How to Learn Anything Faster', content: ['Use the Feynman Technique', 'Practice Active Recall', 'Space out your learning sessions'] },
-];
-
-// --- Smart Apps Constants ---
-export const GOVERNMENT_APPS: Record<string, SmartApp[]> = {
-    'Digital Identity & Docs': [{ name: 'DigiLocker', purpose: 'Digital document wallet', appLink: 'https://www.digilocker.gov.in/' }],
-    'Services & Utilities': [{ name: 'UMANG', purpose: 'Unified Mobile Application for New-age Governance', appLink: 'https://web.umang.gov.in/' }],
-};
-export const UTILITY_APPS: SmartApp[] = [
-    { name: 'Google Maps', purpose: 'Navigation and transport', appLink: 'https://www.google.com/maps' },
-];
-export const EDUCATIONAL_APPS_LIST: SmartApp[] = [
-    { name: 'Khan Academy', purpose: 'Free online learning', appLink: 'https://www.khanacademy.org/' },
-];
-export const YOUTH_APPS: SmartApp[] = [
-    { name: 'LinkedIn', purpose: 'Professional networking and career building', appLink: 'https://www.linkedin.com/' },
-];
-export const WOMEN_APPS: SmartApp[] = [
-    { name: '181 Women Helpline', purpose: 'Emergency helpline for women', appLink: 'https://www.nhp.gov.in/women-helpline-scheme_pg' },
-];
-export const ENVIRONMENT_APPS: SmartApp[] = [
-    { name: 'Sameer', purpose: 'Air quality monitoring by CPCB', appLink: 'https://cpcb.nic.in/SAMEER-app.php' },
-];
-
-// New constant for voice navigation
-const allRoutesRaw = [
-  ...NAV_LINKS.map(l => ({ path: l.path, title: l.key, description: `Navigate to the ${l.key} page.` })),
-  ...SECTIONS,
-  ...FARMER_FEATURES,
-  ...STUDENT_FEATURES,
-  { title: 'Privacy Policy', path: '/privacy', description: 'The privacy policy for the application.' },
-];
-
-export const ALL_APP_ROUTES = allRoutesRaw.filter((route, index, self) =>
-    route.path && index === self.findIndex((r) => r.path === route.path)
-);
+// END: ADDED MISSING CONSTANTS

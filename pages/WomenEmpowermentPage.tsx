@@ -1,108 +1,253 @@
-
-import React from 'react';
-import { ICONS, WOMEN_EMPOWERMENT_FEATURES, WOMEN_SAFETY_RESOURCES, WOMEN_HEALTH_SCHEMES, WOMEN_SKILLING_PROGRAMS, WOMEN_FINANCIAL_SCHEMES } from '../constants';
+import React, { useState } from 'react';
 import { useTranslation } from '../hooks/useTranslation';
+import { 
+    suggestWomenSchemes,
+    getWomenSafetyInfo,
+    calculateWagesAndEntitlements,
+    getWomenHealthInfo,
+    findFamilyBenefits
+} from '../services/geminiService';
+import type { SchemeRecommendation, WageInfo } from '../types';
 
-interface Resource {
-  title: string;
-  description: string;
-  link: string;
-}
-
-const FeatureCard: React.FC<{ title: string; description: string; anchor: string; Icon: React.ElementType }> = ({ title, description, anchor, Icon }) => (
-  <a href={`#${anchor}`} className="block group">
-    <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300 h-full flex flex-col text-center items-center">
-      <Icon className="h-12 w-12 text-orange-500 group-hover:text-orange-600 transition-colors duration-300" />
-      <div className="mt-4 flex-grow">
-        <h3 className="text-xl font-semibold text-gray-800">{title}</h3>
-        <p className="text-gray-500 mt-2 text-sm">{description}</p>
-      </div>
+const AccordionItem: React.FC<{ title: string; children: React.ReactNode; isOpen: boolean; onToggle: () => void; }> = ({ title, children, isOpen, onToggle }) => (
+    <div className="mb-4 bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300">
+        <button
+            onClick={onToggle}
+            className="w-full flex justify-between items-center p-5 text-left focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500"
+            aria-expanded={isOpen}
+        >
+            <h2 className="text-xl md:text-2xl font-bold text-gray-800">{title}</h2>
+            <svg className={`w-6 h-6 text-gray-500 transform transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+        </button>
+        {isOpen && (
+            <div className="px-6 pb-6 pt-4 border-t border-gray-200 bg-gray-50">
+                {children}
+            </div>
+        )}
     </div>
-  </a>
 );
 
-const ResourceCard: React.FC<{ resource: Resource, t: (key: string) => string }> = ({ resource, t }) => (
-  <div className="bg-white p-5 rounded-lg shadow-sm border-l-4 border-orange-400 flex flex-col justify-between h-full">
-    <div>
-      <h4 className="text-lg font-bold text-gray-800">{resource.title}</h4>
-      <p className="text-gray-600 text-sm mt-2">{resource.description}</p>
-    </div>
-    <a href={resource.link} target="_blank" rel="noopener noreferrer" className="inline-block mt-4 text-sm bg-orange-500 text-white font-semibold px-4 py-2 rounded-md hover:bg-orange-600 transition duration-300 text-center">
-      {t('components.resourceCard.accessService')}
-    </a>
-  </div>
-);
-
-const Section: React.FC<{ title: string; anchor: string; children: React.ReactNode }> = ({ title, anchor, children }) => (
-  <section id={anchor} className="py-16">
-    <div className="container mx-auto px-6">
-      <h2 className="text-3xl font-bold text-center text-gray-800 mb-10">{title}</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {children}
-      </div>
-    </div>
-  </section>
-);
-
+const ResourceLink: React.FC<{ titleKey: string; href: string; type?: 'scheme' | 'helpline' | 'app' | 'legal' | 'job' | 'finance' | 'health' | 'education' | 'ngo' }> = ({ titleKey, href }) => {
+    const { t } = useTranslation();
+    return (
+        <a href={href} target="_blank" rel="noopener noreferrer" className="block bg-white p-3 rounded-md shadow-sm hover:shadow-md transition-shadow border-l-4 border-orange-400">
+            <div className="flex justify-between items-center">
+                <span className="font-semibold text-gray-800">{t(titleKey)}</span>
+                <span className="text-orange-500 text-xs font-bold">&rarr;</span>
+            </div>
+        </a>
+    );
+};
 
 const WomenEmpowermentPage: React.FC = () => {
-  const { t } = useTranslation();
+    const { t } = useTranslation();
+    const [openAccordion, setOpenAccordion] = useState<string>('schemes');
+    const toggleAccordion = (key: string) => setOpenAccordion(openAccordion === key ? '' : key);
 
-  // Note: Translating the resource content itself would require a larger refactor of the constants.
-  // For now, the UI/chrome text is translated.
-  
-  return (
-    <div className="min-h-screen bg-pink-50">
-      {/* Hero Section */}
-      <section className="relative bg-cover bg-center text-white py-20 md:py-32" style={{backgroundImage: "url('https://images.unsplash.com/photo-1609788129015-0a5661b36f1a?q=80&w=2070&auto=format&fit=crop')"}}>
-        <div className="absolute inset-0 bg-black opacity-50"></div>
-        <div className="container mx-auto px-6 text-center relative z-10">
-          <h1 className="text-4xl md:text-6xl font-bold leading-tight mb-4">{t('pages.women.heroTitle')}</h1>
-          <p className="text-lg md:text-xl text-gray-200 max-w-3xl mx-auto">
-            {t('pages.women.heroSubtitle')}
-          </p>
+    // State for AI Features
+    const [schemeState, setSchemeState] = useState({ state: '', recs: [] as SchemeRecommendation[], isLoading: false, error: '' });
+    const [safetyState, setSafetyState] = useState({ query: '', answer: '', isLoading: false, error: '' });
+    const [wageState, setWageState] = useState({ skill: '', city: '', info: null as WageInfo | null, isLoading: false, error: '' });
+    const [healthState, setHealthState] = useState({ query: '', answer: '', isLoading: false, error: '' });
+    const [familyState, setFamilyState] = useState({ info: '', recs: [] as SchemeRecommendation[], isLoading: false, error: '' });
+
+    // Handlers for AI Features
+    const handleSchemeCheck = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setSchemeState(s => ({ ...s, isLoading: true, error: '', recs: [] }));
+        try {
+            const recs = await suggestWomenSchemes({ state: schemeState.state });
+            setSchemeState(s => ({ ...s, recs, isLoading: false }));
+        } catch (err) {
+            setSchemeState(s => ({ ...s, error: err instanceof Error ? err.message : 'An error occurred', isLoading: false }));
+        }
+    };
+    
+    const handleSafetyAsk = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setSafetyState(s => ({ ...s, isLoading: true, error: '', answer: '' }));
+        try {
+            const answer = await getWomenSafetyInfo(safetyState.query);
+            setSafetyState(s => ({ ...s, answer, isLoading: false }));
+        } catch (err) {
+            setSafetyState(s => ({ ...s, error: err instanceof Error ? err.message : 'An error occurred', isLoading: false }));
+        }
+    };
+
+    const handleWageCalculate = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setWageState(s => ({ ...s, isLoading: true, error: '', info: null }));
+        try {
+            const info = await calculateWagesAndEntitlements(wageState.skill, wageState.city);
+            setWageState(s => ({ ...s, info, isLoading: false }));
+        } catch(err) {
+            setWageState(s => ({ ...s, error: err instanceof Error ? err.message : 'An error occurred', isLoading: false }));
+        }
+    };
+    
+    const handleHealthAsk = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setHealthState(s => ({ ...s, isLoading: true, error: '', answer: '' }));
+        try {
+            const answer = await getWomenHealthInfo(healthState.query);
+            setHealthState(s => ({ ...s, answer, isLoading: false }));
+        } catch (err) {
+            setHealthState(s => ({ ...s, error: err instanceof Error ? err.message : 'An error occurred', isLoading: false }));
+        }
+    };
+
+    const handleFamilyBenefits = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setFamilyState(s => ({ ...s, isLoading: true, error: '', recs: [] }));
+        try {
+            const recs = await findFamilyBenefits(familyState.info);
+            setFamilyState(s => ({ ...s, recs, isLoading: false }));
+        } catch (err) {
+            setFamilyState(s => ({ ...s, error: err instanceof Error ? err.message : 'An error occurred', isLoading: false }));
+        }
+    };
+
+    const renderAIResults = (title: string, content: React.ReactNode) => (
+         <div className="mt-4 p-4 bg-blue-50 border-l-4 border-blue-500 rounded-r-lg">
+            <h4 className="font-bold text-gray-800 mb-2">{title}</h4>
+            <div className="text-gray-700 text-sm space-y-3">{content}</div>
         </div>
-      </section>
+    );
 
-      {/* Features Grid */}
-      <section className="py-16 bg-gray-100">
-        <div className="container mx-auto px-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {WOMEN_EMPOWERMENT_FEATURES.map((feature) => (
-              <FeatureCard
-                key={feature.anchor}
-                title={t(feature.titleKey)}
-                description={t(feature.descriptionKey)}
-                anchor={feature.anchor}
-                Icon={feature.Icon}
-              />
-            ))}
-          </div>
+    return (
+        <div className="min-h-screen bg-pink-50">
+            <section className="relative bg-cover bg-center text-white py-20 md:py-32" style={{backgroundImage: "url('https://images.unsplash.com/photo-1609788129015-0a5661b36f1a?q=80&w=2070&auto=format&fit=crop')"}}>
+                <div className="absolute inset-0 bg-black opacity-50"></div>
+                <div className="container mx-auto px-6 text-center relative z-10">
+                    <h1 className="text-4xl md:text-6xl font-bold leading-tight mb-4">{t('pages.women.heroTitle')}</h1>
+                    <p className="text-lg md:text-xl text-gray-200 max-w-3xl mx-auto">{t('pages.women.heroSubtitle')}</p>
+                </div>
+            </section>
+
+            <main id="main-content" className="container mx-auto px-4 md:px-6 py-12">
+                <AccordionItem title={t('pages.women.accordion.schemes.title')} isOpen={openAccordion === 'schemes'} onToggle={() => toggleAccordion('schemes')}>
+                    <div className="space-y-3 mb-6">
+                        <ResourceLink titleKey="pages.women.schemes.standup" href="https://www.standupmitra.in/" />
+                        <ResourceLink titleKey="pages.women.schemes.mudra" href="https://www.mudra.org.in/" />
+                        <ResourceLink titleKey="pages.women.schemes.ehaat" href="http://mahilaehaat-rmk.gov.in/" />
+                        <ResourceLink titleKey="pages.women.schemes.bbbp" href="https://wcd.nic.in/bbbp-schemes" />
+                        <ResourceLink titleKey="pages.women.schemes.step" href="https://wcd.nic.in/schemes/step-scheme" />
+                        <ResourceLink titleKey="pages.women.schemes.pmmvy" href="https://pmmvy.nic.in/" />
+                        <ResourceLink titleKey="pages.women.schemes.ayushman" href="https://pmjay.gov.in/" />
+                        <ResourceLink titleKey="pages.women.schemes.sukanya" href="https://www.nsiindia.gov.in/InternalPage.aspx?Id_Pk=89" />
+                        <ResourceLink titleKey="pages.women.schemes.sakhi" href="https://wcd.nic.in/schemes/one-stop-centre-scheme-1" />
+                    </div>
+                     <form onSubmit={handleSchemeCheck} className="space-y-3 bg-white p-4 rounded-lg border">
+                        <h3 className="font-bold">{t('pages.women.schemes.ai.title')}</h3>
+                        <p className="text-sm text-gray-600">{t('pages.women.schemes.ai.description')}</p>
+                        <input value={schemeState.state} onChange={e => setSchemeState(s => ({...s, state: e.target.value}))} placeholder={t('pages.women.schemes.ai.placeholder')} className="w-full bg-white border-gray-300 rounded-md p-2 text-gray-900"/>
+                        <button type="submit" disabled={schemeState.isLoading} className="w-full bg-blue-600 text-white font-semibold py-2 rounded-md hover:bg-blue-700 disabled:bg-blue-300">
+                            {schemeState.isLoading ? t('pages.women.schemes.ai.loading') : t('pages.women.schemes.ai.button')}
+                        </button>
+                     </form>
+                     {schemeState.error && <p className="text-red-500 text-sm mt-2">{schemeState.error}</p>}
+                     {schemeState.recs.length > 0 && renderAIResults(t('pages.women.schemes.ai.resultsTitle'), 
+                        schemeState.recs.map((rec, i) => <div key={i}><p className="font-bold">{rec.schemeTitle}</p><p className="text-xs">{rec.reason}</p></div>)
+                     )}
+                </AccordionItem>
+                
+                <AccordionItem title={t('pages.women.accordion.safety.title')} isOpen={openAccordion === 'safety'} onToggle={() => toggleAccordion('safety')}>
+                     <h3 className="font-bold mb-2">{t('pages.women.safety.helplines.title')}</h3>
+                     <div className="space-y-3 mb-6">
+                        <ResourceLink titleKey="pages.women.safety.helplines.women" href="tel:181" />
+                        <ResourceLink titleKey="pages.women.safety.helplines.police" href="tel:1091" />
+                     </div>
+                     <h3 className="font-bold mb-2">{t('pages.women.safety.apps.title')}</h3>
+                     <div className="space-y-3 mb-6">
+                        <ResourceLink titleKey="pages.women.safety.apps.app112" href="https://play.google.com/store/apps/details?id=com.cdac.ercall" />
+                        <ResourceLink titleKey="pages.women.safety.apps.shebox" href="https://www.shebox.nic.in/" />
+                     </div>
+                    <form onSubmit={handleSafetyAsk} className="space-y-3 bg-white p-4 rounded-lg border">
+                        <h3 className="font-bold">{t('pages.women.safety.ai.title')}</h3>
+                        <textarea value={safetyState.query} onChange={e => setSafetyState(s=>({...s, query: e.target.value}))} rows={2} placeholder={t('pages.women.safety.ai.placeholder')} className="w-full bg-white border-gray-300 rounded-md p-2 text-gray-900"/>
+                        <button type="submit" disabled={safetyState.isLoading} className="w-full bg-blue-600 text-white font-semibold py-2 rounded-md hover:bg-blue-700 disabled:bg-blue-300">
+                             {safetyState.isLoading ? t('pages.women.safety.ai.loading') : t('pages.women.safety.ai.button')}
+                        </button>
+                    </form>
+                    {safetyState.error && <p className="text-red-500 text-sm mt-2">{safetyState.error}</p>}
+                    {safetyState.answer && renderAIResults(t('pages.women.safety.ai.resultsTitle'), <p className="whitespace-pre-wrap">{safetyState.answer}</p>)}
+                </AccordionItem>
+
+                <AccordionItem title={t('pages.women.accordion.jobs.title')} isOpen={openAccordion === 'jobs'} onToggle={() => toggleAccordion('jobs')}>
+                     <h3 className="font-bold mb-2">{t('pages.women.jobs.platforms.title')}</h3>
+                     <div className="space-y-3 mb-6">
+                        <ResourceLink titleKey="pages.women.jobs.platforms.jobsforher" href="https://www.jobsforher.com/" />
+                        <ResourceLink titleKey="pages.women.jobs.platforms.sheroes" href="https://sheroes.com/" />
+                     </div>
+                      <form onSubmit={handleWageCalculate} className="space-y-3 bg-white p-4 rounded-lg border">
+                        <h3 className="font-bold">{t('pages.women.jobs.ai.title')}</h3>
+                        <input value={wageState.skill} onChange={e => setWageState(s=>({...s, skill: e.target.value}))} placeholder={t('pages.women.jobs.ai.skillPlaceholder')} className="w-full bg-white border-gray-300 rounded-md p-2 text-gray-900"/>
+                        <input value={wageState.city} onChange={e => setWageState(s=>({...s, city: e.target.value}))} placeholder={t('pages.women.jobs.ai.cityPlaceholder')} className="w-full bg-white border-gray-300 rounded-md p-2 text-gray-900"/>
+                        <button type="submit" disabled={wageState.isLoading} className="w-full bg-blue-600 text-white font-semibold py-2 rounded-md hover:bg-blue-700 disabled:bg-blue-300">
+                             {wageState.isLoading ? t('pages.women.jobs.ai.loading') : t('pages.women.jobs.ai.button')}
+                        </button>
+                    </form>
+                    {wageState.error && <p className="text-red-500 text-sm mt-2">{wageState.error}</p>}
+                    {wageState.info && renderAIResults(t('pages.women.jobs.ai.resultsTitle'), <div><p><strong>Minimum Wage:</strong> {wageState.info.minimumWage}</p><ul className="list-disc list-inside">{(wageState.info.entitlements || []).map((e,i)=><li key={i}>{e}</li>)}</ul></div>)}
+                </AccordionItem>
+
+                 <AccordionItem title={t('pages.women.accordion.health.title')} isOpen={openAccordion === 'health'} onToggle={() => toggleAccordion('health')}>
+                     <h3 className="font-bold mb-2">{t('pages.women.health.resources.title')}</h3>
+                     <div className="space-y-3 mb-6">
+                        <ResourceLink titleKey="pages.women.health.resources.nhm" href="https://nhm.gov.in/" />
+                        <ResourceLink titleKey="pages.women.health.resources.goonj" href="https://goonj.org/" />
+                     </div>
+                      <form onSubmit={handleHealthAsk} className="space-y-3 bg-white p-4 rounded-lg border">
+                        <h3 className="font-bold">{t('pages.women.health.ai.title')}</h3>
+                        <textarea value={healthState.query} onChange={e => setHealthState(s=>({...s, query: e.target.value}))} rows={2} placeholder={t('pages.women.health.ai.placeholder')} className="w-full bg-white border-gray-300 rounded-md p-2 text-gray-900"/>
+                        <button type="submit" disabled={healthState.isLoading} className="w-full bg-blue-600 text-white font-semibold py-2 rounded-md hover:bg-blue-700 disabled:bg-blue-300">
+                             {healthState.isLoading ? t('pages.women.health.ai.loading') : t('pages.women.health.ai.button')}
+                        </button>
+                    </form>
+                    {healthState.error && <p className="text-red-500 text-sm mt-2">{healthState.error}</p>}
+                    {healthState.answer && renderAIResults(t('pages.women.health.ai.resultsTitle'), <p className="whitespace-pre-wrap">{healthState.answer}</p>)}
+                </AccordionItem>
+                 <AccordionItem title={t('pages.women.accordion.education.title')} isOpen={openAccordion === 'education'} onToggle={() => toggleAccordion('education')}>
+                    <h3 className="font-bold mb-2">{t('pages.women.education.scholarships.title')}</h3>
+                     <div className="space-y-3 mb-6">
+                        <ResourceLink titleKey="pages.women.education.scholarships.nsp" href="https://scholarships.gov.in/" />
+                        <ResourceLink titleKey="pages.women.education.scholarships.pragati" href="https://www.aicte-india.org/schemes/students-development-schemes/pragati" />
+                     </div>
+                     <h3 className="font-bold mb-2">{t('pages.women.education.skills.title')}</h3>
+                     <div className="space-y-3 mb-6">
+                        <ResourceLink titleKey="pages.women.education.skills.skillindia" href="https://www.skillindia.gov.in/" />
+                        <ResourceLink titleKey="pages.women.education.skills.disha" href="https://www.digitalindia.gov.in/disha" />
+                     </div>
+                </AccordionItem>
+                <AccordionItem title={t('pages.women.accordion.community.title')} isOpen={openAccordion === 'community'} onToggle={() => toggleAccordion('community')}>
+                    <h3 className="font-bold mb-2">{t('pages.women.community.ngos.title')}</h3>
+                     <div className="space-y-3 mb-6">
+                        <ResourceLink titleKey="pages.women.community.ngos.sewa" href="http://www.sewa.org/" />
+                        <ResourceLink titleKey="pages.women.community.ngos.azad" href="https://www.azadfoundation.com/" />
+                     </div>
+                </AccordionItem>
+                <AccordionItem title={t('pages.women.accordion.family.title')} isOpen={openAccordion === 'family'} onToggle={() => toggleAccordion('family')}>
+                    <div className="space-y-3 mb-6">
+                        <ResourceLink titleKey="pages.women.family.widowpension" href="https://nsap.nic.in/" />
+                        <ResourceLink titleKey="pages.women.family.nmms" href="https://scholarships.gov.in/" />
+                    </div>
+                     <form onSubmit={handleFamilyBenefits} className="space-y-3 bg-white p-4 rounded-lg border">
+                        <h3 className="font-bold">{t('pages.women.family.ai.title')}</h3>
+                         <textarea value={familyState.info} onChange={e => setFamilyState(s => ({...s, info: e.target.value}))} rows={2} placeholder={t('pages.women.family.ai.placeholder')} className="w-full bg-white border-gray-300 rounded-md p-2 text-gray-900"/>
+                        <button type="submit" disabled={familyState.isLoading} className="w-full bg-blue-600 text-white font-semibold py-2 rounded-md hover:bg-blue-700 disabled:bg-blue-300">
+                             {familyState.isLoading ? t('pages.women.family.ai.loading') : t('pages.women.family.ai.button')}
+                        </button>
+                     </form>
+                    {familyState.error && <p className="text-red-500 text-sm mt-2">{familyState.error}</p>}
+                    {familyState.recs.length > 0 && renderAIResults(t('pages.women.family.ai.resultsTitle'), 
+                        familyState.recs.map((rec, i) => <div key={i}><p className="font-bold">{rec.schemeTitle}</p><p className="text-xs">{rec.reason}</p></div>)
+                     )}
+                </AccordionItem>
+            </main>
         </div>
-      </section>
-
-      {/* Safety & Legal Aid Section */}
-      <Section title={t('pages.women.safetyTitle')} anchor="safety">
-        {WOMEN_SAFETY_RESOURCES.map(resource => <ResourceCard key={resource.title} resource={resource} t={t} />)}
-      </Section>
-      
-      {/* Health & Wellness Section */}
-      <Section title={t('pages.women.healthTitle')} anchor="health">
-        {WOMEN_HEALTH_SCHEMES.map(resource => <ResourceCard key={resource.title} resource={resource} t={t} />)}
-      </Section>
-      
-      {/* Skilling & Career Section */}
-      <Section title={t('pages.women.skillingTitle')} anchor="skilling">
-         {WOMEN_SKILLING_PROGRAMS.map(resource => <ResourceCard key={resource.title} resource={resource} t={t} />)}
-      </Section>
-
-      {/* Financial Independence Section */}
-      <Section title={t('pages.women.financeTitle')} anchor="finance">
-        {WOMEN_FINANCIAL_SCHEMES.map(resource => <ResourceCard key={resource.title} resource={resource} t={t} />)}
-      </Section>
-
-    </div>
-  );
+    );
 };
 
 export default WomenEmpowermentPage;
