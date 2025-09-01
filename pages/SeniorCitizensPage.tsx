@@ -100,7 +100,7 @@ const SeniorCitizensPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-blue-50">
         {/* Hero Section */}
-        <section className="relative bg-gray-700 text-white py-20 text-center" style={{backgroundImage: "url('https://images.unsplash.com/photo-1576134334343-a61210613d5b?q=80&w=2070&auto=format&fit=crop')"}}>
+        <section className="relative bg-cover bg-center text-white py-20 text-center" style={{backgroundImage: "url('https://images.unsplash.com/photo-1543269664-76bc3997d9ea?q=80&w=2070&auto=format&fit=crop')"}}>
             <div className="absolute inset-0 bg-black opacity-50"></div>
             <div className="container mx-auto px-6 relative z-10">
                 <h1 className="text-4xl md:text-6xl font-bold">Golden Years Gateway</h1>

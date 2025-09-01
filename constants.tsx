@@ -502,14 +502,134 @@ export const REFERRAL_PARTNERS = [
   { name: 'TiE', logo: 'https://tie.org/wp-content/uploads/2021/01/logo.png' },
 ];
 
-export const EARNING_METHODS: EarningMethod[] = [ /* Earning methods data */ ];
-export const CASHBACK_APPS: CashbackApp[] = [ /* Cashback apps data */ ];
-export const CRYPTO_APPS: CryptoApp[] = [ /* Crypto apps data */ ];
-export const STUDENT_BANK_ACCOUNTS: StudentBankAccount[] = [ /* Bank accounts data */ ];
-export const REFERRAL_APPS: ReferralApp[] = [ /* Referral apps data */ ];
-export const STUDENT_LOANS: StudentLoanOffer[] = [ /* Student loans data */ ];
-export const STUDENT_CARDS: StudentCard[] = [ /* Student cards data */ ];
-export const STUDENT_DEALS: StudentDeal[] = [ /* Student deals data */ ];
+export const EARNING_METHODS: EarningMethod[] = [
+    {
+        title: 'Start a YouTube Channel',
+        description: 'Make videos on coding, college life, finance, reviews, or tutorials.',
+        earnings: ['Google Ads', 'Affiliate links', 'Brand Sponsorships'],
+        tools: [
+            { name: 'YouTube Studio', link: 'https://studio.youtube.com/' },
+            { name: 'Canva', link: 'https://www.canva.com/' },
+            { name: 'CapCut', link: 'https://www.capcut.com/' }
+        ],
+        videos: [
+            { title: 'How to Start a YouTube Channel – Beginner Guide', link: '#' },
+            { title: 'How Much YouTube Paid Me for 1M Views', link: '#' }
+        ]
+    },
+    {
+        title: 'Sell Digital Products',
+        description: 'Sell PDFs, resumes, templates, planners, coding projects, or notes.',
+        earnings: [],
+        platforms: [
+            { name: 'Gumroad', link: 'https://gumroad.com/' },
+            { name: 'Sellfy', link: 'https://sellfy.com/' },
+            { name: 'Notion Templates', link: 'https://notionmarketplace.com/' }
+        ],
+        videos: [
+            { title: 'How to Make Money Selling Digital Products', link: '#' },
+            { title: 'Earn Money Selling Notion Templates', link: '#' }
+        ]
+    },
+    {
+        title: 'Affiliate Marketing',
+        description: 'Promote apps, courses, or products and earn a commission per sale.',
+        earnings: [],
+        programs: [
+            { name: 'Amazon Affiliate', link: 'https://affiliate-program.amazon.in/' },
+            { name: 'Coursera Affiliate', link: '#' }
+        ],
+        videos: [
+            { title: 'Affiliate Marketing for Beginners', link: '#' },
+            { title: 'Earn ₹50,000/Month With Affiliate Marketing', link: '#' }
+        ]
+    },
+    {
+        title: 'Print on Demand',
+        description: 'Design t-shirts, mugs, etc. No inventory needed!',
+        earnings: [],
+        platforms: [
+            { name: 'Redbubble', link: 'https://www.redbubble.com/' },
+            { name: 'Teespring', link: 'https://www.teespring.com/' }
+        ],
+        videos: [
+            { title: 'Redbubble Beginner Guide', link: '#' },
+            { title: 'Print-on-Demand Full Guide', link: '#' }
+        ]
+    },
+     {
+        title: 'Blogging / Website',
+        description: 'Write on tech, career tips, tutorials, college hacks.',
+        earnings: [],
+        platforms: [
+            { name: 'WordPress', link: 'https://wordpress.com/' },
+            { name: 'Blogger', link: 'https://www.blogger.com/about/' }
+        ],
+        videos: [
+            { title: 'Start a Blog for Free', link: '#' },
+            { title: '5 Ways Blogs Make Money', link: '#' }
+        ]
+    },
+    {
+        title: 'Invest in Stocks or Mutual Funds',
+        description: 'Start with small amounts & earn long-term growth or dividends.',
+        earnings: [],
+        apps: [
+            { name: 'Groww', link: 'https://groww.in/' },
+            { name: 'Zerodha', link: 'https://zerodha.com/' },
+            { name: 'Kuvera', link: 'https://kuvera.in/' }
+        ],
+        videos: [
+            { title: 'Mutual Funds for Beginners', link: '#' },
+            { title: 'Invest in Stocks as a Student', link: '#' }
+        ]
+    },
+];
+export const CASHBACK_APPS: CashbackApp[] = [
+    { name: 'Navi UPI', rewards: ['Users often get opportunities to earn rewards or cashback whenever they make payments', 'Pay any bill over ₹200 (mobile, electricity, credit card), and you\'ll get ₹25 back.'], referral: ['₹100 per referral (limited time offer)', 'Average cashback of ₹2–4 per UPI transaction'], downloadLink: 'https://r.navi.com/fjI4KB', referralLink: 'https://r.navi.com/fjI4KB' },
+    { name: 'Super.money', rewards: ['Provides real cashback on every UPI merchant payment, advertised up to 5%', '₹1–₹5 per transaction, especially on low-value transfers', 'Engaging rewards like Super Drop, Meme Money, and Raffle events'], referral: ['New users typically get a fixed cashback reward — around ₹11 per referral', 'The app limits each user to share up to 10 memes/day'], downloadLink: 'https://link.super.money/gUX04VXK5Pb', referralLink: 'https://link.super.money/gUX04VXK5Pb' },
+    { name: 'MobiKwik', rewards: ['Cashback is credited as SuperCash, which can be used for bill payments or recharges', 'Offers on mobile recharge, electronics, travel bookings and more'], referral: ['You and your friend each get ₹100 SuperCash once your friend adds ₹50 or more', 'Earning limit: up to ₹5,000 SuperCash per month'], downloadLink: 'https://sak38.app.goo.gl/nNJuvJUCbT3eA63w8', referralLink: 'https://sak38.app.goo.gl/nNJuvJUCbT3eA63w8' },
+    { name: 'Pawns.app', rewards: ['Bandwidth sharing: Around $0.20–$0.80 per GB shared', 'Surveys: Around $0.25 to $2 per survey', 'Monthly total (realistic): $5–$30'], referral: [], downloadLink: 'https://discoverpawns.eu/14983216', referralLink: 'https://discoverpawns.eu/14983216' },
+    { name: 'BHIM App', rewards: ['₹100 cashback for first-time users (complete 3 transactions of ₹50+)', 'Merchant Cashback: ₹50–₹500 per month based on volume', 'Festival & Event Offers', 'QR Scan Bonus at partner stores'], referral: ['Invite friends to use BHIM App', 'Earn ₹25–₹50 per successful referral'], downloadLink: 'https://bhimnpci.page.link/app', referralLink: 'https://bhimnpci.page.link/app' },
+];
+export const CRYPTO_APPS: CryptoApp[] = [
+    { name: 'PI COIN', price: '~$0.444 USD per PI', marketCap: '~$3.5 billion', supply: '~7.7 billion PI', predictions: ['CoinCodex: $0.34–$0.67 by 2026, $0.91–$2.81 by 2028', 'CoinPedia: $0.85–$3.50 in 2026, $5.50–$22.00 by 2030'], downloadLink: 'https://minepi.com/Rupesh9502' },
+    { name: 'Sidra Chain', price: '~$3.31 × 10⁻¹¹ USD', marketCap: '~$2,230', supply: '~1.00 billion tokens', predictions: [], downloadLink: 'https://www.sidrachain.com/u/rupesh9502' },
+    { name: 'Interlink', price: '~$0.000758 USD', marketCap: '~$74,500', supply: '~98.39 million INTL', predictions: [], downloadLink: 'https://interlinklabs.ai/referral?refCode=7997401678' },
+    { name: 'Bee Coin', price: '~$0.000024 USD', marketCap: '~$24,000', supply: '~999.9 million BEE', predictions: [], downloadLink: 'https://j.bee.com/s?a=rupesh9502' },
+    { name: 'Sweatcoin', price: '~$0.0027 per token', marketCap: '$18–$20 million', supply: '~7.2–7.7 billion SWEAT', predictions: ['CoinCodex predicts SWEAT may slide to $0.0016–$0.0024 by mid 2025'], downloadLink: '#' },
+];
+export const STUDENT_BANK_ACCOUNTS: StudentBankAccount[] = [
+    { bank: 'ICICI Bank Campus Power', features: ['Zero balance', 'Free debit card, insurance', 'Special education loan rates', 'Discounts on coaching, gadgets'], link: 'https://www.icicibank.com/personal-banking/accounts/campus-power-account' },
+    { bank: 'SBI Student Plus Account', features: ['Linked with Education Loan', 'Global debit card', 'Waived minimum balance'], link: 'https://sbi.co.in/web/personal-banking/accounts/saving-account/student-plus-savings-bank-account' },
+    { bank: 'Kotak 811 Edge', features: ['₹0 balance requirement (with 811 Lite)', 'Virtual debit card', 'Easy KYC from home'], link: 'https://www.kotak.com/en/digital-banking/811.html' },
+    { bank: 'HDFC DigiSave Youth Account', features: ['For age 18–25', 'Zero balance + rewards', 'SmartBuy discounts, Amazon vouchers'], link: 'https://www.hdfcbank.com/personal/save/accounts/savings-accounts/digisave-youth-account' },
+    { bank: 'Airtel Axis Bank Digital Savings', features: ['₹0 balance with 4% interest', 'Digital onboarding', 'Free virtual card'], link: 'https://www.airtel.in/bank/open-account' },
+];
+export const REFERRAL_APPS: ReferralApp[] = [
+    { name: 'CashKaro', referralEarnings: '₹150–₹500', link: '#' },
+    { name: 'Cred', referralEarnings: '₹100–₹500', link: '#' },
+    { name: 'Groww', referralEarnings: '₹25–₹100', link: '#' },
+    { name: 'Upstox', referralEarnings: '₹200–₹1200', link: '#' },
+];
+export const STUDENT_LOANS: StudentLoanOffer[] = [
+    { provider: 'SBI Education Loan', highlights: 'Up to ₹7.5 lakh (no collateral), interest ~8.15%, 0.5% female concession', link: 'https://sbi.co.in/web/personal-banking/loans/education-loans' },
+    { provider: 'Bank of Baroda', highlights: 'Up to ₹80 lakh (domestic & abroad), flexible EMI, BOB Vidya scheme', link: 'https://www.bankofbaroda.in/personal-banking/loans/education-loan' },
+    { provider: 'HDFC Credila', highlights: 'Custom EMI, flexible moratorium, fast approval', link: 'https://www.hdfccredila.com/' },
+    { provider: 'Govt. Credit Scheme (CSIS/GSCCS)', highlights: 'Interest subsidy up to ₹15 lakh loans', link: 'https://www.myscheme.gov.in/schemes/gsccs' },
+];
+export const STUDENT_CARDS: StudentCard[] = [
+    { card: 'IDFC FIRST WoW Card', features: ['No income required', 'FD-backed', 'zero fees'], link: 'https://www.idfcfirstbank.com/credit-card/wow/student' },
+    { card: 'Kotak 811 DreamDifferent', features: ['FD-based', 'free forever'], link: 'https://www.kotak.com/en/credit-card/811-dream-different.html' },
+    { card: 'SBI Student Plus', features: ['Linked to education loan', 'reward points'], link: 'https://www.sbicard.com/en/personal/credit-cards/student/sbi-student-plus-advantage-card.page' },
+];
+export const STUDENT_DEALS: StudentDeal[] = [
+    { platform: 'BookMyForex - Student Special', offer: '₹7,500 cashback on forex card, ₹15,000 cashback on overseas tuition fee transfers, Zero markup fees', link: 'https://www.bookmyforex.com/student-card' },
+    { platform: 'Apple India Back to School', offer: 'Free AirPods/Magic Keyboard with Mac/iPad', link: '#' },
+    { platform: 'Amazon Prime Student', offer: '6-month trial + ₹500 off', link: 'https://www.amazon.in/amazonprime?ref_=nav_cs_primelink_nonmember' },
+    { platform: 'GitHub Student Pack', offer: 'Free domain, Canva, Replit, coding tools', link: 'https://education.github.com/pack' },
+    { platform: 'LinkedIn Premium', offer: 'Free for 1 month with resume tools, courses', link: '#' },
+];
 export const INDIAN_GOV_PLATFORMS: PlatformInfo[] = [ /* Indian gov platforms data */ ];
 export const GLOBAL_PLATFORMS: PlatformInfo[] = [ /* Global platforms data */ ];
 export const CODING_PLATFORMS: PlatformInfo[] = [ /* Coding platforms data */ ];

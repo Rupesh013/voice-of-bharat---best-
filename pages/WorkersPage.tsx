@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useTranslation } from '../hooks/useTranslation';
 import {
@@ -178,7 +179,7 @@ const WorkersPage: React.FC = () => {
 
     return (
         <div className="min-h-screen bg-blue-50">
-            <section className="relative bg-cover bg-center text-white py-20 md:py-32" style={{backgroundImage: "url('https://images.unsplash.com/photo-1598453434026-c9a214b2d244?q=80&w=2070&auto=format&fit=crop')"}}>
+            <section className="relative bg-cover bg-center text-white py-20 md:py-32" style={{backgroundImage: "url('https://images.unsplash.com/photo-1594939638361-2370c061a45b?q=80&w=2070&auto=format&fit=crop')"}}>
                 <div className="absolute inset-0 bg-black opacity-60"></div>
                 <div className="container mx-auto px-6 text-center relative z-10">
                     <h1 className="text-4xl md:text-6xl font-bold leading-tight mb-4">{t('pages.workers.heroTitle')}</h1>

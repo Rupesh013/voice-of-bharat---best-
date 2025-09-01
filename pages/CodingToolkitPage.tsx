@@ -453,6 +453,170 @@ const GitHubContent: React.FC<{ openVideoModal: (url: string) => void }> = ({ op
     </div>
 );
 
+const VSCodeCursorContent: React.FC<{ openVideoModal: (url: string) => void }> = ({ openVideoModal }) => (
+    <div className="animate-fade-in text-white">
+        {/* VS Code Section */}
+        <Section title="🖥️ Visual Studio Code (VS Code)">
+            <p className="text-gray-300 mb-4">Free, lightweight, open-source code editor from Microsoft.</p>
+            <ListItemLink href="https://code.visualstudio.com" title="👉 Official Site: code.visualstudio.com" />
+            <h3 className="text-xl font-semibold mt-6 mb-4">✅ Why Students Should Use It</h3>
+            <ul className="list-disc list-inside space-y-2 text-gray-300">
+                <li><strong>Free Forever</strong> – No hidden charges.</li>
+                <li><strong>Supports 50+ languages</strong> – Python, C, C++, Java, JS, Go, etc.</li>
+                <li><strong>Extensions (like apps for coding):</strong>
+                    <ul className="list-disc list-inside ml-6 mt-2 space-y-1">
+                        <li><a href="https://marketplace.visualstudio.com/items?itemName=ms-python.python" target="_blank" rel="noopener noreferrer" className="text-cyan-400 hover:underline">Python Extension</a></li>
+                        <li><a href="https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode" target="_blank" rel="noopener noreferrer" className="text-cyan-400 hover:underline">Prettier (auto-format)</a></li>
+                        <li><a href="https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens" target="_blank" rel="noopener noreferrer" className="text-cyan-400 hover:underline">GitLens (Git made easy)</a></li>
+                        <li><a href="https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer" target="_blank" rel="noopener noreferrer" className="text-cyan-400 hover:underline">Live Server (instant web preview)</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <h3 className="text-xl font-semibold mt-6 mb-4">🛠️ Features You Must Master</h3>
+            <ul className="list-disc list-inside space-y-2 text-gray-300">
+                <li><strong>Command Palette</strong> → Ctrl+Shift+P (run anything)</li>
+                <li><strong>Terminal</strong> → Run code inside VS Code</li>
+                <li><strong>Debugger</strong> → Set breakpoints & debug like a pro</li>
+                <li><strong>GitHub Integration</strong> → Clone, commit, push from editor</li>
+                <li><strong>Live Share</strong> → Real-time pair programming</li>
+            </ul>
+            <div className="mt-4">
+                <ListItemLink href="https://code.visualstudio.com/docs" title="👉 Learning Path: VS Code Official Docs" />
+            </div>
+        </Section>
+
+        {/* Cursor Section */}
+        <Section title="🤖 Cursor (AI Code Editor)">
+             <p className="text-gray-300 mb-4">A next-gen editor (built on VS Code) with AI built-in.</p>
+             <ListItemLink href="https://cursor.sh" title="👉 Official Site: cursor.sh" />
+             <h3 className="text-xl font-semibold mt-6 mb-4">✅ Why Students Should Use It</h3>
+             <ul className="list-disc list-inside space-y-2 text-gray-300">
+                <li><strong>AI Chat</strong> → Ask coding questions inside editor.</li>
+                <li><strong>Explain Code</strong> → Like a tutor explaining line-by-line.</li>
+                <li><strong>Generate Code</strong> → AI writes boilerplate/test cases.</li>
+                <li><strong>Search Whole Project</strong> → AI finds logic/functions quickly.</li>
+                <li><strong>Debugging Assistant</strong> → Suggests fixes with reasons.</li>
+             </ul>
+             <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+                <ListItemLink href="https://docs.cursor.sh" title="👉 Docs: Cursor Documentation" />
+                <ListItemLink href="https://discord.gg/cursor" title="👉 Community: Cursor Discord" />
+             </div>
+        </Section>
+
+        {/* Student Offers Section */}
+        <Section title="🎁 Student Offers & Freebies">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="bg-gray-700 p-4 rounded-lg">
+                    <h3 className="font-semibold text-lg text-white">1. VS Code</h3>
+                    <ul className="list-disc list-inside text-sm text-gray-300 mt-2 space-y-2">
+                        <li>Free forever.</li>
+                        <li>Pair with <strong>GitHub Student Developer Pack</strong> 🎓
+                            <ul className="list-disc list-inside ml-4 mt-1 text-xs">
+                                <li>GitHub Pro (free)</li>
+                                <li>Free cloud credits (Heroku, DigitalOcean, etc.)</li>
+                                <li>Free tools like Namecheap Domain, Canva Pro, JetBrains IDEs.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                     <a href="https://education.github.com/pack" target="_blank" rel="noopener noreferrer" className="text-sm text-cyan-400 hover:underline mt-2 inline-block">Apply Here &rarr;</a>
+                </div>
+                 <div className="bg-gray-700 p-4 rounded-lg">
+                    <h3 className="font-semibold text-lg text-white">2. Cursor</h3>
+                     <ul className="list-disc list-inside text-sm text-gray-300 mt-2 space-y-2">
+                        <li><strong>Free Plan</strong> → Limited AI usage.</li>
+                        <li><strong>Pro Plan ($20/mo)</strong> → GPT-4, Claude, longer context (may give student discounts).</li>
+                     </ul>
+                     <a href="https://cursor.sh/pricing" target="_blank" rel="noopener noreferrer" className="text-sm text-cyan-400 hover:underline mt-2 inline-block">Pricing Page &rarr;</a>
+                </div>
+            </div>
+        </Section>
+        
+        {/* How to Master Section */}
+        <Section title="🎓 How to Master Them (Step-by-Step)">
+             <h3 className="text-xl font-semibold mb-4">📅 30-Day Plan</h3>
+             <ul className="list-disc list-inside space-y-2 text-gray-300">
+                <li><strong>Week 1</strong> → Learn VS Code basics (navigation, extensions).</li>
+                <li><strong>Week 2</strong> → Git & GitHub inside VS Code.</li>
+                <li><strong>Week 3</strong> → Install Cursor & start using AI for small tasks.</li>
+                <li><strong>Week 4</strong> → Build & deploy a project (GitHub Pages / Netlify).</li>
+             </ul>
+             <div className="mt-4">
+                <ListItemLink href="https://code.visualstudio.com/learn" title="👉 Roadmap Resource: VS Code Roadmap Guide" />
+             </div>
+        </Section>
+        
+        {/* Comparison Table Section */}
+        <Section title="📊 VS Code vs Cursor – Student Comparison">
+             <div className="overflow-x-auto">
+                <table className="min-w-full text-sm text-left">
+                    <thead className="bg-gray-700">
+                        <tr>
+                            <th className="p-3">Feature</th>
+                            <th className="p-3">VS Code</th>
+                            <th className="p-3">Cursor</th>
+                        </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-700">
+                        <tr className="bg-gray-800/50"><td className="p-3 font-semibold">Cost</td><td className="p-3">Free</td><td className="p-3">Free (Pro for AI)</td></tr>
+                        <tr className="bg-gray-800/50"><td className="p-3 font-semibold">Languages</td><td className="p-3">50+</td><td className="p-3">50+</td></tr>
+                        <tr className="bg-gray-800/50"><td className="p-3 font-semibold">AI Support</td><td className="p-3">Extensions only (Copilot, Codeium)</td><td className="p-3">Built-in AI (Chat, Explain, Debug)</td></tr>
+                        <tr className="bg-gray-800/50"><td className="p-3 font-semibold">Best For</td><td className="p-3">Beginners → Strong foundation</td><td className="p-3">Intermediate/Advanced → AI boost</td></tr>
+                        <tr className="bg-gray-800/50"><td className="p-3 font-semibold">Collaboration</td><td className="p-3">Live Share</td><td className="p-3">Limited, but AI helps code reviews</td></tr>
+                        <tr className="bg-gray-800/50"><td className="p-3 font-semibold">Learning Curve</td><td className="p-3">Easy</td><td className="p-3">Easy if you know VS Code</td></tr>
+                        <tr className="bg-gray-800/50"><td className="p-3 font-semibold">Use Case</td><td className="p-3">Projects, assignments, open-source</td><td className="p-3">Debugging, learning, faster coding</td></tr>
+                    </tbody>
+                </table>
+             </div>
+        </Section>
+        
+        {/* Learning Resources Section */}
+        <Section title="📘 Learning Resources & Tutorials">
+             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <h3 className="text-lg font-semibold mb-3">VS Code</h3>
+                    <div className="space-y-3">
+                        <ListItemLink href="https://code.visualstudio.com/docs" title="Official Docs" />
+                        <ListItemLink href="https://www.youtube.com/watch?v=B-s71nIzj2Q" title="Free YouTube Course – VS Code Full Tutorial (freeCodeCamp)" />
+                        <ListItemLink href="https://marketplace.visualstudio.com/vscode" title="Extensions Marketplace" />
+                    </div>
+                </div>
+                <div>
+                    <h3 className="text-lg font-semibold mb-3">Cursor</h3>
+                     <div className="space-y-3">
+                        <ListItemLink href="https://docs.cursor.sh" title="Official Docs" />
+                        <ListItemLink href="https://discord.gg/cursor" title="Community Help – Cursor Discord" />
+                        <ListItemLink href="https://cursor.sh/blog" title="Blog on AI Features" />
+                    </div>
+                </div>
+             </div>
+             <h3 className="text-xl font-semibold mt-8 mb-4">🎥 Must-Watch Videos</h3>
+             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <button onClick={() => openVideoModal(getYoutubeEmbedUrl('https://youtu.be/HJxxGKtdEpU'))} className="block bg-gray-700 p-4 rounded-md hover:bg-gray-600 text-left w-full">📹 VS Code Master</button>
+                <button onClick={() => openVideoModal(getYoutubeEmbedUrl('https://youtu.be/lxRAj1Gijic'))} className="block bg-gray-700 p-4 rounded-md hover:bg-gray-600 text-left w-full">📹 Ultimate VS Code Setup</button>
+                <button onClick={() => openVideoModal(getYoutubeEmbedUrl('https://youtu.be/uKTNaJRVvzw'))} className="block bg-gray-700 p-4 rounded-md hover:bg-gray-600 text-left w-full">📹 VS Code Tips</button>
+                <button onClick={() => openVideoModal(getYoutubeEmbedUrl('https://youtu.be/Vn0LYZ8Qepc'))} className="block bg-gray-700 p-4 rounded-md hover:bg-gray-600 text-left w-full">📹 How to Use Git and GitHub with VSCode</button>
+                <button onClick={() => openVideoModal(getYoutubeEmbedUrl('https://youtu.be/jXp5D5ZnxGM'))} className="block bg-gray-700 p-4 rounded-md hover:bg-gray-600 text-left w-full">📹 GitHub Copilot</button>
+             </div>
+        </Section>
+        
+        {/* Final Strategy Section */}
+        <Section title="🚀 Final Student Strategy">
+            <ol className="list-decimal list-inside space-y-2 text-gray-300">
+                <li><strong>Start with VS Code</strong> → Build foundation (Git, debugging, extensions).</li>
+                <li><strong>Join GitHub Student Pack</strong> → Get free pro tools.</li>
+                <li><strong>Add Cursor</strong> → Use AI for learning, debugging, projects.</li>
+                <li><strong>Build Portfolio Projects</strong> → Host on GitHub Pages or Netlify.</li>
+                <li><strong>Contribute to Open Source</strong> → Gain real-world experience.</li>
+            </ol>
+            <p className="mt-4 italic text-gray-400">
+                👉 After 3–6 months, you’ll not only code faster with AI, but also understand professional workflows (Git, CI/CD, debugging).
+            </p>
+        </Section>
+
+    </div>
+);
+
+
 const CodingToolkitPage: React.FC = () => {
     const [activeTab, setActiveTab] = useState('Master LeetCode');
     const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
@@ -474,7 +638,7 @@ const CodingToolkitPage: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50" onClick={onClose}>
             <div className="bg-gray-900 p-2 md:p-4 rounded-lg shadow-xl relative w-full max-w-4xl" onClick={(e) => e.stopPropagation()}>
                 <button onClick={onClose} className="absolute -top-3 -right-3 bg-white text-black rounded-full h-8 w-8 flex items-center justify-center font-bold text-xl">&times;</button>
-                <div className="aspect-w-16 aspect-h-9" style={{paddingBottom: '56.25%', position: 'relative', height: 0}}>
+                <div style={{paddingBottom: '56.25%', position: 'relative', height: 0}}>
                     <iframe 
                         src={url} 
                         title="YouTube video player" 
@@ -499,15 +663,17 @@ const CodingToolkitPage: React.FC = () => {
                 </div>
 
                 <div className="bg-gray-800 rounded-lg shadow-xl">
-                    <div className="flex justify-center border-b border-gray-700">
+                    <div className="flex justify-center border-b border-gray-700 overflow-x-auto">
                         <TabButton label="Master LeetCode" isActive={activeTab === 'Master LeetCode'} onClick={() => setActiveTab('Master LeetCode')} />
                         <TabButton label="GitHub Toolkit" isActive={activeTab === 'GitHub Toolkit'} onClick={() => setActiveTab('GitHub Toolkit')} />
                         <TabButton label="LinkedIn Toolkit" isActive={activeTab === 'LinkedIn'} onClick={() => setActiveTab('LinkedIn')} />
+                        <TabButton label="VS Code & Cursor" isActive={activeTab === 'VS Code & Cursor'} onClick={() => setActiveTab('VS Code & Cursor')} />
                     </div>
                     <div className="p-4 md:p-8">
                         {activeTab === 'Master LeetCode' && <LeetCodeContent />}
                         {activeTab === 'GitHub Toolkit' && <GitHubContent openVideoModal={handleOpenVideoModal} />}
                         {activeTab === 'LinkedIn' && <LinkedInContent />}
+                        {activeTab === 'VS Code & Cursor' && <VSCodeCursorContent openVideoModal={handleOpenVideoModal} />}
                     </div>
                 </div>
             </div>
