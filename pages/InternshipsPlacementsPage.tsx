@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react';
 import { INTERNSHIPS, POPULAR_INTERNSHIPS, PLACEMENTS } from '../constants';
+import BackButton from '../components/BackButton';
 
 const TABS = ["Internships", "Placements", "Resource Sheet", "Roadmap"];
 
@@ -154,6 +155,7 @@ const InternshipsPlacementsPage: React.FC = () => {
             </section>
             
             <main className="container mx-auto px-4 sm:px-6 py-12">
+                <BackButton className="mb-8" />
                 <div className="flex flex-wrap border-b border-gray-200">
                     {TABS.map(tab => (
                         <TabButton

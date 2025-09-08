@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import ScholarshipTable from '../components/ScholarshipTable';
 import type { AbroadScholarship, EducationLoan, CounselingCenter, VisaStep, ScholarshipDetail } from '../types';
+import BackButton from '../components/BackButton';
 
 const mainTabs = ['Home', 'Government (India)', 'Private (India)', 'Abroad', 'Support'];
 const indiaScholarshipSubTabs = ['Below or Equal 10th', 'Intermediate (11th & 12th)', 'Diploma', 'ITI'];
@@ -295,6 +296,7 @@ const ScholarshipsPage: React.FC = () => {
 
             {/* Main Content */}
             <main className="container mx-auto px-4 sm:px-6 py-12">
+                <BackButton className="mb-8" />
                 <div className="flex flex-wrap border-b border-gray-200">
                     {mainTabs.map(tab => (
                         <TabButton

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import type { Contract } from '../types';
 import { summarizeContract } from '../services/geminiService';
+import { useTranslation } from '../hooks/useTranslation';
 
 interface ContractDetailModalProps {
   contract: Contract | null;
@@ -13,6 +14,7 @@ const ContractDetailModal: React.FC<ContractDetailModalProps> = ({ contract, isO
   const [summary, setSummary] = useState('');
   const [isLoadingSummary, setIsLoadingSummary] = useState(false);
   const [error, setError] = useState('');
+  const { t } = useTranslation();
 
   const handleSimplify = async () => {
     if (!contract) return;
@@ -46,10 +48,10 @@ const ContractDetailModal: React.FC<ContractDetailModalProps> = ({ contract, isO
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-3 text-sm mb-6 bg-gray-50 p-4 rounded-lg">
-            <p><strong className="font-medium text-gray-600">Buyer:</strong> {contract.buyerName} {contract.buyerVerified && <span className="text-green-600 font-semibold">(Verified)</span>}</p>
-            <p><strong className="font-medium text-gray-600">Crop:</strong> {contract.crop}</p>
-            <p><strong className="font-medium text-gray-600">Quantity:</strong> {contract.quantity}</p>
-            <p><strong className="font-medium text-gray-600">Price:</strong> <span className="font-bold text-green-700">{contract.price}</span></p>
+            <p><strong className="font-medium text-gray-600">{t('components.contractCard.by')}</strong> {contract.buyerName} {contract.buyerVerified && <span className="text-green-600 font-semibold">({t('components.contractCard.verified')})</span>}</p>
+            <p><strong className="font-medium text-gray-600">{t('components.contractCard.crop')}</strong> {contract.crop}</p>
+            <p><strong className="font-medium text-gray-600">{t('components.contractCard.quantity')}</strong> {contract.quantity}</p>
+            <p><strong className="font-medium text-gray-600">{t('components.contractCard.price')}</strong> <span className="font-bold text-green-700">{contract.price}</span></p>
             <p><strong className="font-medium text-gray-600">Start Date:</strong> {contract.timeline.startDate}</p>
             <p><strong className="font-medium text-gray-600">End Date:</strong> {contract.timeline.endDate}</p>
         </div>
@@ -58,13 +60,13 @@ const ContractDetailModal: React.FC<ContractDetailModalProps> = ({ contract, isO
             <div className="flex flex-col sm:flex-row justify-between sm:items-center mb-2">
                 <h3 className="font-semibold text-lg">Contract Terms</h3>
                 <button onClick={handleSimplify} disabled={isLoadingSummary} className="text-sm bg-orange-100 text-orange-700 px-3 py-1 rounded-full hover:bg-orange-200 disabled:opacity-50 mt-2 sm:mt-0">
-                    {isLoadingSummary ? 'Analyzing...' : '✨ Simplify with AI'}
+                    {isLoadingSummary ? t('components.contractDetailModal.analyzing') : `✨ ${t('components.contractDetailModal.simplify')}`}
                 </button>
             </div>
             
             {summary && (
               <div className="bg-orange-50 border-l-4 border-orange-400 p-4 my-4 text-gray-700 text-sm">
-                <h4 className="font-bold">AI Summary:</h4>
+                <h4 className="font-bold">{t('components.contractDetailModal.summary')}:</h4>
                 <p className="whitespace-pre-wrap">{summary}</p>
               </div>
             )}
@@ -78,9 +80,9 @@ const ContractDetailModal: React.FC<ContractDetailModalProps> = ({ contract, isO
         </div>
 
         <div className="mt-8 flex justify-end space-x-4">
-          <button type="button" onClick={handleClose} className="px-6 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300">Close</button>
+          <button type="button" onClick={handleClose} className="px-6 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300">{t('components.contractDetailModal.close')}</button>
           {isApplying && (
-            <button type="button" className="px-6 py-2 bg-green-600 text-white font-semibold rounded-md hover:bg-green-700">Apply Now</button>
+            <button type="button" className="px-6 py-2 bg-green-600 text-white font-semibold rounded-md hover:bg-green-700">{t('components.contractDetailModal.apply')}</button>
           )}
         </div>
       </div>

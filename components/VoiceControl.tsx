@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { processVoiceCommand } from '../services/geminiService';
 import { useLanguage } from '../contexts/LanguageContext';
+import type { Language, VoiceCommandResult } from '../types';
 
 declare global {
   interface Window {
@@ -15,7 +16,7 @@ const VoiceControl: React.FC = () => {
     const [feedback, setFeedback] = useState('');
     const [displayTranscript, setDisplayTranscript] = useState('');
     
-    const { language } = useLanguage();
+    const { language, setLanguage } = useLanguage();
     const recognitionRef = useRef<any>(null);
     const navigate = useNavigate();
     const timeoutRef = useRef<number | null>(null);
@@ -70,7 +71,10 @@ const VoiceControl: React.FC = () => {
             
             recognition.onerror = (event: any) => {
                 console.error('Speech recognition error', event.error);
-                const errorMsg = 'Sorry, there was an error with speech recognition.';
+                let errorMsg = 'Sorry, there was an error with speech recognition.';
+                if (event.error === 'not-allowed') {
+                    errorMsg = 'Microphone access denied. Please enable it in your browser settings.';
+                }
                 setFeedback(errorMsg);
                 speak(errorMsg);
                 setIsListening(false);
@@ -89,9 +93,38 @@ const VoiceControl: React.FC = () => {
             setFeedback(result.responseText);
             setDisplayTranscript('');
 
-            if (result.action === 'navigate' && result.path) {
-                setTimeout(() => navigate(result.path), 1000); 
+            switch (result.action) {
+                case 'navigate':
+                    if (result.path) {
+                        setTimeout(() => navigate(result.path), 500);
+                    }
+                    break;
+                case 'fill_input':
+                    if (result.selector && typeof result.value !== 'undefined') {
+                        const inputElement = document.querySelector(result.selector) as HTMLInputElement;
+                        if (inputElement) {
+                            inputElement.value = result.value;
+                            // Dispatch an 'input' event to ensure React state updates if the component is controlled.
+                            const event = new Event('input', { bubbles: true });
+                            inputElement.dispatchEvent(event);
+                        } else {
+                            const errorMsg = "Sorry, I couldn't find an input field to fill on this page.";
+                            speak(errorMsg);
+                            setFeedback(errorMsg);
+                        }
+                    }
+                    break;
+                case 'change_language':
+                    if (result.language_code) {
+                        setLanguage(result.language_code);
+                    }
+                    break;
+                case 'speak':
+                case 'unknown':
+                    // The speak() call above already handled this.
+                    break;
             }
+
         } catch (error) {
             console.error(error);
             const errorMessage = "I'm sorry, I could not process the command.";

@@ -1,3 +1,14 @@
+export type Language = 'en' | 'hi' | 'te' | 'ta' | 'ur' | 'bn' | 'mr' | 'gu' | 'kn' | 'or' | 'ml';
+
+export interface VoiceCommandResult {
+  action: 'navigate' | 'speak' | 'fill_input' | 'change_language' | 'unknown';
+  path: string;
+  selector: string;
+  value: string;
+  language_code: Language;
+  language_name: string;
+  responseText: string;
+}
 export interface ChatMessage {
   sender: 'user' | 'bot';
   text: string;

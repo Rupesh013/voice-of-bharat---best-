@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import SmartAppCard from '../components/SmartAppCard';
 import {
@@ -8,6 +9,7 @@ import {
     WOMEN_APPS,
     ENVIRONMENT_APPS
 } from '../constants';
+import BackButton from '../components/BackButton';
 
 const TABS = [
     "Home",
@@ -99,6 +101,7 @@ const SmartAppsPage: React.FC = () => {
             </section>
 
             <main className="container mx-auto px-4 sm:px-6 py-12">
+                 <BackButton className="mb-8" />
                  <div className="overflow-x-auto pb-4">
                     <div className="flex justify-center space-x-2">
                         {TABS.map(tab => (

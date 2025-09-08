@@ -1,7 +1,9 @@
+
 import React, { useState } from 'react';
 // FIX: Renamed InvestmentGuide component to avoid conflict with the imported type. The type is used here.
 import type { BudgetPlan, LoanAnalysis, InvestmentGuide } from '../types';
 import { generateBudgetPlan, analyzeStudentLoan, generateInvestmentGuide } from '../services/geminiService';
+import BackButton from '../components/BackButton';
 
 const TabButton: React.FC<{ label: string; isActive: boolean; onClick: () => void; }> = ({ label, isActive, onClick }) => (
     <button
@@ -259,6 +261,7 @@ const FinancialManagementPage: React.FC = () => {
     return (
         <div className="bg-orange-50 min-h-screen py-12">
             <div className="container mx-auto px-6 max-w-4xl">
+                <BackButton className="mb-8" />
                 <div className="text-center mb-12">
                     <h1 className="text-4xl md:text-5xl font-bold text-gray-800">AI Financial Management Tools</h1>
                     <p className="text-gray-600 mt-4 text-lg">

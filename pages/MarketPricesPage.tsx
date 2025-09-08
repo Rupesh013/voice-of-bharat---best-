@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { MOCK_MARKET_PRICES } from '../constants';
 import type { MarketPrice } from '../types';
 import { getMarketPriceInsights } from '../services/geminiService';
+import BackButton from '../components/BackButton';
 
 const PriceRow: React.FC<{ item: MarketPrice }> = ({ item }) => {
     const trendConfig = {
@@ -45,6 +46,7 @@ const MarketPricesPage: React.FC = () => {
     return (
         <div className="min-h-screen bg-purple-50 py-12">
             <div className="container mx-auto px-6 max-w-6xl">
+                <BackButton className="mb-8" />
                 <div className="text-center mb-12">
                     <h1 className="text-4xl md:text-5xl font-bold text-gray-800">Market Price Intelligence</h1>
                     <p className="text-gray-600 mt-4 text-lg">

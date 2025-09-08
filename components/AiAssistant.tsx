@@ -1,11 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react';
 import type { ChatMessage } from '../types';
 import { streamChatResponse } from '../services/geminiService';
+import { useTranslation } from '../hooks/useTranslation';
 
 const AiAssistant: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { t } = useTranslation();
   const [messages, setMessages] = useState<ChatMessage[]>([
-    { sender: 'bot', text: 'Hello! How can I help you today with government schemes or other services?' }
+    { sender: 'bot', text: t('aiAssistant.greeting') }
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -49,7 +51,7 @@ const AiAssistant: React.FC = () => {
       setMessages(prev => {
          const lastMsg = prev[prev.length - 1];
           if (lastMsg && lastMsg.sender === 'bot') {
-            return [...prev.slice(0, -1), { sender: 'bot', text: 'Sorry, I encountered an error.' }];
+            return [...prev.slice(0, -1), { sender: 'bot', text: t('aiAssistant.error') }];
           }
           return prev;
       });
@@ -75,7 +77,7 @@ const AiAssistant: React.FC = () => {
       {isOpen && (
         <div className="fixed bottom-24 right-6 w-96 h-[500px] bg-white rounded-lg shadow-2xl z-50 flex flex-col transition-all duration-300 ease-in-out">
           <div className="bg-gray-800 text-white p-4 rounded-t-lg flex justify-between items-center">
-            <h3 className="font-semibold">AI Assistant</h3>
+            <h3 className="font-semibold">{t('aiAssistant.title')}</h3>
             <button onClick={() => setIsOpen(false)} className="text-gray-300 hover:text-white">&times;</button>
           </div>
           <div className="flex-1 p-4 overflow-y-auto bg-gray-100">
@@ -95,7 +97,7 @@ const AiAssistant: React.FC = () => {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && handleSend()}
-                placeholder="Ask me anything..."
+                placeholder={t('aiAssistant.placeholder')}
                 className="flex-1 border rounded-l-md p-2 focus:outline-none focus:ring-2 focus:ring-orange-500 bg-white text-gray-900"
                 disabled={isLoading}
               />
@@ -104,7 +106,7 @@ const AiAssistant: React.FC = () => {
                 className="bg-orange-500 text-white px-4 rounded-r-md hover:bg-orange-600 disabled:bg-orange-300"
                 disabled={isLoading}
               >
-                {isLoading ? '...' : 'Send'}
+                {isLoading ? t('aiAssistant.sending') : t('aiAssistant.send')}
               </button>
             </div>
           </div>

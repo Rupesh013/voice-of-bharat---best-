@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { getCropRecommendation } from '../services/geminiService';
 import type { CropRecommendation } from '../types';
+import BackButton from '../components/BackButton';
 
 const soilTypes = ["Alluvial", "Black", "Red", "Laterite", "Arid", "Forest & Mountainous"];
 const marketPreferences = ["High Value", "Staple Food", "Drought Resistant", "Quick Yield"];
@@ -67,6 +68,7 @@ const CropRecommendationPage: React.FC = () => {
     return (
         <div className="min-h-screen bg-yellow-50 py-12">
             <div className="container mx-auto px-6 max-w-4xl">
+                <BackButton className="mb-8" />
                 <div className="text-center mb-12">
                     <h1 className="text-4xl md:text-5xl font-bold text-gray-800">AI Crop Recommender</h1>
                     <p className="text-gray-600 mt-4 text-lg">

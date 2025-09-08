@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { NAV_LINKS } from '../constants';
 import { useTranslation } from '../hooks/useTranslation';
-import { useLanguage, Language } from '../contexts/LanguageContext';
+// FIX: Module '"../contexts/LanguageContext"' declares 'Language' locally, but it is not exported. The `Language` type should be imported from `../types` instead.
+import { useLanguage } from '../contexts/LanguageContext';
+import type { Language } from '../types';
 
 const LanguageSwitcher: React.FC = () => {
     const { language, setLanguage } = useLanguage();
@@ -76,9 +78,9 @@ const Header: React.FC = () => {
             </Link>
           ))}
           <LanguageSwitcher />
-          <button className="bg-orange-500 text-white font-semibold px-4 py-2 rounded-md hover:bg-orange-600 transition duration-300">
-            Login
-          </button>
+          <Link to="/login" className="bg-orange-500 text-white font-semibold px-4 py-2 rounded-md hover:bg-orange-600 transition duration-300">
+            {t('header.login')}
+          </Link>
         </nav>
 
         <div className="md:hidden flex items-center gap-4">
@@ -99,9 +101,9 @@ const Header: React.FC = () => {
                 {t(`nav.${link.key}`)}
               </Link>
             ))}
-            <button className="bg-orange-500 text-white font-semibold px-4 py-2 rounded-md hover:bg-orange-600 transition duration-300">
-              Login
-            </button>
+            <Link to="/login" onClick={() => setIsMenuOpen(false)} className="bg-orange-500 text-white font-semibold px-4 py-2 rounded-md hover:bg-orange-600 transition duration-300">
+              {t('header.login')}
+            </Link>
           </nav>
         </div>
       )}

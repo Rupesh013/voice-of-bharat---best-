@@ -3,6 +3,7 @@ import SectionCard from '../components/SectionCard';
 import ScholarshipCard from '../components/ScholarshipCard';
 import { STUDENT_FEATURES, MOCK_SCHOLARSHIPS } from '../constants';
 import { useTranslation } from '../hooks/useTranslation';
+import BackButton from '../components/BackButton';
 
 const StudentsPage: React.FC = () => {
   const { t } = useTranslation();
@@ -23,6 +24,7 @@ const StudentsPage: React.FC = () => {
       {/* Features Grid */}
       <section className="py-16">
         <div className="container mx-auto px-6">
+          <BackButton to="/" className="mb-8" />
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-800">{t('pages.students.toolkitTitle')}</h2>
             <p className="text-gray-600 mt-2">{t('pages.students.toolkitSubtitle')}</p>

@@ -108,9 +108,9 @@ const OffersPage: React.FC = () => {
                     <div className="bg-white p-4 rounded-lg shadow-md mb-8 sticky top-20 z-30">
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                              <div className="md:col-span-2">
-                                <label htmlFor="search" className="sr-only">Search Offers</label>
+                                <label htmlFor="page-search-input" className="sr-only">Search Offers</label>
                                 <input
-                                    id="search"
+                                    id="page-search-input"
                                     type="text"
                                     value={searchTerm}
                                     onChange={(e) => setSearchTerm(e.target.value)}

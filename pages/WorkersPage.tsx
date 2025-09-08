@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useTranslation } from '../hooks/useTranslation';
 import {
@@ -8,6 +7,7 @@ import {
   getLaborRightsInfo
 } from '../services/geminiService';
 import type { Job, WageInfo, SchemeRecommendation } from '../types';
+import BackButton from '../components/BackButton';
 
 const AccordionItem: React.FC<{ title: string; children: React.ReactNode; isOpen: boolean; onToggle: () => void; }> = ({ title, children, isOpen, onToggle }) => (
     <div className="mb-4 bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300">
@@ -192,6 +192,7 @@ const WorkersPage: React.FC = () => {
             </section>
 
             <main id="main-content" className="container mx-auto px-4 md:px-6 py-12">
+                <BackButton to="/" className="mb-8" />
                 <AccordionItem title={t('pages.workers.accordion.jobs.title')} isOpen={openAccordion === 'jobs'} onToggle={() => toggleAccordion('jobs')}>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <FeatureContainer title={t('pages.workers.jobs.aiMatching.title')} description={t('pages.workers.jobs.aiMatching.description')}>
@@ -260,7 +261,7 @@ const WorkersPage: React.FC = () => {
                     <p>Coming Soon: Safety guides, health benefit information, and an emergency SOS button.</p>
                 </AccordionItem>
                 <AccordionItem title={t('pages.workers.accordion.community.title')} isOpen={openAccordion === 'community'} onToggle={() => toggleAccordion('community')}>
-                    <p>Coming Soon: Q&amp;A forums, chatbot support, and a directory of helpful NGOs.</p>
+                    <p>Coming Soon: Q&A forums, chatbot support, and a directory of helpful NGOs.</p>
                 </AccordionItem>
             </main>
         </div>

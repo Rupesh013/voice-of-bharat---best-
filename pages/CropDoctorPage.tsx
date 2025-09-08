@@ -1,7 +1,10 @@
 
+
 import React, { useState, useCallback } from 'react';
 import { diagnoseCropDisease } from '../services/geminiService';
 import type { CropDiagnosis } from '../types';
+import { useTranslation } from '../hooks/useTranslation';
+import BackButton from '../components/BackButton';
 
 const CropDoctorPage: React.FC = () => {
   const [image, setImage] = useState<string | null>(null);
@@ -10,6 +13,7 @@ const CropDoctorPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isSuccess, setIsSuccess] = useState(false);
+  const { t } = useTranslation();
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -66,14 +70,14 @@ const CropDoctorPage: React.FC = () => {
       {!diagnosis.isHealthy && (
         <>
           <div className="mb-4">
-            <h4 className="font-semibold text-gray-800 mb-2">Recommended Treatment:</h4>
+            <h4 className="font-semibold text-gray-800 mb-2">{t('pages.cropDoctor.results.treatment')}</h4>
             <ul className="list-disc list-inside space-y-1 text-gray-600">
               {diagnosis.recommendedTreatment.map((step, index) => <li key={index}>{step}</li>)}
             </ul>
           </div>
 
           <div>
-            <h4 className="font-semibold text-gray-800 mb-2">Preventive Measures:</h4>
+            <h4 className="font-semibold text-gray-800 mb-2">{t('pages.cropDoctor.results.prevention')}</h4>
             <ul className="list-disc list-inside space-y-1 text-gray-600">
               {diagnosis.preventiveMeasures.map((step, index) => <li key={index}>{step}</li>)}
             </ul>
@@ -86,10 +90,11 @@ const CropDoctorPage: React.FC = () => {
   return (
     <div className="bg-green-50 min-h-screen py-12">
       <div className="container mx-auto px-6 max-w-4xl">
+        <BackButton className="mb-8" />
         <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-800">AI Crop Doctor</h1>
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-800">{t('pages.cropDoctor.title')}</h1>
           <p className="text-gray-600 mt-4 text-lg">
-            Upload an image of your crop to get an instant diagnosis and treatment recommendations.
+            {t('pages.cropDoctor.subtitle')}
           </p>
         </div>
 
@@ -97,7 +102,7 @@ const CropDoctorPage: React.FC = () => {
           {!image ? (
             <div className="text-center">
               <label htmlFor="crop-image-upload" className="cursor-pointer inline-block bg-orange-500 text-white font-semibold px-8 py-4 rounded-md hover:bg-orange-600 transition duration-300">
-                Upload Crop Image
+                {t('pages.cropDoctor.uploadButton')}
               </label>
               <input
                 id="crop-image-upload"
@@ -106,7 +111,7 @@ const CropDoctorPage: React.FC = () => {
                 onChange={handleImageChange}
                 className="hidden"
               />
-              <p className="text-sm text-gray-500 mt-4">Supports PNG and JPG formats.</p>
+              <p className="text-sm text-gray-500 mt-4">{t('pages.cropDoctor.uploadHelp')}</p>
             </div>
           ) : (
             <div className="text-center">
@@ -117,14 +122,14 @@ const CropDoctorPage: React.FC = () => {
                   className="bg-green-600 text-white font-semibold px-8 py-3 rounded-md hover:bg-green-700 transition duration-300 disabled:bg-gray-400"
                   disabled={isLoading}
                 >
-                  {isLoading ? 'Analyzing...' : 'Diagnose Plant'}
+                  {isLoading ? t('pages.cropDoctor.analyzing') : t('pages.cropDoctor.diagnoseButton')}
                 </button>
                  <button
                   onClick={resetState}
                   className="bg-gray-500 text-white font-semibold px-8 py-3 rounded-md hover:bg-gray-600 transition duration-300"
                   disabled={isLoading}
                 >
-                  Change Image
+                  {t('pages.cropDoctor.changeImageButton')}
                 </button>
               </div>
             </div>
@@ -133,21 +138,21 @@ const CropDoctorPage: React.FC = () => {
         
         {isLoading && (
           <div className="text-center mt-6">
-            <p className="text-lg text-gray-700 animate-pulse">Our AI is analyzing your crop, please wait...</p>
+            <p className="text-lg text-gray-700 animate-pulse">{t('pages.cropDoctor.analyzing')}</p>
           </div>
         )}
 
         {error && (
           <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg relative mt-6" role="alert">
-            <strong className="font-bold">Error: </strong>
+            <strong className="font-bold">{t('pages.cropDoctor.errorPrefix')}: </strong>
             <span className="block sm:inline">{error}</span>
           </div>
         )}
         
         {isSuccess && !isLoading && (
             <div className="bg-green-100 border-l-4 border-green-500 text-green-700 px-4 py-3 rounded-lg relative mt-6" role="alert">
-                <strong className="font-bold">Success! </strong>
-                <span className="block sm:inline">Diagnosis complete. See the results below.</span>
+                <strong className="font-bold">{t('pages.cropDoctor.success.title')} </strong>
+                <span className="block sm:inline">{t('pages.cropDoctor.success.description')}</span>
             </div>
         )}
 

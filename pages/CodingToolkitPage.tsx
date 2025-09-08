@@ -1,5 +1,7 @@
 
+
 import React, { useState } from 'react';
+import BackButton from '../components/BackButton';
 
 // A helper component for sections
 const Section: React.FC<{ title: string; children: React.ReactNode, titleClassName?: string }> = ({ title, children, titleClassName = 'text-orange-400' }) => (
@@ -655,6 +657,7 @@ const CodingToolkitPage: React.FC = () => {
     return (
         <div className="min-h-screen bg-gray-900 text-gray-200">
             <div className="container mx-auto px-4 sm:px-6 py-12">
+                <BackButton className="mb-8" />
                 <div className="text-center mb-12">
                     <h1 className="text-4xl md:text-5xl font-bold text-white">Coding & Development Toolkit</h1>
                     <p className="mt-4 text-lg text-gray-400 max-w-3xl mx-auto">

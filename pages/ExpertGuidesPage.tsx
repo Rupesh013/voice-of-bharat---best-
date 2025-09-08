@@ -3,6 +3,7 @@ import React from 'react';
 import { MOCK_EXPERT_GUIDES } from '../constants';
 import type { ExpertGuide } from '../types';
 import ExpertGuideAssistant from '../components/ExpertGuideAssistant';
+import BackButton from '../components/BackButton';
 
 const GuideCard: React.FC<{ guide: ExpertGuide }> = ({ guide }) => (
     <div className="bg-white rounded-lg shadow-md overflow-hidden transform hover:-translate-y-1 transition-transform duration-300">
@@ -31,6 +32,7 @@ const ExpertGuidesPage: React.FC = () => {
 
             <section className="py-16">
                 <div className="container mx-auto px-6">
+                    <BackButton className="mb-8" />
                     <div className="text-center mb-12">
                         <h2 className="text-3xl font-bold text-gray-800">Knowledge Base</h2>
                         <p className="text-gray-600 mt-2">Browse our collection of guides and tutorials.</p>

@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useTranslation } from '../hooks/useTranslation';
+import BackButton from '../components/BackButton';
 
 // --- Reusable Components ---
 
@@ -59,24 +61,26 @@ const ResourceLink: React.FC<{ href: string; title: string; description?: string
 );
 
 const EntrepreneursPage: React.FC = () => {
+    const { t } = useTranslation();
     return (
       <div className="min-h-screen bg-gray-900 text-white">
         {/* Hero Section */}
         <section className="bg-gray-800 text-center py-20 relative overflow-hidden" style={{backgroundImage: "url('https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=2832&auto=format&fit=crop')"}}>
             <div className="absolute inset-0 bg-black opacity-60"></div>
             <div className="container mx-auto px-6 relative z-10">
-                <h1 className="text-4xl md:text-5xl font-bold">The Entrepreneur's Launchpad</h1>
+                <h1 className="text-4xl md:text-5xl font-bold">{t('pages.entrepreneurs.heroTitle')}</h1>
                 <p className="mt-4 text-lg text-gray-300 max-w-3xl mx-auto">
-                    Your complete step-by-step guide to building a successful startup, from idea to global scale.
+                    {t('pages.entrepreneurs.heroSubtitle')}
                 </p>
             </div>
         </section>
 
         <main className="container mx-auto px-4 md:px-6 py-12">
+            <BackButton to="/" className="mb-8" />
             
             {/* Level 1 */}
-            <AccordionSection level={1} title="Foundation — Entrepreneurial Mindset & Basics" defaultOpen>
-                <p className="font-semibold text-lg mb-4 text-gray-200">🔹 Goal: Understand what entrepreneurship really means.</p>
+            <AccordionSection level={1} title={t('pages.entrepreneurs.level1Title')} defaultOpen>
+                <p className="font-semibold text-lg mb-4 text-gray-200">🔹 {t('pages.entrepreneurs.level1Goal')}</p>
                 <Module title="1. What is Entrepreneurship? (Myths vs Reality)">
                     <p className="bg-gray-700 p-3 rounded-md"><strong>Definition:</strong> Entrepreneurship is the process of identifying, developing, and bringing a business idea to life by taking financial, strategic, and personal risks.</p>
                     <h4 className="font-semibold mt-4">Common Myths vs. Reality</h4>
@@ -157,120 +161,10 @@ const EntrepreneursPage: React.FC = () => {
                     <ResourceLink href="https://www.youtube.com/watch?v=7QmCUDHpNzE" title="📊 Case Study: Dropbox MVP Video" description="See the video that validated the idea overnight."/>
                 </ResourceCard>
             </AccordionSection>
-            
-            {/* Level 3 */}
-            <AccordionSection level={3} title="Business Setup & Legal">
-                 <p className="font-semibold text-lg mb-4 text-gray-200">🔹 Goal: Learn to register and run a business officially.</p>
-                 <Module title="1. Business Registration">
-                    <p>Choose the right structure: Sole Proprietor (easiest), Partnership, LLP (Limited Liability), or Private Limited Company (best for funding).</p>
-                 </Module>
-                 <Module title="2. Taxes & Compliance">
-                    <p>Understand basics like PAN, GST (if turnover > ₹40L for goods, ₹20L for services), and annual filings. Use tools like Zoho Books or Tally.</p>
-                 </Module>
-                 <Module title="3. Intellectual Property (IP)">
-                    <p>Protect your brand with Trademarks (logos), Copyrights (code, content), and Patents (inventions).</p>
-                 </Module>
-                 <Module title="4. Contracts & Agreements">
-                    <p>Crucial documents include a Founder’s Agreement (defines equity/roles), NDA (protects ideas), and Employee Contracts.</p>
-                 </Module>
-                 <ResourceCard title="📌 Resources">
-                    <ResourceLink href="https://www.startupindia.gov.in/?utm_source=chatgpt.com" title="🇮🇳 India – Startup India Hub" description="Official govt platform for schemes, mentorship, and compliance."/>
-                    <ResourceLink href="https://www.sba.gov/business-guide?utm_source=chatgpt.com" title="🇺🇸 USA – SBA Business Guide" description="Step-by-step guide for U.S. business regulations."/>
-                    <ResourceLink href="https://www.rocketlawyer.com/?utm_source=chatgpt.com" title="🛠️ Free Tool: Rocket Lawyer" description="Offers free legal document templates like NDAs and contracts."/>
-                 </ResourceCard>
-            </AccordionSection>
-
-            {/* Level 4 */}
-            <AccordionSection level={4} title="Finance, Funding & Investment">
-                <p className="font-semibold text-lg mb-4 text-gray-200">🔹 Goal: Master startup finance & funding strategies.</p>
-                <Module title="1. Financial Basics & Pitch Deck">
-                    <p>Understand Cash Flow, P&L, and Balance Sheet. Create a 10-12 slide Pitch Deck (Problem, Solution, Market Size, Team, Ask) to tell your story to investors.</p>
-                </Module>
-                 <Module title="2. Bootstrapping vs. External Funding">
-                    <p><strong>Bootstrapping:</strong> Using personal savings/revenue. ✅ More freedom, ❌ slower growth. (e.g., Zoho)</p>
-                    <p><strong>External Funding:</strong> Angel investors, VCs. ✅ Faster growth, ❌ equity dilution. (e.g., Flipkart)</p>
-                 </Module>
-                  <Module title="3. Government Schemes (India)">
-                    <p>Explore schemes like Startup India (tax holiday), MUDRA Loans, and Stand-Up India (for women & SC/ST entrepreneurs).</p>
-                 </Module>
-                 <ResourceCard title="📌 Resources">
-                    <ResourceLink href="https://www.sequoiacap.com/article/writing-a-business-plan/?utm_source=chatgpt.com" title="📑 Template: Sequoia Pitch Deck Template" description="The legendary 10-slide structure used by top startups."/>
-                    <ResourceLink href="https://www.amazon.com/Venture-Deals-Smarter-Lawyer-Capitalist/dp/1119594820?utm_source=chatgpt.com" title="📘 Book: Venture Deals" description="The go-to book for understanding VC deals and term sheets."/>
-                    <ResourceLink href="https://carta.com/start/?utm_source=chatgpt.com" title="🛠️ Free Tool: Carta" description="Free cap table and equity management for early-stage startups."/>
-                 </ResourceCard>
-            </AccordionSection>
-
-            {/* Level 5 */}
-            <AccordionSection level={5} title="Marketing, Sales & Branding">
-                <p className="font-semibold text-lg mb-4 text-gray-200">🔹 Goal: Learn how to get customers & build brand trust.</p>
-                <Module title="1. Digital Marketing Basics">
-                    <p>Use SEO (free Google traffic), SEM (paid Google ads), and Social Media Marketing to reach customers.</p>
-                </Module>
-                 <Module title="2. Content Marketing & Storytelling">
-                    <p>People buy stories, not just products. Use blogs, videos, and social media to build a narrative around your brand. (e.g., Nike's "Just Do It").</p>
-                </Module>
-                 <Module title="3. Sales Funnel & Retention">
-                    <p>Guide customers from Awareness to Purchase and beyond. Remember, retaining a customer is 5x cheaper than acquiring a new one.</p>
-                </Module>
-                 <ResourceCard title="📌 Resources">
-                    <ResourceLink href="https://learndigital.withgoogle.com/digitalgarage?utm_source=chatgpt.com" title="🎓 Free Course: Google Digital Garage" description="Free courses and certifications in digital marketing."/>
-                    <ResourceLink href="https://www.hubspot.com/products/crm?utm_source=chatgpt.com" title="🛠️ Tool: HubSpot CRM" description="A free, all-in-one tool for managing customer relationships."/>
-                    <ResourceLink href="https://www.amazon.com/Building-StoryBrand-Clarify-Message-Customers/dp/0718033329?utm_source=chatgpt.com" title="📘 Book: Building a StoryBrand" description="Learn to clarify your message using a powerful 7-step storytelling framework."/>
-                </ResourceCard>
-            </AccordionSection>
-            
-            {/* Level 6 */}
-             <AccordionSection level={6} title="Technology & Tools for Entrepreneurs">
-                <p className="font-semibold text-lg mb-4 text-gray-200">🔹 Goal: Use modern tools to scale business efficiently.</p>
-                <Module title="1. No-Code & E-commerce Tools">
-                    <p>Launch fast without developers using Webflow (websites), Bubble (web apps), or Glide (mobile apps). Use Shopify for powerful online stores.</p>
-                </Module>
-                <Module title="2. Analytics, Automation & AI">
-                    <p>Track performance with Google Analytics. Automate tasks with Zapier. Use AI tools like ChatGPT (content), MidJourney (visuals), and Notion (collaboration) to work smarter.</p>
-                </Module>
-                 <ResourceCard title="📌 Resources">
-                    <ResourceLink href="https://www.notion.so/startups?utm_source=chatgpt.com" title="🛠️ Tool: Notion for Startups" description="Free/discounted workspace for docs, tasks, and project management."/>
-                    <ResourceLink href="https://www.makerpad.co/toolkit?utm_source=chatgpt.com" title="📖 Guide: No-Code Startup Toolkit" description="A curated list of no-code tools to build and automate without coding."/>
-                    <ResourceLink href="https://www.youtube.com/@NoCodeMBA" title="▶️ YouTube: NoCode MBA" description="Tutorials on building real products without code."/>
-                </ResourceCard>
-            </AccordionSection>
-
-            {/* Level 7 */}
-            <AccordionSection level={7} title="Scaling, Leadership & Global Expansion">
-                 <p className="font-semibold text-lg mb-4 text-gray-200">🔹 Goal: Learn how to grow from a small business to a global enterprise.</p>
-                <Module title="1. Growth Hacking & Team Building">
-                    <p>Use low-cost, high-impact strategies like referral programs to grow. Hire people smarter than you and build a culture of ownership.</p>
-                </Module>
-                <Module title="2. International Expansion & Exits">
-                    <p>Use tools like Stripe for cross-border payments. Understand exit options like an IPO (going public) or Acquisition (being bought by a larger company).</p>
-                </Module>
-                 <ResourceCard title="📌 Resources">
-                    <ResourceLink href="https://www.amazon.com/Blitzscaling-Lightning-Fast-Building-Massively-Companies/dp/1524761419?utm_source=chatgpt.com" title="📘 Book: Blitzscaling" description="By Reid Hoffman (LinkedIn founder), on how to scale rapidly."/>
-                    <ResourceLink href="https://stripe.com/in/atlas?utm_source=chatgpt.com" title="🛠️ Tool: Stripe Atlas" description="Incorporate a company globally, set up a U.S. bank account, and manage payments."/>
-                    <ResourceLink href="https://growthhackers.com/growth-studies/airbnb?utm_source=chatgpt.com" title="📊 Case Study: Airbnb's Growth Story" description="Learn how Airbnb used growth hacks to scale globally."/>
-                </ResourceCard>
-            </AccordionSection>
-
-            {/* Level 8 */}
-             <AccordionSection level={8} title="Continuous Learning & Networking">
-                 <p className="font-semibold text-lg mb-4 text-gray-200">🔹 Goal: Stay updated & build powerful connections.</p>
-                <Module title="1. Incubators, Accelerators & Networking">
-                    <p>Join programs like Y Combinator or local incubators for mentorship and funding. Attend events from TiE Global or Startup Grind to meet investors and co-founders.</p>
-                </Module>
-                 <Module title="2. Mentorship & Staying Updated">
-                    <p>Find mentors on LinkedIn. Read TechCrunch and YourStory daily to stay updated on trends.</p>
-                </Module>
-                 <ResourceCard title="📌 Resources">
-                    <ResourceLink href="https://angel.co/?utm_source=chatgpt.com" title="🌐 Platform: AngelList" description="A platform to raise funding, hire talent, and invest in startups."/>
-                    <ResourceLink href="https://www.startupschool.org/?utm_source=chatgpt.com" title="🎓 Platform: Y Combinator Startup School" description="A free online program and curriculum from the world's top accelerator."/>
-                    <ResourceLink href="https://tie.org/?utm_source=chatgpt.com" title="🌍 Network: TiE Global" description="One of the world’s largest entrepreneurship networks for mentorship and events."/>
-                    <ResourceLink href="https://10000startups.com/?utm_source=chatgpt.com" title="🇮🇳 Network: NASSCOM 10,000 Startups" description="A major Indian initiative to incubate and fund 10,000 startups."/>
-                </ResourceCard>
-            </AccordionSection>
-
         </main>
       </div>
     );
 };
 
+// FIX: Added default export for the EntrepreneursPage component.
 export default EntrepreneursPage;

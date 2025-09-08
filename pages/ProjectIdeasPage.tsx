@@ -1,8 +1,10 @@
+
 import React, { useState, useMemo } from 'react';
 import { MOCK_PROJECTS, ICONS, REFERRAL_PARTNERS } from '../constants';
 import type { Project } from '../types';
 import ProjectCard from '../components/ProjectCard';
 import SubmitIdeaModal from '../components/SubmitIdeaModal';
+import BackButton from '../components/BackButton';
 
 type FilterType = 'All' | 'Tech' | 'Agri' | 'Social' | 'Health';
 type SortType = 'Votes' | 'Recent' | 'Funding';
@@ -66,6 +68,7 @@ const ProjectIdeasPage: React.FC = () => {
 
             {/* Main Content: Leaderboard */}
             <main className="container mx-auto px-6 py-12">
+                <BackButton className="mb-8" />
                 {showSuccessBanner && (
                     <div className="mb-6 bg-green-900 border border-green-600 text-green-200 px-4 py-3 rounded-lg relative text-center" role="alert">
                         <strong className="font-bold">Success!</strong>

@@ -8,6 +8,7 @@ import {
     findFamilyBenefits
 } from '../services/geminiService';
 import type { SchemeRecommendation, WageInfo } from '../types';
+import BackButton from '../components/BackButton';
 
 const AccordionItem: React.FC<{ title: string; children: React.ReactNode; isOpen: boolean; onToggle: () => void; }> = ({ title, children, isOpen, onToggle }) => (
     <div className="mb-4 bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300">
@@ -122,6 +123,7 @@ const WomenEmpowermentPage: React.FC = () => {
 
             {/* Main Content */}
             <main id="main-content" className="container mx-auto px-4 md:px-6 py-12">
+                <BackButton to="/" className="mb-8" />
                 <AccordionItem title={t('pages.women.accordion.schemes.title')} isOpen={openAccordion === 'schemes'} onToggle={() => toggleAccordion('schemes')}>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                         {/* AI Feature */}

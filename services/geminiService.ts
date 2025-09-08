@@ -1,7 +1,7 @@
 
 
 import { GoogleGenAI, Type } from "@google/genai";
-import type { ChatMessage, CropDiagnosis, FertilizerRecommendation, SchemeRecommendation, WeatherAlert, CropRecommendation, FinancialProduct, MarketPrice, ResumeData, CareerRoadmap, LearningPath, BudgetPlan, LoanAnalysis, InvestmentGuide, JobSearchParams, Job, WageInfo, AIUpdateResult, GroundingSource, AIOfferResult } from '../types';
+import type { ChatMessage, CropDiagnosis, FertilizerRecommendation, SchemeRecommendation, WeatherAlert, CropRecommendation, FinancialProduct, MarketPrice, ResumeData, CareerRoadmap, LearningPath, BudgetPlan, LoanAnalysis, InvestmentGuide, JobSearchParams, Job, WageInfo, AIUpdateResult, GroundingSource, AIOfferResult, VoiceCommandResult } from '../types';
 import { ALL_APP_ROUTES } from '../constants';
 
 if (!process.env.API_KEY) {
@@ -847,28 +847,49 @@ export async function getRealTimeOffers(topic: string): Promise<AIOfferResult> {
   }
 }
 
-// FIX: The file was truncated. This completes the function with best practices.
-export async function processVoiceCommand(command: string): Promise<{ action: 'navigate' | 'speak' | 'unknown', path: string, responseText: string }> {
-  
-  const validRoutes = ALL_APP_ROUTES.map(r => `path: ${r.path}, description: ${(r as any).description ?? (r as any).title}`).join('\n');
+export async function processVoiceCommand(command: string): Promise<VoiceCommandResult> {
+    const validRoutes = ALL_APP_ROUTES.map(r => `path: ${r.path}, description: ${r.description}`).join('\n');
 
-  const systemInstruction = `You are a voice assistant for a web application called "Voice of Bharat". Your task is to interpret a user's voice command and determine the correct action.
+    const systemInstruction = `You are an advanced voice assistant for a web application called "Voice of Bharat". Your job is to interpret user commands and decide the correct action to perform. You MUST respond with a JSON object that follows the provided schema.
 
-The available pages in the application are:
+**Available Actions:**
+
+1.  **'navigate'**: Use this when the user wants to go to a specific page.
+    *   Set 'path' to the correct route from the list below.
+    *   Set 'responseText' to a confirmation like "Navigating to the [Page Name] page."
+
+2.  **'fill_input'**: Use this when the user wants to search or type into an input field on the current page.
+    *   Identify the target input field's CSS selector. The primary search bar on pages like Updates and Offers has the ID '#page-search-input'.
+    *   Extract the value the user wants to type and put it in the 'value' field.
+    *   Set 'selector' to the CSS selector of the input field.
+    *   Set 'responseText' to a confirmation like "Searching for [value]."
+
+3.  **'change_language'**: Use this when the user wants to change the website's language.
+    *   Identify the language and put its two-letter code in 'language_code'.
+    *   Put the full language name in 'language_name'.
+    *   Set 'responseText' to a confirmation like "Changing language to [Language Name]."
+
+4.  **'speak'**: Use for general questions, greetings, or small talk. Also use if the command is ambiguous but doesn't fit other actions.
+    *   Set 'responseText' to a helpful, conversational reply.
+
+5.  **'unknown'**: Use ONLY if the command is complete gibberish or impossible to understand.
+    *   Set 'responseText' to "Sorry, I didn't understand that. Please try again."
+
+**Available Languages for 'change_language' action:**
+- English (en), Hindi (hi), Telugu (te), Tamil (ta), Urdu (ur), Bengali (bn), Marathi (mr), Gujarati (gu), Kannada (kn), Odia (or), Malayalam (ml)
+
+**Available Pages for 'navigate' action:**
 ${validRoutes}
 
-Based on the user's command, you must decide one of three actions:
-1.  'navigate': If the user wants to go to a specific page.
-2.  'speak': If the user is asking a general question, greeting, or making small talk.
-3.  'unknown': If you cannot understand the command.
+**Examples:**
+- User: "go to the farmers page" -> action: "navigate", path: "/farmers", responseText: "Navigating to the farmers page."
+- User: "search for scholarships" -> action: "fill_input", selector: "#page-search-input", value: "scholarships", responseText: "Searching for scholarships."
+- User: "change language to hindi" -> action: "change_language", language_code: "hi", language_name: "Hindi", responseText: "Changing language to Hindi."
+- User: "hello how are you" -> action: "speak", responseText: "I'm doing well, thank you for asking! How can I help you today?"
+- User: "what is the weather" -> action: "speak", responseText: "I can help you navigate the app or search for information, but I can't check the weather."
+- User: "garble garble" -> action: "unknown", responseText: "Sorry, I didn't understand that. Please try again."
 
-You must respond with a JSON object that follows the provided schema. The 'responseText' should be a confirmation message to speak back to the user.
-
-Examples:
-- User command: "go to the farmers page" -> responds with JSON for action: "navigate", path: "/farmers", responseText: "Navigating to the farmers page."
-- User command: "hello how are you" -> responds with JSON for action: "speak", path: "", responseText: "I'm doing well, thank you for asking! How can I help you?"
-- User command: "what is the weather" -> responds with JSON for action: "speak", path: "", responseText: "I can help you navigate the app, but I can't check the weather."
-- User command: "garble garble" -> responds with JSON for action: "unknown", path: "", responseText: "Sorry, I didn't understand that. Please try again."
+Always be concise and direct in your 'responseText'.
 `;
 
     const responseSchema = {
@@ -876,38 +897,49 @@ Examples:
         properties: {
             action: {
                 type: Type.STRING,
-                enum: ['navigate', 'speak', 'unknown'],
-                description: "The action to take: navigate, speak, or unknown."
+                enum: ['navigate', 'speak', 'fill_input', 'change_language', 'unknown'],
             },
-            path: {
-                type: Type.STRING,
-                description: "The navigation path if action is 'navigate', otherwise an empty string."
-            },
-            responseText: {
-                type: Type.STRING,
-                description: "The text to speak back to the user as confirmation or response."
-            },
+            path: { type: Type.STRING },
+            selector: { type: Type.STRING },
+            value: { type: Type.STRING },
+            language_code: { type: Type.STRING },
+            language_name: { type: Type.STRING },
+            responseText: { type: Type.STRING },
         },
-        required: ['action', 'path', 'responseText'],
+        required: ['action', 'responseText'],
     };
 
-  try {
-      const response = await ai.models.generateContent({
-        model,
-        contents: command,
-        config: {
-          systemInstruction,
-          responseMimeType: "application/json",
-          responseSchema,
-        }
-      });
-      return parseGeminiJson(response.text);
-  } catch (error) {
-      console.error("Error processing voice command:", error);
-      return {
-          action: 'unknown',
-          path: '',
-          responseText: "I'm having trouble understanding you right now. Please try again."
-      };
-  }
+    try {
+        const response = await ai.models.generateContent({
+            model,
+            contents: command,
+            config: {
+                systemInstruction,
+                responseMimeType: "application/json",
+                responseSchema,
+            }
+        });
+        // The Gemini API might not return all optional fields. We provide sensible defaults.
+        const parsed = parseGeminiJson(response.text);
+        return {
+            action: parsed.action || 'unknown',
+            path: parsed.path || '',
+            selector: parsed.selector || '',
+            value: parsed.value || '',
+            language_code: parsed.language_code || 'en',
+            language_name: parsed.language_name || '',
+            responseText: parsed.responseText || "I'm sorry, I had trouble processing that."
+        };
+    } catch (error) {
+        console.error("Error processing voice command:", error);
+        return {
+            action: 'unknown',
+            path: '',
+            selector: '',
+            value: '',
+            language_code: 'en',
+            language_name: '',
+            responseText: "I'm having trouble understanding you right now. Please try again."
+        };
+    }
 }

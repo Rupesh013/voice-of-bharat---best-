@@ -647,20 +647,25 @@ export const ENVIRONMENT_APPS: SmartApp[] = [ /* Environment apps data */ ];
 export const INTERNSHIPS: Record<string, any[]> = { /* Internships data */ };
 export const POPULAR_INTERNSHIPS: any[] = [ /* Popular internships data */ ];
 export const PLACEMENTS: any[] = [ /* Placements data */ ];
+
+const studentFeatureRoutes = STUDENT_FEATURES.map(f => ({ path: f.path, title: f.titleKey.split('.').pop() || '', description: f.descriptionKey.split('.').pop() || '' }));
+const farmerFeatureRoutes = FARMER_FEATURES.map(f => ({ path: f.path, title: f.titleKey.split('.').pop() || '', description: f.descriptionKey.split('.').pop() || '' }));
+
 export const ALL_APP_ROUTES = [
-    { path: '/', title: 'Home' },
-    { path: '/updates', title: 'Updates' },
-    { path: '/offers', title: 'Offers' },
-    { path: '/students', title: 'Students' },
-    { path: '/women-empowerment', title: 'Women Empowerment' },
-    { path: '/farmers', title: 'Farmers' },
-    { path: '/workers', title: 'Workers' },
-    { path: '/senior-citizens', title: 'Senior Citizens' },
-    { path: '/entrepreneurs', title: 'Entrepreneurs' },
-    { path: '/about', title: 'About Us' },
-    { path: '/contact', title: 'Contact Us' },
-    { path: '/privacy', title: 'Privacy Policy' },
-    ...FARMER_FEATURES.map(f => ({ path: f.path, title: f.titleKey.split('.').pop() })),
-    ...STUDENT_FEATURES.map(f => ({ path: f.path, title: f.titleKey.split('.').pop() })),
+    { path: '/', title: 'Home', description: 'The main landing page with an overview of all sections.' },
+    { path: '/updates', title: 'Updates', description: 'Latest news and announcements about government schemes and services.' },
+    { path: '/offers', title: 'Offers', description: 'Find deals, subsidies, grants, and exclusive offers.' },
+    { path: '/login', title: 'Login', description: 'Log in to your Voice of Bharat account.' },
+    { path: '/students', title: 'Students', description: 'A hub for students with tools for scholarships, resume building, and career guidance.' },
+    { path: '/women-empowerment', title: 'Women Empowerment', description: 'Resources and schemes for women\'s safety, health, and financial independence.' },
+    { path: '/farmers', title: 'Farmers', description: 'Tools and information for farmers, including crop management, market prices, and schemes.' },
+    { path: '/workers', title: 'Workers', description: 'A portal for laborers to find jobs, understand their rights, and access social security.' },
+    { path: '/senior-citizens', title: 'Senior Citizens', description: 'Information on pension schemes, healthcare, and services for senior citizens.' },
+    { path: '/entrepreneurs', title: 'Entrepreneurs', description: 'A guide for starting and growing a business, with resources on funding and legalities.' },
+    { path: '/about', title: 'About Us', description: 'Learn about the mission and team behind Voice of Bharat.' },
+    { path: '/contact', title: 'Contact Us', description: 'Get in touch with the Voice of Bharat team for support or inquiries.' },
+    { path: '/privacy', title: 'Privacy Policy', description: 'Read our privacy policy to understand how we handle your data.' },
+    ...studentFeatureRoutes.map(f => ({ ...f, description: `Student tool for ${f.description}` })),
+    ...farmerFeatureRoutes.map(f => ({ ...f, description: `Farmer tool for ${f.description}` })),
 ];
 // END: ADDED MISSING CONSTANTS

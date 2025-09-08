@@ -2,11 +2,13 @@ import React, { useState, useRef, useEffect } from 'react';
 import type { ChatMessage } from '../types';
 import { streamChatResponse } from '../services/geminiService';
 import { ICONS } from '../constants';
+import { useTranslation } from '../hooks/useTranslation';
 
 const MarketAssistant: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { t } = useTranslation();
   const [messages, setMessages] = useState<ChatMessage[]>([
-    { sender: 'bot', text: 'Hello! Need help listing your produce? Ask me for pricing tips, description ideas, or selling advice!' }
+    { sender: 'bot', text: t('components.marketAssistant.greeting') }
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -74,7 +76,7 @@ const MarketAssistant: React.FC = () => {
       {isOpen && (
         <div className="fixed bottom-24 left-6 w-96 h-[500px] bg-white rounded-lg shadow-2xl z-50 flex flex-col transition-all duration-300 ease-in-out">
           <div className="bg-green-700 text-white p-4 rounded-t-lg flex justify-between items-center">
-            <h3 className="font-semibold">Market Assistant</h3>
+            <h3 className="font-semibold">{t('components.marketAssistant.title')}</h3>
             <button onClick={() => setIsOpen(false)} className="text-gray-200 hover:text-white">&times;</button>
           </div>
           <div className="flex-1 p-4 overflow-y-auto bg-gray-100">
@@ -94,7 +96,7 @@ const MarketAssistant: React.FC = () => {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && handleSend()}
-                placeholder="Ask for selling advice..."
+                placeholder={t('components.marketAssistant.placeholder')}
                 className="flex-1 border rounded-l-md p-2 focus:outline-none focus:ring-2 focus:ring-green-500 bg-white text-gray-900"
                 disabled={isLoading}
               />
@@ -103,7 +105,7 @@ const MarketAssistant: React.FC = () => {
                 className="bg-green-600 text-white px-4 rounded-r-md hover:bg-green-700 disabled:bg-green-300"
                 disabled={isLoading}
               >
-                {isLoading ? '...' : 'Send'}
+                {isLoading ? t('components.marketAssistant.sending') : t('components.marketAssistant.send')}
               </button>
             </div>
           </div>

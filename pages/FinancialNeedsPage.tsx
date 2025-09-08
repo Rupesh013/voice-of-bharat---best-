@@ -1,6 +1,8 @@
+
 import React, { useState } from 'react';
 import { getFinancialProducts } from '../services/geminiService';
 import type { FinancialProduct } from '../types';
+import BackButton from '../components/BackButton';
 
 const ProductCard: React.FC<{ product: FinancialProduct }> = ({ product }) => (
     <div className="bg-white p-6 rounded-lg shadow-md border-l-4 border-blue-500">
@@ -46,6 +48,7 @@ const FinancialNeedsPage: React.FC = () => {
     return (
         <div className="min-h-screen bg-indigo-50 py-12">
             <div className="container mx-auto px-6 max-w-4xl">
+                <BackButton className="mb-8" />
                 <div className="text-center mb-12">
                     <h1 className="text-4xl md:text-5xl font-bold text-gray-800">AI Financial Advisor</h1>
                     <p className="text-gray-600 mt-4 text-lg">

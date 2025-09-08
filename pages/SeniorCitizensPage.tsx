@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { ICONS } from '../constants';
 import { getSeniorCitizenAIResponse } from '../services/geminiService';
+import { useTranslation } from '../hooks/useTranslation';
+import BackButton from '../components/BackButton';
 
 // --- Reusable Components ---
 
@@ -47,7 +49,8 @@ const FeatureCard: React.FC<{ title: string; description: string; links: { name:
     </div>
 );
 
-const AIQueryBox: React.FC<{ title: string; description: string; placeholder: string; systemInstruction: string; }> = ({ title, description, placeholder, systemInstruction }) => {
+const AIQueryBox: React.FC<{ title: string; description: string; placeholder: string; systemInstruction: string; buttonText: string; }> = ({ title, description, placeholder, systemInstruction, buttonText }) => {
+    const { t } = useTranslation();
     const [input, setInput] = useState('');
     const [response, setResponse] = useState('');
     const [isLoading, setIsLoading] = useState(false);
@@ -82,13 +85,13 @@ const AIQueryBox: React.FC<{ title: string; description: string; placeholder: st
                     disabled={isLoading}
                 />
                 <button onClick={handleSubmit} disabled={isLoading} className="bg-blue-600 text-white font-bold px-6 py-3 rounded-md hover:bg-blue-700 transition disabled:bg-gray-400">
-                    {isLoading ? 'Thinking...' : 'Ask'}
+                    {isLoading ? t('pages.seniors.common.loading') : buttonText}
                 </button>
             </div>
             {error && <p className="text-red-600 text-sm mt-2">{error}</p>}
             {response && (
                 <div className="mt-4 p-4 bg-white border rounded-md max-h-60 overflow-y-auto">
-                    <h4 className="font-semibold text-gray-800 mb-2">Assistant says:</h4>
+                    <h4 className="font-semibold text-gray-800 mb-2">{t('pages.seniors.common.assistantSays')}</h4>
                     <p className="text-gray-700 text-base whitespace-pre-wrap">{response}</p>
                 </div>
             )}
@@ -97,106 +100,115 @@ const AIQueryBox: React.FC<{ title: string; description: string; placeholder: st
 };
 
 const SeniorCitizensPage: React.FC = () => {
+  const { t } = useTranslation();
   return (
     <div className="min-h-screen bg-blue-50">
         {/* Hero Section */}
         <section className="relative bg-cover bg-center text-white py-20 text-center" style={{backgroundImage: "url('https://images.unsplash.com/photo-1543269664-76bc3997d9ea?q=80&w=2070&auto=format&fit=crop')"}}>
             <div className="absolute inset-0 bg-black opacity-50"></div>
             <div className="container mx-auto px-6 relative z-10">
-                <h1 className="text-4xl md:text-6xl font-bold">Golden Years Gateway</h1>
+                <h1 className="text-4xl md:text-6xl font-bold">{t('pages.seniors.heroTitle')}</h1>
                 <p className="mt-4 text-xl text-gray-200 max-w-3xl mx-auto">
-                    Your trusted hub for health, community, and services to support a vibrant senior life.
+                    {t('pages.seniors.heroSubtitle')}
                 </p>
             </div>
         </section>
 
         <main className="container mx-auto px-4 md:px-6 py-12">
-            <AccordionSection title="Useful Services" Icon={ICONS.Shield} defaultOpen>
+            <BackButton to="/" className="mb-8" />
+            <AccordionSection title={t('pages.seniors.servicesTitle')} Icon={ICONS.Shield} defaultOpen>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <FeatureCard 
-                        title="Healthcare Services"
-                        description="Book doctor appointments, get medicine reminders, and find local health resources."
+                        title={t('pages.seniors.features.healthcare.title')}
+                        description={t('pages.seniors.features.healthcare.description')}
                         links={[
-                            { name: 'Book on Practo', url: 'https://www.practo.com/' },
-                            { name: 'Apollo 24/7', url: 'https://www.apollo247.com/' }
+                            { name: t('pages.seniors.features.healthcare.link1'), url: 'https://www.practo.com/' },
+                            { name: t('pages.seniors.features.healthcare.link2'), url: 'https://www.apollo247.com/' }
                         ]}
                     />
                     <AIQueryBox 
-                        title="Health Assistant"
-                        description="Ask general health questions. Note: This is not medical advice. Always consult a doctor."
-                        placeholder="e.g., What are some light exercises for knee pain?"
+                        title={t('pages.seniors.features.healthAssistant.title')}
+                        description={t('pages.seniors.features.healthAssistant.description')}
+                        placeholder={t('pages.seniors.features.healthAssistant.placeholder')}
+                        buttonText={t('pages.seniors.features.healthAssistant.button')}
                         systemInstruction="You are a helpful health assistant for senior citizens in India. Provide general, easy-to-understand health information and tips. Be encouraging. Always include a disclaimer to consult a real doctor for medical advice."
                     />
                      <AIQueryBox 
-                        title="Pension & Scheme Finder"
-                        description="Describe your situation to find relevant government schemes and pension information."
-                        placeholder="e.g., I am 68 and live in Kerala, what schemes apply to me?"
+                        title={t('pages.seniors.features.schemeFinder.title')}
+                        description={t('pages.seniors.features.schemeFinder.description')}
+                        placeholder={t('pages.seniors.features.schemeFinder.placeholder')}
+                        buttonText={t('pages.seniors.features.healthAssistant.button')}
                         systemInstruction="You are an expert on Indian government schemes for senior citizens. Based on user input, identify and explain relevant schemes. Provide eligibility and benefits in simple, large-font friendly terms."
                     />
                     <AIQueryBox 
-                        title="Legal Aid"
-                        description="Get simple explanations for legal questions about senior rights, property, and wills. This is not legal advice."
-                        placeholder="e.g., Explain what a will is in simple terms."
+                        title={t('pages.seniors.features.legalAid.title')}
+                        description={t('pages.seniors.features.legalAid.description')}
+                        placeholder={t('pages.seniors.features.legalAid.placeholder')}
+                        buttonText={t('pages.seniors.features.healthAssistant.button')}
                         systemInstruction="You are a legal assistant providing basic information on Indian laws relevant to senior citizens. Explain concepts clearly and simply. Always state that this is not legal advice and a professional lawyer should be consulted for any legal matter."
                     />
                 </div>
             </AccordionSection>
 
-            <AccordionSection title="Community & Learning" Icon={ICONS.Student}>
+            <AccordionSection title={t('pages.seniors.communityTitle')} Icon={ICONS.Student}>
                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                      <FeatureCard 
-                        title="Hobbies & Learning"
-                        description="Find online classes, workshops, and video tutorials for hobbies like gardening, music, or arts & crafts."
+                        title={t('pages.seniors.features.hobbies.title')}
+                        description={t('pages.seniors.features.hobbies.description')}
                         links={[
-                            { name: 'Learn on YouTube', url: 'https://www.youtube.com/' },
-                            { name: 'Online Courses', url: 'https://www.coursera.org/' }
+                            { name: t('pages.seniors.features.hobbies.link1'), url: 'https://www.youtube.com/' },
+                            { name: t('pages.seniors.features.hobbies.link2'), url: 'https://www.coursera.org/' }
                         ]}
                     />
                      <AIQueryBox 
-                        title="Hobby & Activity Finder"
-                        description="Tell us what you like, and our assistant will suggest new hobbies and activities for you to try."
-                        placeholder="e.g., I enjoy reading and quiet activities."
+                        title={t('pages.seniors.features.hobbyFinder.title')}
+                        description={t('pages.seniors.features.hobbyFinder.description')}
+                        placeholder={t('pages.seniors.features.hobbyFinder.placeholder')}
+                        buttonText={t('pages.seniors.features.healthAssistant.button')}
                         systemInstruction="You are a friendly and creative assistant suggesting safe and engaging hobbies for senior citizens in India based on their interests. Provide a few ideas with simple steps to get started."
                     />
                 </div>
             </AccordionSection>
 
-            <AccordionSection title="Resources for Independence" Icon={ICONS.Lightbulb}>
+            <AccordionSection title={t('pages.seniors.independenceTitle')} Icon={ICONS.Lightbulb}>
                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <AIQueryBox 
-                        title="Digital Tutor"
-                        description="Get simple, step-by-step instructions for using smartphones, apps, and websites."
-                        placeholder="e.g., How do I make a WhatsApp video call?"
+                        title={t('pages.seniors.features.digitalTutor.title')}
+                        description={t('pages.seniors.features.digitalTutor.description')}
+                        placeholder={t('pages.seniors.features.digitalTutor.placeholder')}
+                        buttonText={t('pages.seniors.features.healthAssistant.button')}
                         systemInstruction="You are a patient and clear digital tutor for senior citizens. Explain how to use technology (like smartphones, WhatsApp, Google Pay) in very simple, numbered steps. Avoid technical jargon and be encouraging."
                     />
                     <AIQueryBox 
-                        title="Finance Explainer"
-                        description="Understand financial topics like online banking, digital wallets, and savings plans. This is not financial advice."
-                        placeholder="e.g., What is a fixed deposit?"
+                        title={t('pages.seniors.features.financeExplainer.title')}
+                        description={t('pages.seniors.features.financeExplainer.description')}
+                        placeholder={t('pages.seniors.features.financeExplainer.placeholder')}
+                        buttonText={t('pages.seniors.features.healthAssistant.button')}
                         systemInstruction="You are a financial literacy guide for senior citizens in India. Explain financial concepts simply and clearly. Use relatable examples. Always include a strong disclaimer that this is educational information, not financial advice, and a professional advisor should be consulted."
                     />
                     <AIQueryBox 
-                        title="Safety Tips"
-                        description="Ask for safety tips for living independently at home or while traveling."
-                        placeholder="e.g., Home safety tips for living alone."
+                        title={t('pages.seniors.features.safetyTips.title')}
+                        description={t('pages.seniors.features.safetyTips.description')}
+                        placeholder={t('pages.seniors.features.safetyTips.placeholder')}
+                        buttonText={t('pages.seniors.features.healthAssistant.button')}
                         systemInstruction="You are a safety expert for senior citizens. Provide practical and easy-to-implement safety tips for various situations (home, travel, online). Keep the tone calm and reassuring."
                     />
                      <FeatureCard 
-                        title="Emergency Contacts"
-                        description="Quick access to essential emergency numbers for immediate help."
+                        title={t('pages.seniors.features.emergency.title')}
+                        description={t('pages.seniors.features.emergency.description')}
                         links={[
-                            { name: 'National Helpline: 14567', url: 'tel:14567' },
-                            { name: 'Police: 100', url: 'tel:100' },
-                            { name: 'Ambulance: 102', url: 'tel:102' }
+                            { name: t('pages.seniors.features.emergency.link1'), url: 'tel:14567' },
+                            { name: t('pages.seniors.features.emergency.link2'), url: 'tel:100' },
+                            { name: t('pages.seniors.features.emergency.link3'), url: 'tel:102' }
                         ]}
                     />
                 </div>
             </AccordionSection>
 
             <div className="mt-12 text-center bg-white p-8 rounded-lg shadow-md">
-                <h2 className="text-2xl font-bold text-gray-800">A Trusted & Accessible Space</h2>
+                <h2 className="text-2xl font-bold text-gray-800">{t('pages.seniors.commitment.title')}</h2>
                 <p className="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">
-                    We are committed to providing verified information in a simple, secure, and accessible way. Our design uses large fonts, high contrast, and easy navigation to ensure a comfortable experience for all our senior users.
+                    {t('pages.seniors.commitment.description')}
                 </p>
             </div>
         </main>

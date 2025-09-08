@@ -1,9 +1,11 @@
+
 import React, { useState } from 'react';
 import type { ResumeData } from '../types';
 import { generateResumeSummary, generateExperiencePoints, generateCoverLetter } from '../services/geminiService';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType, convertInchesToTwip } from 'docx';
+import BackButton from '../components/BackButton';
 
 
 const initialResumeData: ResumeData = {
@@ -214,6 +216,7 @@ const ResumeBuilderPage: React.FC = () => {
   return (
     <div className="bg-gray-100 min-h-screen p-4 md:p-8">
       <div className="container mx-auto">
+        <BackButton className="mb-4" />
         <div className="text-center mb-8">
             <h1 className="text-4xl md:text-5xl font-bold text-gray-800">Resume, Cover Letter & Portfolio Builder</h1>
             <p className="text-gray-600 mt-4 text-lg">Your complete toolkit for crafting the perfect job application.</p>

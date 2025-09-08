@@ -38,6 +38,7 @@ import VoiceControl from './components/VoiceControl';
 import { LanguageProvider } from './contexts/LanguageContext';
 import UpdatesPage from './pages/UpdatesPage';
 import OffersPage from './pages/OffersPage';
+import LoginPage from './pages/LoginPage';
 
 const AppLayout: React.FC = () => {
   const location = useLocation();
@@ -53,6 +54,7 @@ const AppLayout: React.FC = () => {
           <Route path="/" element={<HomePage />} />
           <Route path="/updates" element={<UpdatesPage />} />
           <Route path="/offers" element={<OffersPage />} />
+          <Route path="/login" element={<LoginPage />} />
           <Route path="/students" element={<StudentsPage />} />
           <Route path="/students/scholarships" element={<ScholarshipsPage />} />
           <Route path="/students/resume-builder" element={<ResumeBuilderPage />} />

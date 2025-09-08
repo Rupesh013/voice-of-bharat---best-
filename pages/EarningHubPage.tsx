@@ -5,6 +5,7 @@ import {
 } from '../constants';
 import type { EarningMethod, CashbackApp, CryptoApp, StudentBankAccount, StudentLoanOffer, StudentCard, StudentDeal, ReferralApp } from '../types';
 import EarningHubAssistant from '../components/EarningHubAssistant';
+import BackButton from '../components/BackButton';
 
 const TabButton: React.FC<{ label: string; isActive: boolean; onClick: () => void; }> = ({ label, isActive, onClick }) => (
     <button
@@ -126,8 +127,8 @@ const EarningHubPage: React.FC = () => {
                             {REFERRAL_APPS.map((app, i) => (
                                 <div key={i} className="bg-white p-4 rounded-lg shadow-sm text-center">
                                     <p className="font-semibold">{app.name}</p>
-                                    <p className="text-green-600 font-bold text-lg">{app.referralEarnings}</p>
-                                    <a href={app.link} target="_blank" rel="noopener noreferrer" className="text-sm text-purple-600 hover:underline">Watch Video</a>
+                                    <p className="text-sm text-green-600 font-bold">{app.referralEarnings}</p>
+                                    <a href={app.link} target="_blank" rel="noopener noreferrer" className="text-xs text-purple-600 hover:underline mt-1 inline-block">Get App</a>
                                 </div>
                             ))}
                         </div>
@@ -135,53 +136,59 @@ const EarningHubPage: React.FC = () => {
                 );
             case 'Cashback Apps':
                 return (
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {CASHBACK_APPS.map((app, i) => <CashbackAppCard key={i} app={app} />)}
                     </div>
                 );
             case 'Crypto Apps':
-                 return (
+                return (
                     <div>
-                        <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded-md mb-8">
-                            <h4 className="font-bold">⚠️ Important Warning</h4>
-                            <p>Cryptocurrency is highly volatile and risky. The information provided is for educational purposes only. Do not invest more than you can afford to lose. We are not financial advisors.</p>
+                         <div className="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 rounded-md mb-6" role="alert">
+                            <p className="font-bold">Disclaimer:</p>
+                            <p>Cryptocurrency is highly volatile and unregulated. Invest at your own risk. The information provided is for educational purposes only.</p>
                         </div>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                             {CRYPTO_APPS.map((app, i) => <CryptoAppCard key={i} app={app} />)}
                         </div>
                     </div>
                 );
             case 'Finance Offers':
                 return (
-                    <div>
-                        <FinanceCard title="🏦 Best Student Bank Accounts" items={STUDENT_BANK_ACCOUNTS} type="bank" />
-                        <FinanceCard title="🎓 Student Education Loan Offers" items={STUDENT_LOANS} type="loan" />
-                        <FinanceCard title="💳 Student Credit & Debit Cards (No Income Required)" items={STUDENT_CARDS} type="card" />
-                        <FinanceCard title="🎁 Bonus: Student Offers & Deals" items={STUDENT_DEALS} type="deal" />
+                     <div>
+                        <FinanceCard title="Best Student Bank Accounts" items={STUDENT_BANK_ACCOUNTS} type="bank" />
+                        <FinanceCard title="Top Education Loan Offers" items={STUDENT_LOANS} type="loan" />
+                        <FinanceCard title="Credit Cards for Students" items={STUDENT_CARDS} type="card" />
+                        <FinanceCard title="Exclusive Student Deals" items={STUDENT_DEALS} type="deal" />
                     </div>
                 );
-            case 'Support':
+             case 'Support':
                 return (
                     <div className="text-center">
                         <h2 className="text-3xl font-bold text-gray-800 mb-4">Need Help?</h2>
-                        <p className="text-gray-600">For questions about the Earning Hub, contact our support team.</p>
+                        <p className="text-gray-600">
+                            For any questions about earning methods, financial products, or safety, please contact our support team.
+                        </p>
                         <a href="mailto:voiceofbharat.help@gmail.com" className="mt-4 inline-block bg-purple-600 text-white font-semibold px-6 py-3 rounded-md hover:bg-purple-700">
-                            Email: voiceofbharat.help@gmail.com
+                           Email: voiceofbharat.help@gmail.com
                         </a>
                     </div>
                 );
-            default: return null;
+            default:
+                return null;
         }
-    }
-
+    };
+    
     return (
-        <div className="min-h-screen bg-gray-50">
+        <div className="min-h-screen bg-purple-50">
             <section className="bg-purple-700 text-white py-20 text-center">
                 <h1 className="text-4xl md:text-5xl font-bold">Student Earning Hub</h1>
-                <p className="mt-4 text-lg max-w-3xl mx-auto">Learn, earn, and grow. Your guide to financial empowerment as a student.</p>
+                <p className="mt-4 text-lg max-w-3xl mx-auto">
+                    Learn to earn, save, and invest. Your complete guide to financial empowerment.
+                </p>
             </section>
 
             <main className="container mx-auto px-4 sm:px-6 py-12">
+                <BackButton className="mb-8" />
                 <div className="flex flex-wrap border-b border-gray-200">
                     {tabs.map(tab => (
                         <TabButton
@@ -201,4 +208,5 @@ const EarningHubPage: React.FC = () => {
     );
 };
 
+// FIX: Added default export for EarningHubPage to resolve import error in App.tsx.
 export default EarningHubPage;

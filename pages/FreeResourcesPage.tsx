@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import PlatformTable from '../components/PlatformTable';
 import {
@@ -10,6 +11,7 @@ import {
     JOB_PORTALS,
     LEARNING_ARTICLES
 } from '../constants';
+import BackButton from '../components/BackButton';
 
 const TABS = [
     "Indian Government",
@@ -80,6 +82,7 @@ const FreeResourcesPage: React.FC = () => {
             </section>
 
             <main className="container mx-auto px-2 sm:px-4 py-12">
+                <BackButton className="mb-8" />
                 <div className="overflow-x-auto">
                     <div className="flex border-b border-gray-200">
                         {TABS.map(tab => (

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import type { CareerRoadmap } from '../types';
 import { generateCareerRoadmap } from '../services/geminiService';
+import BackButton from '../components/BackButton';
 
 const RoadmapDisplay: React.FC<{ roadmap: CareerRoadmap }> = ({ roadmap }) => (
     <div className="bg-white p-6 rounded-lg shadow-md mt-8 animate-fade-in">
@@ -88,6 +89,7 @@ const CareerRoadmapsPage: React.FC = () => {
     return (
         <div className="bg-orange-50 min-h-screen py-12">
             <div className="container mx-auto px-6 max-w-4xl">
+                <BackButton className="mb-8" />
                 <div className="text-center mb-12">
                     <h1 className="text-4xl md:text-5xl font-bold text-gray-800">AI Career Roadmaps</h1>
                     <p className="text-gray-600 mt-4 text-lg">

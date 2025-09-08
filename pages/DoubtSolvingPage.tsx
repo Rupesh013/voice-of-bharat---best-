@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { solveAcademicDoubt } from '../services/geminiService';
 import { ICONS } from '../constants';
+import BackButton from '../components/BackButton';
 
 const DoubtSolvingPage: React.FC = () => {
     // AI Solver State
@@ -62,6 +63,7 @@ const DoubtSolvingPage: React.FC = () => {
             </section>
             
             <main className="container mx-auto px-4 sm:px-6 py-12">
+                <BackButton className="mb-8" />
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
                     
                     {/* AI Solver */}
