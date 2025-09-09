@@ -1,5 +1,3 @@
-
-
 import React from 'react';
 import SectionCard from '../components/SectionCard';
 import { SECTIONS } from '../constants';

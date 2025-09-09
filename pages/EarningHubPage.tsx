@@ -208,5 +208,4 @@ const EarningHubPage: React.FC = () => {
     );
 };
 
-// FIX: Added default export for EarningHubPage to resolve import error in App.tsx.
 export default EarningHubPage;

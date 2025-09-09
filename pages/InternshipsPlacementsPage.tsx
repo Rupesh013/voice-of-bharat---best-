@@ -50,30 +50,74 @@ const InternshipTable: React.FC<{ data: typeof INTERNSHIPS[keyof typeof INTERNSH
 
 const InternshipsPlacementsPage: React.FC = () => {
     const [activeTab, setActiveTab] = useState(TABS[0]);
+    const [searchTerm, setSearchTerm] = useState('');
 
     const renderContent = () => {
         switch (activeTab) {
             case "Internships":
+                const lowerCaseSearchTerm = searchTerm.toLowerCase();
+
+                const filteredInternships = Object.entries(INTERNSHIPS)
+                    .map(([category, data]) => {
+                        const filteredData = data.filter(item =>
+                            item.company.toLowerCase().includes(lowerCaseSearchTerm) ||
+                            item.eligibility.toLowerCase().includes(lowerCaseSearchTerm)
+                        );
+                        return { category, data: filteredData };
+                    })
+                    .filter(category => category.data.length > 0);
+
+                const filteredPopularInternships = POPULAR_INTERNSHIPS.filter(item =>
+                    item.company.toLowerCase().includes(lowerCaseSearchTerm) ||
+                    (item.program && item.program.toLowerCase().includes(lowerCaseSearchTerm)) ||
+                    item.eligibility.toLowerCase().includes(lowerCaseSearchTerm)
+                );
+
+                const hasResults = filteredInternships.length > 0 || filteredPopularInternships.length > 0;
+
                 return (
                     <div>
-                        {Object.entries(INTERNSHIPS).map(([category, data]) => (
-                            <Section key={category} title={category}>
-                                <InternshipTable data={data} />
-                            </Section>
-                        ))}
-                         <Section title="Other Popular Internships">
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                {POPULAR_INTERNSHIPS.map(item => (
-                                    <div key={item.company} className="bg-white p-4 rounded-lg shadow-sm border-l-4 border-orange-500">
-                                        <h3 className="font-bold text-lg">{item.company} - {item.program}</h3>
-                                        <p className="text-sm text-gray-600 mt-1"><strong>Eligibility:</strong> {item.eligibility}</p>
-                                        <p className="text-sm text-gray-600"><strong>Period:</strong> {item.period}</p>
-                                        <p className="font-semibold text-green-600 mt-2">Stipend: {item.stipend}</p>
-                                        <a href={item.link} target="_blank" rel="noopener noreferrer" className="text-sm text-orange-600 hover:underline font-semibold mt-2 inline-block">More Details &rarr;</a>
-                                    </div>
+                        <div className="mb-8">
+                            <label htmlFor="internship-search" className="sr-only">Search Internships</label>
+                            <input
+                                type="text"
+                                id="internship-search"
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                                placeholder="Search by company, role, or skill (e.g., Google, B.Tech, FAANG)..."
+                                className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-orange-500 focus:border-orange-500 text-gray-900"
+                            />
+                        </div>
+
+                        {hasResults ? (
+                            <>
+                                {filteredInternships.map(({ category, data }) => (
+                                    <Section key={category} title={category}>
+                                        <InternshipTable data={data} />
+                                    </Section>
                                 ))}
+                                {filteredPopularInternships.length > 0 && (
+                                    <Section title="Other Popular Internships">
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                            {filteredPopularInternships.map(item => (
+                                                <div key={`${item.company}-${item.program}`} className="bg-white p-4 rounded-lg shadow-sm border-l-4 border-orange-500">
+                                                    <h3 className="font-bold text-lg">{item.company} - {item.program}</h3>
+                                                    <p className="text-sm text-gray-600 mt-1"><strong>Eligibility:</strong> {item.eligibility}</p>
+                                                    <p className="text-sm text-gray-600"><strong>Period:</strong> {item.period}</p>
+                                                    <p className="font-semibold text-green-600 mt-2">Stipend: {item.stipend}</p>
+                                                    <a href={item.link} target="_blank" rel="noopener noreferrer" className="text-sm text-orange-600 hover:underline font-semibold mt-2 inline-block">More Details &rarr;</a>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </Section>
+                                )}
+                            </>
+                        ) : (
+                            <div className="text-center py-12 bg-white rounded-lg shadow-sm">
+                                <p className="text-xl font-semibold text-gray-700">No internships found for "{searchTerm}".</p>
+                                <p className="text-gray-500 mt-2">Try searching for a different keyword or clearing the search.</p>
                             </div>
-                        </Section>
+                        )}
                     </div>
                 );
             case "Placements":

@@ -1,55 +1,110 @@
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import type { LearningPath } from '../types';
 import { generateLearningPath } from '../services/geminiService';
 import BackButton from '../components/BackButton';
 
-const LearningPathDisplay: React.FC<{ path: LearningPath }> = ({ path }) => (
-    <div className="bg-white p-6 rounded-lg shadow-md mt-8 animate-fade-in">
-        <h2 className="text-3xl font-bold text-center text-gray-800 mb-2">{path.title}</h2>
-        <p className="text-center text-gray-500 mb-2 font-semibold">{path.duration}</p>
-        <p className="text-center text-gray-600 mb-8 max-w-2xl mx-auto">{path.introduction}</p>
-
-        <div className="relative border-l-2 border-orange-200 ml-6 pl-8 space-y-12">
-            {path.steps.map((step, index) => (
-                <div key={index} className="relative">
-                    <div className="absolute -left-[42px] top-1 w-8 h-8 bg-orange-500 rounded-full text-white flex items-center justify-center font-bold ring-4 ring-white">
-                        {index + 1}
-                    </div>
-                    <div className="bg-gray-50 p-4 rounded-lg shadow-sm">
-                        <h3 className="text-xl font-semibold text-gray-800">{step.title}</h3>
-                        <div className="mt-3">
-                            <h4 className="font-semibold text-sm text-gray-700 mb-1">Topics to Cover:</h4>
-                            <ul className="list-disc list-inside text-sm text-gray-600 space-y-1 pl-2">
-                                {step.topics.map((topic, i) => <li key={i}>{topic}</li>)}
-                            </ul>
-                        </div>
-                        <div className="mt-4">
-                            <h4 className="font-semibold text-sm text-gray-700 mb-2">📚 Recommended Resources:</h4>
-                            <div className="space-y-2">
-                                {step.resources.map((res, i) => (
-                                    <a key={i} href={res.link} target="_blank" rel="noopener noreferrer" className="flex items-center p-2 bg-white rounded-md border hover:bg-orange-50 transition">
-                                        <span className="text-xs font-semibold uppercase text-white bg-orange-400 px-2 py-0.5 rounded-full mr-3">{res.type}</span>
-                                        <span className="text-sm text-orange-600 font-medium hover:underline">{res.name}</span>
-                                    </a>
-                                ))}
-                            </div>
-                        </div>
-                        <div className="mt-4 p-3 bg-green-50 border-l-4 border-green-400 rounded-r-lg">
-                            <h4 className="font-semibold text-sm text-green-800">🛠️ Mini-Project: {step.project.name}</h4>
-                            <p className="text-sm text-gray-700 mt-1">{step.project.description}</p>
-                        </div>
-                    </div>
-                </div>
-            ))}
-        </div>
-        
-        <div className="mt-10 p-4 bg-blue-50 border-l-4 border-blue-400 rounded-r-lg">
-            <h4 className="font-semibold text-lg text-blue-800 mb-2">💡 Final Career Advice</h4>
-            <p className="text-gray-700">{path.careerAdvice}</p>
-        </div>
+const ProgressBar: React.FC<{ progress: number }> = ({ progress }) => (
+    <div className="w-full bg-gray-200 rounded-full h-4 mb-4">
+        <div
+            className="bg-orange-500 h-4 rounded-full transition-all duration-500 ease-out"
+            style={{ width: `${progress}%` }}
+        ></div>
     </div>
 );
+
+const LearningPathDisplay: React.FC<{ path: LearningPath }> = ({ path }) => {
+    const [completedTopics, setCompletedTopics] = useState<Record<string, boolean>>({});
+
+    const totalTopics = useMemo(() => path.steps.reduce((acc, step) => acc + step.topics.length, 0), [path.steps]);
+    
+    const completedCount = useMemo(() => Object.values(completedTopics).filter(Boolean).length, [completedTopics]);
+
+    const progress = totalTopics > 0 ? (completedCount / totalTopics) * 100 : 0;
+
+    const handleToggleTopic = (stepIndex: number, topicIndex: number) => {
+        const key = `${stepIndex}-${topicIndex}`;
+        setCompletedTopics(prev => ({
+            ...prev,
+            [key]: !prev[key]
+        }));
+    };
+    
+    return (
+        <div className="bg-white p-6 rounded-lg shadow-md mt-8 animate-fade-in">
+            <h2 className="text-3xl font-bold text-center text-gray-800 mb-2">{path.title}</h2>
+            <p className="text-center text-gray-500 mb-2 font-semibold">{path.duration}</p>
+            <p className="text-center text-gray-600 mb-4 max-w-2xl mx-auto">{path.introduction}</p>
+
+            <div className="px-8 my-6">
+                <div className="flex justify-between items-center mb-1 text-sm">
+                    <span className="font-semibold">Progress</span>
+                    <span className="font-bold text-orange-600">{Math.round(progress)}%</span>
+                </div>
+                <ProgressBar progress={progress} />
+            </div>
+
+            <div className="relative border-l-2 border-orange-200 ml-6 pl-8 space-y-12">
+                {path.steps.map((step, stepIndex) => (
+                    <div key={stepIndex} className="relative">
+                        <div className="absolute -left-[42px] top-1 w-8 h-8 bg-orange-500 rounded-full text-white flex items-center justify-center font-bold ring-4 ring-white">
+                            {stepIndex + 1}
+                        </div>
+                        <div className="bg-gray-50 p-4 rounded-lg shadow-sm">
+                            <h3 className="text-xl font-semibold text-gray-800">{step.title}</h3>
+                            <div className="mt-3">
+                                <h4 className="font-semibold text-sm text-gray-700 mb-2">Topics to Cover:</h4>
+                                <ul className="space-y-2">
+                                    {step.topics.map((topic, topicIndex) => {
+                                        const key = `${stepIndex}-${topicIndex}`;
+                                        const isCompleted = !!completedTopics[key];
+                                        return (
+                                            <li key={topicIndex} className="flex items-start">
+                                                <label className="flex items-center cursor-pointer group">
+                                                    <input
+                                                        type="checkbox"
+                                                        checked={isCompleted}
+                                                        onChange={() => handleToggleTopic(stepIndex, topicIndex)}
+                                                        className="w-4 h-4 rounded text-orange-500 border-gray-300 focus:ring-orange-500"
+                                                    />
+                                                    <span className={`ml-3 text-sm transition-all duration-300 ${
+                                                        isCompleted ? 'text-gray-400 line-through opacity-70' : 'text-gray-700 group-hover:text-gray-900'
+                                                    }`}>
+                                                        {topic}
+                                                    </span>
+                                                </label>
+                                            </li>
+                                        );
+                                    })}
+                                </ul>
+                            </div>
+                            <div className="mt-4">
+                                <h4 className="font-semibold text-sm text-gray-700 mb-2">📚 Recommended Resources:</h4>
+                                <div className="space-y-2">
+                                    {step.resources.map((res, i) => (
+                                        <a key={i} href={res.link} target="_blank" rel="noopener noreferrer" className="flex items-center p-2 bg-white rounded-md border hover:bg-orange-50 transition">
+                                            <span className="text-xs font-semibold uppercase text-white bg-orange-400 px-2 py-0.5 rounded-full mr-3">{res.type}</span>
+                                            <span className="text-sm text-orange-600 font-medium hover:underline">{res.name}</span>
+                                        </a>
+                                    ))}
+                                </div>
+                            </div>
+                            <div className="mt-4 p-3 bg-green-50 border-l-4 border-green-400 rounded-r-lg">
+                                <h4 className="font-semibold text-sm text-green-800">🛠️ Mini-Project: {step.project.name}</h4>
+                                <p className="text-sm text-gray-700 mt-1">{step.project.description}</p>
+                            </div>
+                        </div>
+                    </div>
+                ))}
+            </div>
+            
+            <div className="mt-10 p-4 bg-blue-50 border-l-4 border-blue-400 rounded-r-lg">
+                <h4 className="font-semibold text-lg text-blue-800 mb-2">💡 Final Career Advice</h4>
+                <p className="text-gray-700">{path.careerAdvice}</p>
+            </div>
+        </div>
+    );
+};
 
 
 const LearningPathsPage: React.FC = () => {

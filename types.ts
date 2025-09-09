@@ -1,3 +1,5 @@
+import React from 'react';
+
 export type Language = 'en' | 'hi' | 'te' | 'ta' | 'ur' | 'bn' | 'mr' | 'gu' | 'kn' | 'or' | 'ml';
 
 export interface VoiceCommandResult {
@@ -430,6 +432,13 @@ export interface AIUpdateResult {
   sources: GroundingSource[];
 }
 
+export interface NewsArticle {
+  title: string;
+  summary: string;
+  link: string;
+  source: string;
+}
+
 export interface Offer {
   id: number;
   category: 'Students' | 'Women' | 'Farmers' | 'Workers' | 'Seniors' | 'Entrepreneurs' | 'General';
@@ -444,3 +453,59 @@ export interface Offer {
 }
 
 export type AIOfferResult = AIUpdateResult;
+
+export interface CategorizedOffer {
+  title: string;
+  description: string;
+  link: string;
+  source: string;
+  eligibility?: string;
+  expiry?: string;
+}
+
+export interface DiseaseInfo {
+  name: string;
+  symptoms: string[];
+  causes: string[];
+  diagnosis: string[];
+  treatment: string[];
+  prevention: string[];
+  medications: string; // Will include the disclaimer text
+}
+
+export interface ServiceProvider {
+  name: string;
+  service: string;
+  phone: string;
+  rating: number;
+  address: string;
+}
+
+export interface PortalInfo {
+  portalName: string;
+  url: string;
+  notes: string;
+}
+
+export interface Document {
+  id: number;
+  name: string;
+  type: 'Aadhaar' | 'PAN Card' | 'Driving License' | 'Passport' | 'Other';
+  dateAdded: string;
+}
+
+export interface Internship {
+    company: string;
+    program?: string;
+    eligibility: string;
+    period: string;
+    stipend: string;
+    link: string;
+}
+
+export interface PopularInternship extends Internship {}
+
+export interface Placement {
+    company: string;
+    link: string;
+}

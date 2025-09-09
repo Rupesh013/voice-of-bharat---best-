@@ -9,6 +9,7 @@ import {
 } from '../services/geminiService';
 import type { SchemeRecommendation, WageInfo } from '../types';
 import BackButton from '../components/BackButton';
+import { ICONS } from '../constants';
 
 const AccordionItem: React.FC<{ title: string; children: React.ReactNode; isOpen: boolean; onToggle: () => void; }> = ({ title, children, isOpen, onToggle }) => (
     <div className="mb-4 bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300">
@@ -42,9 +43,82 @@ const ResourceLink: React.FC<{ titleKey: string; href: string; type?: 'scheme' |
     );
 };
 
+const SOSModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
+    const { t } = useTranslation();
+    const [location, setLocation] = useState<string | null>(null);
+    const [locationError, setLocationError] = useState('');
+    const [copied, setCopied] = useState(false);
+
+    const handleGetLocation = () => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const { latitude, longitude } = position.coords;
+                    setLocation(`Lat: ${latitude.toFixed(5)}, Long: ${longitude.toFixed(5)}`);
+                    setLocationError('');
+                },
+                (error) => {
+                    setLocationError(t('pages.women.safety.sos.locationNotAvailable'));
+                }
+            );
+        } else {
+            setLocationError('Geolocation is not supported by this browser.');
+        }
+    };
+
+    const handleCopy = () => {
+        const textToCopy = `Emergency! My location is: ${location}. Please send help.`;
+        navigator.clipboard.writeText(textToCopy).then(() => {
+            setCopied(true);
+            setTimeout(() => setCopied(false), 2000);
+        });
+    };
+
+    React.useEffect(() => {
+        handleGetLocation();
+    }, []);
+
+    return (
+        <div className="fixed inset-0 bg-black bg-opacity-60 z-50 flex justify-center items-center p-4" onClick={onClose}>
+            <div className="bg-white rounded-lg shadow-2xl p-6 w-full max-w-md text-center" onClick={e => e.stopPropagation()}>
+                <ICONS.SOS className="w-16 h-16 mx-auto text-red-500" />
+                <h3 className="text-2xl font-bold text-gray-800 mt-4">{t('pages.women.safety.sos.modalTitle')}</h3>
+                <p className="text-gray-600 mt-2 text-sm">{t('pages.women.safety.sos.modalDescription')}</p>
+                
+                <div className="mt-6 bg-gray-100 p-4 rounded-lg">
+                    <h4 className="font-semibold">{t('pages.women.safety.sos.yourLocation')}</h4>
+                    {location && <p className="text-lg font-mono my-2 text-gray-800">{location}</p>}
+                    {locationError && <p className="text-sm text-red-600 my-2">{locationError}</p>}
+                    {location && (
+                        <button onClick={handleCopy} className="bg-blue-500 text-white font-semibold px-4 py-2 rounded-md text-sm hover:bg-blue-600">
+                            {copied ? t('pages.women.safety.sos.detailsCopied') : t('pages.women.safety.sos.copyDetails')}
+                        </button>
+                    )}
+                </div>
+
+                <div className="mt-6 space-y-3">
+                    <ResourceLink titleKey="pages.women.safety.helplines.emergency" href="tel:112" />
+                    <ResourceLink titleKey="pages.women.safety.helplines.women" href="tel:181" />
+                    <ResourceLink titleKey="pages.women.safety.helplines.police" href="tel:1091" />
+                </div>
+                 <div className="mt-6 text-left text-sm text-gray-600 bg-yellow-50 p-3 rounded-lg">
+                    <h4 className="font-bold text-yellow-800">{t('pages.women.safety.sos.safetyTipsTitle')}</h4>
+                    <ul className="list-disc list-inside pl-2 mt-1">
+                        <li>{t('pages.women.safety.sos.safetyTip1')}</li>
+                        <li>{t('pages.women.safety.sos.safetyTip2')}</li>
+                        <li>{t('pages.women.safety.sos.safetyTip3')}</li>
+                    </ul>
+                </div>
+                <button onClick={onClose} className="mt-6 w-full bg-gray-200 text-gray-800 font-semibold py-2 rounded-md">Close</button>
+            </div>
+        </div>
+    );
+};
+
+
 const WomenEmpowermentPage: React.FC = () => {
     const { t } = useTranslation();
-    const [openAccordion, setOpenAccordion] = useState<string>('schemes');
+    const [openAccordion, setOpenAccordion] = useState<string>('safety');
     const toggleAccordion = (key: string) => setOpenAccordion(openAccordion === key ? '' : key);
 
     // State for AI Features
@@ -53,6 +127,7 @@ const WomenEmpowermentPage: React.FC = () => {
     const [wageState, setWageState] = useState({ skill: '', city: '', info: null as WageInfo | null, isLoading: false, error: '' });
     const [healthState, setHealthState] = useState({ query: '', answer: '', isLoading: false, error: '' });
     const [familyState, setFamilyState] = useState({ info: '', recs: [] as SchemeRecommendation[], isLoading: false, error: '' });
+    const [isSosModalOpen, setIsSosModalOpen] = useState(false);
 
     // Handlers for AI Features
     const handleSchemeCheck = async (e: React.FormEvent) => {
@@ -112,6 +187,7 @@ const WomenEmpowermentPage: React.FC = () => {
 
     return (
         <div className="min-h-screen bg-pink-50">
+            {isSosModalOpen && <SOSModal onClose={() => setIsSosModalOpen(false)} />}
             {/* Hero Section */}
             <section className="relative bg-cover bg-center text-white py-20 md:py-32" style={{backgroundImage: "url('https://images.unsplash.com/photo-1573496130407-57329f01f769?q=80&w=2069&auto=format&fit=crop')"}}>
                 <div className="absolute inset-0 bg-black opacity-60"></div>
@@ -160,86 +236,92 @@ const WomenEmpowermentPage: React.FC = () => {
                             <ResourceLink titleKey="pages.women.schemes.pmmvy" href="https://wcd.nic.in/schemes/pradhan-mantri-matru-vandana-yojana" />
                             <ResourceLink titleKey="pages.women.schemes.ayushman" href="https://www.pmjay.gov.in/" />
                             <ResourceLink titleKey="pages.women.schemes.sukanya" href="https://www.indiapost.gov.in/Financial/Pages/Content/sukanya-samriddhi-yojana.aspx" />
-                            <ResourceLink titleKey="pages.women.schemes.sakhi" href="https://wcd.nic.in/schemes/one-stop-centre-scheme" />
+                            <ResourceLink titleKey="pages.women.schemes.sakhi" href="https://wcd.nic.in/schemes/one-stop-centre-scheme-1" />
                         </div>
                     </div>
                 </AccordionItem>
-
+                
                 <AccordionItem title={t('pages.women.accordion.safety.title')} isOpen={openAccordion === 'safety'} onToggle={() => toggleAccordion('safety')}>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        {/* AI Feature */}
-                        <div className="bg-white p-5 rounded-lg shadow-sm border-l-4 border-orange-400">
-                           <h3 className="text-lg font-bold text-gray-800">{t('pages.women.safety.ai.title')}</h3>
-                            <form onSubmit={handleSafetyAsk} className="mt-4 space-y-3">
-                                <textarea value={safetyState.query} onChange={e => setSafetyState(s => ({ ...s, query: e.target.value }))} rows={3} placeholder={t('pages.women.safety.ai.placeholder')} className="w-full bg-white border-gray-300 rounded-md p-2 text-gray-900" />
-                                <button type="submit" className="w-full bg-blue-600 text-white font-semibold py-2 rounded-md hover:bg-blue-700 disabled:bg-blue-300" disabled={safetyState.isLoading}>
-                                    {safetyState.isLoading ? t('pages.women.safety.ai.loading') : t('pages.women.safety.ai.button')}
-                                </button>
-                            </form>
-                             {safetyState.error && <p className="text-red-500 text-sm mt-2">{safetyState.error}</p>}
-                             {safetyState.answer && (
-                                <div className="mt-4 p-3 bg-blue-50 border rounded-md">
-                                    <h4 className="font-semibold text-gray-800 mb-2">{t('pages.women.safety.ai.resultsTitle')}</h4>
-                                    <p className="text-gray-700 text-sm whitespace-pre-wrap">{safetyState.answer}</p>
-                                </div>
-                             )}
+                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        {/* SOS Button */}
+                        <div className="bg-red-50 p-5 rounded-lg shadow-sm border-l-4 border-red-400 text-center flex flex-col justify-center">
+                            <h3 className="text-lg font-bold text-gray-800">{t('pages.women.safety.sos.title')}</h3>
+                            <p className="text-gray-600 text-sm mt-2">{t('pages.women.safety.sos.description')}</p>
+                            <button onClick={() => setIsSosModalOpen(true)} className="mt-4 bg-red-600 text-white font-bold py-3 px-6 rounded-md hover:bg-red-700 transition-transform transform hover:scale-105">
+                                {t('pages.women.safety.sos.button')}
+                            </button>
                         </div>
-                        {/* Static Links */}
-                         <div className="space-y-4">
+                        <div className="space-y-4">
                             <div>
-                                <h3 className="text-lg font-semibold mb-2">{t('pages.women.safety.helplines.title')}</h3>
-                                <div className="space-y-3">
+                                <h3 className="font-semibold text-lg">{t('pages.women.safety.helplines.title')}</h3>
+                                <div className="mt-2 space-y-2">
                                     <ResourceLink titleKey="pages.women.safety.helplines.women" href="tel:181" />
                                     <ResourceLink titleKey="pages.women.safety.helplines.police" href="tel:1091" />
+                                    <ResourceLink titleKey="pages.women.safety.helplines.emergency" href="tel:112" />
                                 </div>
                             </div>
                             <div>
-                                <h3 className="text-lg font-semibold mb-2">{t('pages.women.safety.apps.title')}</h3>
-                                <div className="space-y-3">
+                                <h3 className="font-semibold text-lg">{t('pages.women.safety.apps.title')}</h3>
+                                <div className="mt-2 space-y-2">
                                     <ResourceLink titleKey="pages.women.safety.apps.app112" href="https://play.google.com/store/apps/details?id=in.gov.dmer.disha.care" />
                                     <ResourceLink titleKey="pages.women.safety.apps.shebox" href="https://shebox.nic.in/" />
                                 </div>
                             </div>
                         </div>
                     </div>
+                    {/* AI Feature */}
+                     <div className="mt-8 bg-white p-5 rounded-lg shadow-sm border-l-4 border-orange-400">
+                        <h3 className="text-lg font-bold text-gray-800">{t('pages.women.safety.ai.title')}</h3>
+                        <form onSubmit={handleSafetyAsk} className="mt-4 space-y-3">
+                            <textarea value={safetyState.query} onChange={e => setSafetyState(s => ({ ...s, query: e.target.value }))} rows={3} placeholder={t('pages.women.safety.ai.placeholder')} className="w-full bg-white border-gray-300 rounded-md p-2 text-gray-900" />
+                            <button type="submit" className="w-full bg-blue-600 text-white font-semibold py-2 rounded-md hover:bg-blue-700 disabled:bg-blue-300" disabled={safetyState.isLoading}>
+                                {safetyState.isLoading ? t('pages.women.safety.ai.loading') : t('pages.women.safety.ai.button')}
+                            </button>
+                        </form>
+                        {safetyState.error && <p className="text-red-500 text-sm mt-2">{safetyState.error}</p>}
+                        {safetyState.answer && (
+                            <div className="mt-4 p-3 bg-blue-50 border rounded-md">
+                                <h4 className="font-semibold text-gray-800 mb-2">{t('pages.women.safety.ai.resultsTitle')}</h4>
+                                <p className="text-gray-700 text-sm whitespace-pre-wrap">{safetyState.answer}</p>
+                            </div>
+                        )}
+                    </div>
                 </AccordionItem>
-                
+
                  <AccordionItem title={t('pages.women.accordion.jobs.title')} isOpen={openAccordion === 'jobs'} onToggle={() => toggleAccordion('jobs')}>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        {/* AI Feature */}
+                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <div className="bg-white p-5 rounded-lg shadow-sm border-l-4 border-orange-400">
                            <h3 className="text-lg font-bold text-gray-800">{t('pages.women.jobs.ai.title')}</h3>
                             <form onSubmit={handleWageCalculate} className="mt-4 space-y-3">
-                                <input value={wageState.skill} onChange={e => setWageState(s => ({ ...s, skill: e.target.value }))} placeholder={t('pages.women.jobs.ai.skillPlaceholder')} className="w-full bg-white border-gray-300 rounded-md p-2 text-gray-900"/>
-                                <input value={wageState.city} onChange={e => setWageState(s => ({ ...s, city: e.target.value }))} placeholder={t('pages.women.jobs.ai.cityPlaceholder')} className="w-full bg-white border-gray-300 rounded-md p-2 text-gray-900"/>
+                               <input value={wageState.skill} onChange={e => setWageState(s => ({...s, skill: e.target.value}))} placeholder={t('pages.women.jobs.ai.skillPlaceholder')} className="w-full bg-white border-gray-300 rounded-md p-2 text-gray-900"/>
+                               <input value={wageState.city} onChange={e => setWageState(s => ({...s, city: e.target.value}))} placeholder={t('pages.women.jobs.ai.cityPlaceholder')} className="w-full bg-white border-gray-300 rounded-md p-2 text-gray-900"/>
                                 <button type="submit" className="w-full bg-blue-600 text-white font-semibold py-2 rounded-md hover:bg-blue-700 disabled:bg-blue-300" disabled={wageState.isLoading}>
                                     {wageState.isLoading ? t('pages.women.jobs.ai.loading') : t('pages.women.jobs.ai.button')}
                                 </button>
                             </form>
-                             {wageState.error && <p className="text-red-500 text-sm mt-2">{wageState.error}</p>}
-                             {wageState.info && (
-                                <div className="mt-4 p-3 bg-green-50 border-l-4 border-green-400 rounded-r-lg">
-                                    <h4 className="font-bold">{t('pages.women.jobs.ai.resultsTitle')}</h4>
-                                    <p className="mt-2"><strong>Minimum Wage:</strong> <span className="font-bold text-green-700">{wageState.info.minimumWage}</span></p>
-                                    <h5 className="font-semibold mt-2">Key Entitlements:</h5>
-                                    <ul className="list-disc list-inside text-sm">{wageState.info.entitlements.map((e, i) => <li key={i}>{e}</li>)}</ul>
+                            {wageState.error && <p className="text-red-500 text-sm mt-2">{wageState.error}</p>}
+                            {wageState.info && (
+                                <div className="mt-4 p-4 bg-green-50 border-l-4 border-green-400 rounded-r-lg">
+                                     <h4 className="font-bold">{t('pages.women.jobs.ai.resultsTitle')}</h4>
+                                     <p className="mt-2"><strong>Skill:</strong> {wageState.info.skill}</p>
+                                     <p><strong>City:</strong> {wageState.info.city}</p>
+                                     <p><strong>Minimum Wage:</strong> <span className="font-bold text-green-700">{wageState.info.minimumWage}</span></p>
+                                     <h5 className="font-semibold mt-2">Key Entitlements:</h5>
+                                     <ul className="list-disc list-inside text-sm">
+                                        {wageState.info.entitlements.map((e, i) => <li key={i}>{e}</li>)}
+                                     </ul>
                                 </div>
-                             )}
+                            )}
                         </div>
-                         {/* Static Links */}
-                        <div>
-                             <h3 className="text-lg font-semibold mb-2">{t('pages.women.jobs.platforms.title')}</h3>
-                             <div className="space-y-3">
-                                <ResourceLink titleKey="pages.women.jobs.platforms.jobsforher" href="https://www.jobsforher.com/" />
-                                <ResourceLink titleKey="pages.women.jobs.platforms.sheroes" href="https://sheroes.com/" />
-                            </div>
+                        <div className="space-y-3">
+                            <h3 className="font-semibold text-lg">{t('pages.women.jobs.platforms.title')}</h3>
+                             <ResourceLink titleKey="pages.women.jobs.platforms.jobsforher" href="https://www.jobsforher.com/" />
+                             <ResourceLink titleKey="pages.women.jobs.platforms.sheroes" href="https://sheroes.com/" />
                         </div>
                     </div>
                 </AccordionItem>
-                
                  <AccordionItem title={t('pages.women.accordion.health.title')} isOpen={openAccordion === 'health'} onToggle={() => toggleAccordion('health')}>
-                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        {/* AI Feature */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <div className="bg-white p-5 rounded-lg shadow-sm border-l-4 border-orange-400">
                            <h3 className="text-lg font-bold text-gray-800">{t('pages.women.health.ai.title')}</h3>
                             <form onSubmit={handleHealthAsk} className="mt-4 space-y-3">
@@ -256,59 +338,25 @@ const WomenEmpowermentPage: React.FC = () => {
                                 </div>
                              )}
                         </div>
-                        {/* Static Links */}
-                        <div>
-                             <h3 className="text-lg font-semibold mb-2">{t('pages.women.health.resources.title')}</h3>
-                             <div className="space-y-3">
-                                <ResourceLink titleKey="pages.women.health.resources.nhm" href="https://nhm.gov.in/" />
-                                <ResourceLink titleKey="pages.women.health.resources.goonj" href="https://goonj.org/njpc/" />
-                            </div>
-                        </div>
-                    </div>
-                 </AccordionItem>
-                 
-                <AccordionItem title={t('pages.women.accordion.education.title')} isOpen={openAccordion === 'education'} onToggle={() => toggleAccordion('education')}>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                         <div>
-                             <h3 className="text-lg font-semibold mb-2">{t('pages.women.education.scholarships.title')}</h3>
-                             <div className="space-y-3">
-                                <ResourceLink titleKey="pages.women.education.scholarships.nsp" href="https://scholarships.gov.in/" />
-                                <ResourceLink titleKey="pages.women.education.scholarships.pragati" href="https://www.aicte-india.org/schemes/students-development-schemes/Pragati" />
-                            </div>
-                        </div>
-                         <div>
-                             <h3 className="text-lg font-semibold mb-2">{t('pages.women.education.skills.title')}</h3>
-                             <div className="space-y-3">
-                                <ResourceLink titleKey="pages.women.education.skills.skillindia" href="https://www.skillindia.gov.in/" />
-                                <ResourceLink titleKey="pages.women.education.skills.disha" href="https://www.pmgdisha.in/" />
-                            </div>
-                        </div>
-                    </div>
-                </AccordionItem>
-                
-                <AccordionItem title={t('pages.women.accordion.community.title')} isOpen={openAccordion === 'community'} onToggle={() => toggleAccordion('community')}>
-                     <div>
-                         <h3 className="text-lg font-semibold mb-2">{t('pages.women.community.ngos.title')}</h3>
-                         <div className="space-y-3">
-                            <ResourceLink titleKey="pages.women.community.ngos.sewa" href="https://www.sewa.org/" />
-                            <ResourceLink titleKey="pages.women.community.ngos.azad" href="https://azadfoundation.com/" />
+                        <div className="space-y-3">
+                            <h3 className="font-semibold text-lg">{t('pages.women.health.resources.title')}</h3>
+                            <ResourceLink titleKey="pages.women.health.resources.nhm" href="https://nhm.gov.in/"/>
+                            <ResourceLink titleKey="pages.women.health.resources.goonj" href="https://goonj.org/njpc/"/>
                         </div>
                     </div>
                 </AccordionItem>
 
                  <AccordionItem title={t('pages.women.accordion.family.title')} isOpen={openAccordion === 'family'} onToggle={() => toggleAccordion('family')}>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        {/* AI Feature */}
                         <div className="bg-white p-5 rounded-lg shadow-sm border-l-4 border-orange-400">
                            <h3 className="text-lg font-bold text-gray-800">{t('pages.women.family.ai.title')}</h3>
-                            <p className="text-gray-600 text-sm mt-2">{t('pages.women.schemes.ai.description')}</p>
-                            <form onSubmit={handleFamilyCheck} className="mt-4 space-y-3">
-                                <textarea value={familyState.info} onChange={e => setFamilyState(s => ({ ...s, info: e.target.value }))} rows={3} placeholder={t('pages.women.family.ai.placeholder')} className="w-full bg-white border-gray-300 rounded-md p-2 text-gray-900"/>
+                           <form onSubmit={handleFamilyCheck} className="mt-4 space-y-3">
+                                <textarea value={familyState.info} onChange={e => setFamilyState(s => ({ ...s, info: e.target.value }))} rows={3} placeholder={t('pages.women.family.ai.placeholder')} className="w-full bg-white border-gray-300 rounded-md p-2 text-gray-900" />
                                 <button type="submit" className="w-full bg-blue-600 text-white font-semibold py-2 rounded-md hover:bg-blue-700 disabled:bg-blue-300" disabled={familyState.isLoading}>
                                     {familyState.isLoading ? t('pages.women.family.ai.loading') : t('pages.women.family.ai.button')}
                                 </button>
-                            </form>
-                            {familyState.error && <p className="text-red-500 text-sm mt-2">{familyState.error}</p>}
+                           </form>
+                           {familyState.error && <p className="text-red-500 text-sm mt-2">{familyState.error}</p>}
                             {familyState.recs.length > 0 && (
                                 <div className="mt-4 space-y-3">
                                     <h4 className="font-bold">{t('pages.women.family.ai.resultsTitle')}</h4>
@@ -322,12 +370,13 @@ const WomenEmpowermentPage: React.FC = () => {
                                 </div>
                             )}
                         </div>
-                        {/* Static Links */}
-                        <div className="space-y-3">
-                             <ResourceLink titleKey="pages.women.family.widowpension" href="https://nsap.nic.in/nsap/beneficary-corner/track-application-status.html" />
-                             <ResourceLink titleKey="pages.women.family.nmms" href="https://scholarships.gov.in/" />
+                         <div className="space-y-3">
+                            <ResourceLink titleKey="pages.women.schemes.pmmvy" href="https://wcd.nic.in/schemes/pradhan-mantri-matru-vandana-yojana" />
+                            <ResourceLink titleKey="pages.women.schemes.sukanya" href="https://www.indiapost.gov.in/Financial/Pages/Content/sukanya-samriddhi-yojana.aspx" />
+                            <ResourceLink titleKey="pages.women.family.widowpension" href="https://nsap.nic.in/nsap/Programme-guidelines.html" />
+                            <ResourceLink titleKey="pages.women.family.nmms" href="https://scholarships.gov.in/" />
                         </div>
-                    </div>
+                     </div>
                 </AccordionItem>
             </main>
         </div>

@@ -1,7 +1,5 @@
-
-
 import { GoogleGenAI, Type } from "@google/genai";
-import type { ChatMessage, CropDiagnosis, FertilizerRecommendation, SchemeRecommendation, WeatherAlert, CropRecommendation, FinancialProduct, MarketPrice, ResumeData, CareerRoadmap, LearningPath, BudgetPlan, LoanAnalysis, InvestmentGuide, JobSearchParams, Job, WageInfo, AIUpdateResult, GroundingSource, AIOfferResult, VoiceCommandResult } from '../types';
+import type { ChatMessage, CropDiagnosis, FertilizerRecommendation, SchemeRecommendation, WeatherAlert, CropRecommendation, FinancialProduct, MarketPrice, ResumeData, CareerRoadmap, LearningPath, BudgetPlan, LoanAnalysis, InvestmentGuide, JobSearchParams, Job, WageInfo, AIUpdateResult, GroundingSource, AIOfferResult, VoiceCommandResult, DiseaseInfo, NewsArticle, CategorizedOffer, PortalInfo, ServiceProvider } from '../types';
 import { ALL_APP_ROUTES } from '../constants';
 
 if (!process.env.API_KEY) {
@@ -783,9 +781,7 @@ export async function getRealTimeUpdates(topic: string): Promise<AIUpdateResult>
 
     const summary = response.text;
     const rawChunks = response.candidates?.[0]?.groundingMetadata?.groundingChunks || [];
-
-    // FIX: The Gemini API's GroundingChunk type has optional properties.
-    // We must filter and map the raw chunks to match our strict GroundingSource type.
+    
     const sources: GroundingSource[] = rawChunks
       .filter(chunk => chunk.web && chunk.web.uri && chunk.web.title)
       .map(chunk => ({
@@ -806,6 +802,45 @@ export async function getRealTimeUpdates(topic: string): Promise<AIUpdateResult>
   } catch (error) {
     console.error("Error getting real-time updates:", error);
     throw new Error("Failed to fetch real-time updates. The service might be temporarily unavailable.");
+  }
+}
+
+export async function getCategorizedNews(category: string): Promise<NewsArticle[]> {
+  const prompt = `You are an AI news assistant for the "Voice of Bharat" platform. Find the top 6 latest and most relevant news articles in India for the "${category}" category. The information must be from the last 24-48 hours. For each article, provide a concise title, a one or two-sentence summary, the direct URL to the article, and the name of the publication (source).
+
+VERY IMPORTANT: Your entire response must be ONLY a valid JSON array of objects. Do not include any other text, greetings, explanations, or markdown formatting like \`\`\`json. Each object in the array must have the following keys: "title", "summary", "link", "source".
+
+Example format:
+[
+  {
+    "title": "Example News Title 1",
+    "summary": "This is a summary of the first news article.",
+    "link": "https://example.com/news/1",
+    "source": "Example News Site"
+  }
+]
+`;
+
+  try {
+    const response = await ai.models.generateContent({
+      model,
+      contents: prompt,
+      config: {
+        tools: [{ googleSearch: {} }],
+      },
+    });
+
+    const textResponse = response.text;
+    try {
+        return parseGeminiJson(textResponse);
+    } catch (e) {
+      console.error("Failed to parse news JSON from AI response:", textResponse, e);
+      throw new Error("The AI returned news in an unexpected format. Please try refreshing.");
+    }
+
+  } catch (error) {
+    console.error(`Error getting categorized news for ${category}:`, error);
+    throw new Error(`Failed to fetch real-time news for ${category}. The service might be temporarily unavailable.`);
   }
 }
 
@@ -844,6 +879,47 @@ export async function getRealTimeOffers(topic: string): Promise<AIOfferResult> {
   } catch (error) {
     console.error("Error getting real-time offers:", error);
     throw new Error("Failed to fetch real-time offers. The service might be temporarily unavailable.");
+  }
+}
+
+export async function getCategorizedOffers(category: string): Promise<CategorizedOffer[]> {
+  const prompt = `You are an AI assistant for the "Voice of Bharat" platform. Find the top 6 latest and most relevant public offers, deals, or subsidies in India for the "${category}" category. For each offer, provide a concise title, a one or two-sentence description, the direct URL to the offer, the name of the provider (source), and if available, the eligibility criteria and expiry date.
+
+VERY IMPORTANT: Your entire response must be ONLY a valid JSON array of objects. Do not include any other text, greetings, explanations, or markdown formatting like \`\`\`json. Each object in the array must have the following keys: "title", "description", "link", "source", "eligibility", "expiry". If eligibility or expiry are not available, use an empty string.
+
+Example format:
+[
+  {
+    "title": "Example Offer Title 1",
+    "description": "This is a summary of the first offer.",
+    "link": "https://example.com/offer/1",
+    "source": "Example Provider",
+    "eligibility": "For all users.",
+    "expiry": "31 Dec 2024"
+  }
+]
+`;
+
+  try {
+    const response = await ai.models.generateContent({
+      model,
+      contents: prompt,
+      config: {
+        tools: [{ googleSearch: {} }],
+      },
+    });
+
+    const textResponse = response.text;
+    try {
+        return parseGeminiJson(textResponse);
+    } catch (e) {
+      console.error("Failed to parse offers JSON from AI response:", textResponse, e);
+      throw new Error("The AI returned offers in an unexpected format. Please try refreshing.");
+    }
+
+  } catch (error) {
+    console.error(`Error getting categorized offers for ${category}:`, error);
+    throw new Error(`Failed to fetch real-time offers for ${category}. The service might be temporarily unavailable.`);
   }
 }
 
@@ -941,5 +1017,157 @@ Always be concise and direct in your 'responseText'.
             language_name: '',
             responseText: "I'm having trouble understanding you right now. Please try again."
         };
+    }
+}
+
+export async function findHealthSchemes(userInput: string): Promise<SchemeRecommendation[]> {
+    const prompt = `You are an expert on Indian government health schemes for the general population (e.g., Ayushman Bharat, Jan Aushadhi). Based on the user's situation, recommend up to 3 relevant schemes. For each, provide the scheme title, why it's a good fit, a key benefit, and the official link. User input: "${userInput}"`;
+    const responseSchema = {
+        type: Type.ARRAY,
+        items: {
+            type: Type.OBJECT,
+            properties: {
+                schemeTitle: { type: Type.STRING },
+                reason: { type: Type.STRING },
+                benefit: { type: Type.STRING },
+                link: { type: Type.STRING }
+            },
+            required: ['schemeTitle', 'reason', 'link']
+        }
+    };
+
+    try {
+        const response = await ai.models.generateContent({
+            model,
+            contents: prompt,
+            config: {
+                responseMimeType: "application/json",
+                responseSchema
+            }
+        });
+        return parseGeminiJson(response.text);
+    } catch (error) {
+        console.error("Error recommending health schemes:", error);
+        throw new Error("Failed to get health scheme recommendations.");
+    }
+}
+
+export async function getNutritionAdvice(query: string): Promise<string> {
+    const systemInstruction = `You are a helpful and empathetic AI health advisor named 'Swasthya Saheli'. Answer general health and nutrition questions simply and clearly. IMPORTANT: ALWAYS begin your response with a prominent disclaimer in a new line: 'DISCLAIMER: I am an AI assistant and not a medical professional. Please consult a qualified doctor for any health concerns.' After the disclaimer, provide the helpful, general information.`;
+    try {
+        const response = await ai.models.generateContent({ model, contents: query, config: { systemInstruction } });
+        return response.text;
+    } catch (error) {
+        console.error("Error in getNutritionAdvice:", error);
+        throw new Error("I'm sorry, I couldn't process that request right now. Please try again.");
+    }
+}
+
+export async function getDiseaseInfo(diseaseName: string): Promise<DiseaseInfo> {
+  const prompt = `Provide a concise overview of the disease "${diseaseName}". Structure the response in the specified JSON format. For the 'medications' field, list common *types* or *classes* of drugs used for treatment, NOT specific brand names. Crucially, prefix this list with the exact disclaimer: "DISCLAIMER: This is not medical advice. Consult a doctor for prescriptions. Common medication types include:"`;
+
+  const responseSchema = {
+    type: Type.OBJECT,
+    properties: {
+      name: { type: Type.STRING, description: 'The name of the disease.' },
+      symptoms: { type: Type.ARRAY, items: { type: Type.STRING }, description: 'A list of common symptoms.' },
+      causes: { type: Type.ARRAY, items: { type: Type.STRING }, description: 'A list of common causes or risk factors.' },
+      diagnosis: { type: Type.ARRAY, items: { type: Type.STRING }, description: 'Common methods of diagnosis.' },
+      treatment: { type: Type.ARRAY, items: { type: Type.STRING }, description: 'Common treatment approaches.' },
+      prevention: { type: Type.ARRAY, items: { type: Type.STRING }, description: 'Preventive measures.' },
+      medications: { type: Type.STRING, description: 'A string starting with a disclaimer, followed by types of medications used.' }
+    },
+    required: ['name', 'symptoms', 'causes', 'diagnosis', 'treatment', 'prevention', 'medications']
+  };
+
+  try {
+    const response = await ai.models.generateContent({
+      model,
+      contents: prompt,
+      config: {
+        responseMimeType: "application/json",
+        responseSchema
+      }
+    });
+    const parsed = parseGeminiJson(response.text);
+    // Ensure the name field is correctly set from the input for consistency
+    parsed.name = diseaseName;
+    return parsed;
+  } catch (error) {
+    console.error("Error getting disease information:", error);
+    throw new Error(`Failed to get information for "${diseaseName}". Please try again.`);
+  }
+}
+
+export async function findBillerPortal(biller: string, state: string): Promise<PortalInfo> {
+    const prompt = `You are a helpful AI assistant that finds official government utility payment portals in India. For the biller "${biller}" in the state of "${state}", find the official online payment portal. Provide the name of the portal, its direct URL, and a brief note about it.`;
+    const responseSchema = {
+        type: Type.OBJECT,
+        properties: {
+            portalName: { type: Type.STRING },
+            url: { type: Type.STRING },
+            notes: { type: Type.STRING },
+        },
+        required: ['portalName', 'url', 'notes']
+    };
+
+    try {
+        const response = await ai.models.generateContent({
+            model,
+            contents: prompt,
+            config: {
+                responseMimeType: "application/json",
+                responseSchema
+            }
+        });
+        return parseGeminiJson(response.text);
+    } catch (error) {
+        console.error("Error finding biller portal:", error);
+        throw new Error("Failed to find the official payment portal.");
+    }
+}
+
+export async function draftGrievanceLetter(details: string): Promise<string> {
+    const prompt = `Based on the following user-provided details, draft a formal, polite, and clear grievance letter. The letter should be structured professionally with placeholders for name, address, and date. User details: "${details}"`;
+    const systemInstruction = "You are an AI assistant that helps Indian citizens draft formal letters for government grievances. Your tone should be respectful but firm, and the language should be simple and clear.";
+    try {
+        const response = await ai.models.generateContent({
+            model,
+            contents: prompt,
+            config: { systemInstruction }
+        });
+        return response.text;
+    } catch (error) {
+        console.error("Error drafting grievance letter:", error);
+        throw new Error("Failed to draft the grievance letter.");
+    }
+}
+
+export async function findLocalServices(service: string, location: string): Promise<ServiceProvider[]> {
+    const prompt = `You are an AI local search assistant. Find 3-5 example listings for local service providers for "${service}" in "${location}". For each, provide a fictional name, the service type, a fictional phone number, a realistic rating out of 5, and a fictional address.`;
+    const responseSchema = {
+        type: Type.ARRAY,
+        items: {
+            type: Type.OBJECT,
+            properties: {
+                name: { type: Type.STRING },
+                service: { type: Type.STRING },
+                phone: { type: Type.STRING },
+                rating: { type: Type.NUMBER },
+                address: { type: Type.STRING },
+            },
+            required: ['name', 'service', 'phone', 'rating', 'address']
+        }
+    };
+    try {
+        const response = await ai.models.generateContent({
+            model,
+            contents: prompt,
+            config: { responseMimeType: "application/json", responseSchema }
+        });
+        return parseGeminiJson(response.text);
+    } catch (error) {
+        console.error("Error finding local services:", error);
+        throw new Error("Failed to find local service providers.");
     }
 }

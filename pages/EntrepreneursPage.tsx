@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useTranslation } from '../hooks/useTranslation';
 import BackButton from '../components/BackButton';
@@ -65,7 +66,7 @@ const EntrepreneursPage: React.FC = () => {
     return (
       <div className="min-h-screen bg-gray-900 text-white">
         {/* Hero Section */}
-        <section className="bg-gray-800 text-center py-20 relative overflow-hidden" style={{backgroundImage: "url('https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=2832&auto=format&fit=crop')"}}>
+        <section className="bg-gray-800 text-center py-20 relative overflow-hidden" style={{backgroundImage: "url('https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=2832&auto=format=fit=crop')"}}>
             <div className="absolute inset-0 bg-black opacity-60"></div>
             <div className="container mx-auto px-6 relative z-10">
                 <h1 className="text-4xl md:text-5xl font-bold">{t('pages.entrepreneurs.heroTitle')}</h1>
@@ -161,10 +162,99 @@ const EntrepreneursPage: React.FC = () => {
                     <ResourceLink href="https://www.youtube.com/watch?v=7QmCUDHpNzE" title="📊 Case Study: Dropbox MVP Video" description="See the video that validated the idea overnight."/>
                 </ResourceCard>
             </AccordionSection>
+
+            {/* Level 3 */}
+            <AccordionSection level={3} title="Building & Legal Compliance">
+                <p className="font-semibold text-lg mb-4 text-gray-200">🔹 Goal: From an idea to a registered, compliant entity.</p>
+                <Module title="1. Company Registration">
+                    <p>Choose the right structure for your business. For most tech startups, a <strong>Private Limited Company (Pvt. Ltd.)</strong> is recommended for scalability and funding.</p>
+                    <ul className="list-disc list-inside space-y-2 mt-2">
+                        <li><strong>Sole Proprietorship:</strong> Easiest to start, one owner, unlimited liability.</li>
+                        <li><strong>Partnership Firm:</strong> Two or more partners, shared profits and liability.</li>
+                        <li><strong>LLP (Limited Liability Partnership):</strong> Partners have limited liability. Good for professional services.</li>
+                        <li><strong>Pvt. Ltd. Company:</strong> Separate legal entity, limited liability, required for VC funding.</li>
+                    </ul>
+                </Module>
+                <Module title="2. Legal & Compliance Checklist">
+                     <ul className="list-disc list-inside space-y-1">
+                        <li>✅ <strong>PAN & TAN:</strong> Essential for tax purposes.</li>
+                        <li>✅ <strong>Startup India Recognition (DPIIT):</strong> For tax benefits and easier compliance.</li>
+                        <li>✅ <strong>GST Registration:</strong> Mandatory if your turnover exceeds the threshold.</li>
+                        <li>✅ <strong>Bank Account:</strong> A dedicated current account for the business.</li>
+                        <li>✅ <strong>MSME Registration:</strong> For benefits under MSME schemes.</li>
+                    </ul>
+                </Module>
+                <Module title="3. Building Your Core Team">
+                    <p>Your first hires are critical. Look for people who are passionate, adaptable, and complement your skills.</p>
+                    <p className="mt-2">Key initial roles often include a technical co-founder/lead, a product/marketing person, and a operations person.</p>
+                </Module>
+                <ResourceCard title="📌 Resources">
+                    <ResourceLink href="https://www.startupindia.gov.in/" title="🇮🇳 Govt. Portal: Startup India Hub" description="The single point of contact for the entire startup ecosystem."/>
+                    <ResourceLink href="https://www.mca.gov.in/content/mca/global/en/home.html" title="⚖️ Ministry of Corporate Affairs (MCA)" description="For company registration and compliance."/>
+                    <ResourceLink href="https://cleartax.in/s/startup-registration" title="📚 Guide: How to Register a Startup in India" />
+                </ResourceCard>
+            </AccordionSection>
+
+            {/* Level 4 */}
+            <AccordionSection level={4} title="Funding & Finance">
+                <p className="font-semibold text-lg mb-4 text-gray-200">🔹 Goal: Secure capital to fuel your growth.</p>
+                <Module title="1. Funding Stages Explained">
+                     <ul className="list-disc list-inside space-y-2">
+                        <li><strong>Bootstrapping:</strong> Using your own savings. Full control, but slow growth.</li>
+                        <li><strong>Seed Funding:</strong> First official money, often from Angel Investors or Seed Funds. Used to find product-market fit.</li>
+                        <li><strong>Series A, B, C:</strong> Venture Capital (VC) rounds for scaling the business, market expansion, and new products.</li>
+                    </ul>
+                </Module>
+                <Module title="2. Government Funding Schemes">
+                     <ul className="list-disc list-inside space-y-1">
+                        <li>✅ <strong>Startup India Seed Fund Scheme:</strong> Up to ₹50 Lakhs for proof of concept and product trials.</li>
+                        <li>✅ <strong>Mudra Yojana:</strong> Collateral-free loans up to ₹10 Lakhs for micro/small businesses.</li>
+                        <li>✅ <strong>Credit Guarantee Scheme (CGS):</strong> Collateral-free credit for MSMEs.</li>
+                    </ul>
+                </Module>
+                <Module title="3. Creating a Winning Pitch Deck">
+                    <p>Your pitch deck is your startup's story. It must be concise and compelling.</p>
+                    <p className="mt-2"><strong>Key Slides:</strong> 1. Cover, 2. Problem, 3. Solution, 4. Market Size, 5. Product, 6. Business Model, 7. Go-to-Market Strategy, 8. Competition, 9. Team, 10. Financials & The Ask.</p>
+                </Module>
+                 <ResourceCard title="📌 Resources">
+                    <ResourceLink href="https://www.startupindia.gov.in/content/sih/en/funding.html" title="💰 Startup India Funding Schemes" />
+                    <ResourceLink href="https://www.ycombinator.com/library/2u-a-guide-to-seed-fundraising" title="📘 Y Combinator's Guide to Fundraising" />
+                    <ResourceLink href="https://www.canva.com/pitch-deck-templates/" title="🎨 Free Tool: Canva Pitch Deck Templates" />
+                </ResourceCard>
+            </AccordionSection>
+            
+            {/* Level 5 */}
+            <AccordionSection level={5} title="Growth & Scaling">
+                <p className="font-semibold text-lg mb-4 text-gray-200">🔹 Goal: Grow your user base and scale operations sustainably.</p>
+                <Module title="1. Digital Marketing & Sales Funnel">
+                    <p>Acquire customers online through a structured approach.</p>
+                    <ul className="list-disc list-inside space-y-2 mt-2">
+                        <li><strong>Top of Funnel (Awareness):</strong> SEO, Content Marketing (Blogs, Videos), Social Media.</li>
+                        <li><strong>Middle of Funnel (Consideration):</strong> Email Marketing, Webinars, Case Studies.</li>
+                        <li><strong>Bottom of Funnel (Conversion):</strong> Free Trials, Demos, Discounts.</li>
+                    </ul>
+                </Module>
+                 <Module title="2. Key Metrics for Startups (SaaS)">
+                     <ul className="list-disc list-inside space-y-1">
+                        <li>✅ <strong>CAC (Customer Acquisition Cost):</strong> How much it costs to get a new customer.</li>
+                        <li>✅ <strong>LTV (Lifetime Value):</strong> Total revenue a customer brings. (Goal: LTV > 3x CAC).</li>
+                        <li>✅ <strong>MRR/ARR (Monthly/Annual Recurring Revenue):</strong> Predictable revenue from subscriptions.</li>
+                        <li>✅ <strong>Churn Rate:</strong> Percentage of customers who cancel their subscription.</li>
+                    </ul>
+                </Module>
+                <Module title="3. Scaling Operations">
+                    <p>As you grow, you need to move from manual processes to automated systems.</p>
+                    <p className="mt-2">Focus on automating marketing (e.g., Mailchimp), sales (e.g., CRM), and customer support (e.g., Chatbots).</p>
+                </Module>
+                <ResourceCard title="📌 Resources">
+                    <ResourceLink href="https://blog.hubspot.com/marketing" title="📚 Blog: HubSpot Marketing Blog" description="Industry-leading articles on all things marketing."/>
+                    <ResourceLink href="https://neilpatel.com/blog/" title="📈 Blog: Neil Patel on SEO & Digital Marketing" />
+                    <ResourceLink href="https://www.ycombinator.com/library" title="🎓 Y Combinator Library" description="Essays and videos on startup growth."/>
+                </ResourceCard>
+            </AccordionSection>
         </main>
       </div>
     );
 };
 
-// FIX: Added default export for the EntrepreneursPage component.
 export default EntrepreneursPage;

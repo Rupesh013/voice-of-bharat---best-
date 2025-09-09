@@ -1,17 +1,15 @@
-
-
 import React from 'react';
 import type { 
   Contract, MarketPrice, ExpertGuide, Scholarship, ScholarshipDetail, 
   AbroadScholarship, EducationLoan, CounselingCenter, VisaStep, EarningMethod, CashbackApp, 
   CryptoApp, StudentBankAccount, StudentLoanOffer, StudentCard, StudentDeal, ReferralApp, Project,
-  PlatformInfo, Article, SmartApp, EducationResource, Update, Offer
+  PlatformInfo, Article, SmartApp, EducationResource, Update, Offer, Internship, PopularInternship, Placement
 } from './types';
 
 export const NAV_LINKS = [
   { key: 'home', path: '/' },
-  { key: 'updates', path: '/updates'},
-  { key: 'offers', path: '/offers' },
+  { key: 'news', path: '/news-and-offers' },
+  { key: 'myBharat', path: '/my-bharat' },
   { key: 'about', path: '/about' },
   { key: 'contact', path: '/contact' },
 ];
@@ -48,624 +46,390 @@ export const ICONS = {
       <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18 9 11.25l4.306 4.306a11.95 11.95 0 0 1 5.814-5.518l2.74-1.22m0 0-5.94-2.281m5.94 2.28-2.28 5.941" />
     </svg>
   ),
+  Services: (props: React.SVGProps<SVGSVGElement>) => (
+    <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0 0 12 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75Z" />
+    </svg>
+  ),
+  MyBharat: (props: React.SVGProps<SVGSVGElement>) => (
+    <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+    </svg>
+  ),
+  SOS: (props: React.SVGProps<SVGSVGElement>) => (
+     <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m0-10.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.75c0 5.592 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.286Zm0 13.036h.008v.008h-.008v-.008Z" />
+    </svg>
+  ),
   Email: (props: React.SVGProps<SVGSVGElement>) => (
     <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" /></svg>
   ),
   WhatsApp: (props: React.SVGProps<SVGSVGElement>) => (
-    <svg {...props} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M16.6,14.2c-0.2-0.1-1.5-0.7-1.7-0.8c-0.2-0.1-0.4-0.1-0.6,0.1c-0.2,0.2-0.6,0.8-0.8,0.9c-0.1,0.1-0.3,0.2-0.5,0.1 c-0.2-0.1-1-0.4-1.9-1.2c-0.7-0.6-1.2-1.4-1.3-1.6c-0.1-0.2,0-0.4,0.1-0.5c0.1-0.1,0.2-0.3,0.4-0.4c0.1-0.1,0.2-0.2,0.3-0.4 c0.1-0.1,0.1-0.3,0-0.4c-0.1-0.1-0.6-1.5-0.8-2.1c-0.2-0.5-0.4-0.5-0.6-0.5c-0.2,0-0.4,0-0.6,0c-0.2,0-0.5,0.1-0.8,0.4 c-0.3,0.3-1.1,1.1-1.1,2.6c0,1.5,1.1,3,1.3,3.2c0.2,0.2,2.2,3.4,5.4,4.8c0.8,0.3,1.4,0.5,1.8,0.7c0.7,0.2,1.4,0.2,1.9,0.1 c0.6-0.1,1.8-0.7,2.1-1.4c0.3-0.7,0.3-1.3,0.2-1.4C17.1,14.3,16.8,14.3,16.6,14.2z M12,2C6.5,2,2,6.5,2,12s4.5,10,10,10 c1.6,0,3.1-0.4,4.4-1.1l-1-1.8c-1,0.5-2.1,0.8-3.4,0.8c-4.4,0-8-3.6-8-8s3.6-8,8-8c4.4,0,8,3.6,8,8c0,1.3-0.3,2.5-0.9,3.6l1.8,1 c0.7-1.3,1.1-2.8,1.1-4.6C22,6.5,17.5,2,12,2z M19.1,17.2l-1.8-1c0.8-1.3,1.2-2.8,1.2-4.3c0-4.4-3.6-8-8-8S4.5,7.5,4.5,12 c0,4.4,3.6,8,8,8c1.5,0,2.9-0.4,4.2-1.1l1,1.8c-1.4,0.8-3.1,1.3-4.9,1.3C7.6,22,3,17.4,3,12S7.6,2,13.3,2c5.7,0,10.3,4.6,10.3,10.3 c0,1.9-0.5,3.7-1.4,5.2L19.1,17.2z"/></svg>
+    <svg {...props} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M16.6,14.2c-0.2-0.1-1.5-0.7-1.7-0.8c-0.2-0.1-0.4-0.1-0.6,0.1c-0.2,0.2-0.6,0.8-0.8,0.9c-0.1,0.1-0.3,0.2-0.5,0.1 c-0.2-0.1-1-0.4-1.9-1.2c-0.7-0.6-1.2-1.4-1.3-1.6c-0.1-0.2,0-0.4,0.1-0.5c0.1-0.1,0.2-0.3,0.4-0.4c0.1-0.1,0.2-0.2,0.3-0.4 c-0.1-0.2-0.6-1.5-0.8-2.1c-0.2-0.5-0.4-0.5-0.6-0.5c-0.2,0-0.4,0-0.6,0c-0.2,0-0.5,0.1-0.8,0.4c-0.3,0.3-1,1-1,2.4 c0,1.4,1,2.8,1.2,3c0.1,0.2,2,3.2,5,4.4c0.7,0.3,1.3,0.5,1.7,0.6c0.7,0.2,1.3,0.1,1.8-0.1c0.5-0.2,1.5-0.7,1.7-1.3 c0.2-0.6,0.2-1.2,0.1-1.3C17,14.3,16.8,14.3,16.6,14.2z M12,2C6.5,2,2,6.5,2,12s4.5,10,10,10c5.5,0,10-4.5,10-10S17.5,2,12,2z M12,20.5c-4.7,0-8.5-3.8-8.5-8.5c0-4.7,3.8-8.5,8.5-8.5c4.7,0,8.5,3.8,8.5,8.5C20.5,16.7,16.7,20.5,12,20.5z"/></svg>
   ),
   GitHub: (props: React.SVGProps<SVGSVGElement>) => (
-    <svg {...props} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12,2C6.48,2,2,6.48,2,12c0,4.42,2.87,8.17,6.84,9.5c0.5,0.09,0.68-0.22,0.68-0.48 c0-0.24-0.01-0.87-0.01-1.7c-2.78,0.6-3.37-1.34-3.37-1.34c-0.45-1.16-1.11-1.47-1.11-1.47c-0.91-0.62,0.07-0.6,0.07-0.6 c1,0.07,1.53,1.03,1.53,1.03c0.89,1.53,2.34,1.09,2.91,0.83c0.09-0.65,0.35-1.09,0.63-1.34c-2.22-0.25-4.55-1.11-4.55-4.94 c0-1.09,0.39-1.98,1.03-2.68c-0.1-0.25-0.45-1.27,0.1-2.64c0,0,0.84-0.27,2.75,1.02c0.79-0.22,1.65-0.33,2.5-0.33 c0.85,0,1.71,0.11,2.5,0.33c1.91-1.29,2.75-1.02,2.75-1.02c0.55,1.37,0.2,2.39,0.1,2.64c0.64,0.7,1.03,1.59,1.03,2.68 c0,3.84-2.34,4.68-4.57,4.93c0.36,0.31,0.68,0.92,0.68,1.85c0,1.34-0.01,2.42-0.01,2.75c0,0.27,0.18,0.58,0.69,0.48 C20.13,20.17,23,16.42,23,12C23,6.48,18.52,2,12,2z"/></svg>
+    <svg {...props} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.034c-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.108-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.565 21.795 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
   ),
   Location: (props: React.SVGProps<SVGSVGElement>) => (
     <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" /><path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" /></svg>
   ),
-  FarmChat: (props: React.SVGProps<SVGSVGElement>) => (
-    <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 1-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 1 3.09-3.09L12 5.25l.813 2.846a4.5 4.5 0 0 1 3.09 3.09L18.75 12l-2.846.813a4.5 4.5 0 0 1-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456ZM16.898 20.575 16.5 21.75l-.398-1.175a3.375 3.375 0 0 0-2.456-2.456L12.5 18l1.175-.398a3.375 3.375 0 0 0 2.456-2.456L16.5 14.25l.398 1.175a3.375 3.375 0 0 0 2.456 2.456L20.5 18l-1.175.398a3.375 3.375 0 0 0-2.456 2.456Z" />
-    </svg>
-  ),
-  MarketChat: (props: React.SVGProps<SVGSVGElement>) => (
-    <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c.51 0 .962-.343 1.087-.835l1.823-6.812a.5.5 0 0 0-.447-.646l-13.434-1.343a.5.5 0 0 0-.586.447l-1.932 8.583c-.083.37-.39.658-.768.658H3.75a.75.75 0 1 0 0 1.5h.375Z" />
-    </svg>
-  ),
-  Expert: (props: React.SVGProps<SVGSVGElement>) => (
-    <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
-    </svg>
-  ),
-  Upvote: (props: React.SVGProps<SVGSVGElement>) => (
-    <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-      <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5" />
-    </svg>
-  ),
-  Trophy: (props: React.SVGProps<SVGSVGElement>) => (
-    <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 18.75h-9a9.75 9.75 0 0 1-4.874-1.971l.242.311a.5.5 0 0 0 .756-.35l.525-2.222a.5.5 0 0 0-.21-.518l-1.92-1.37a.5.5 0 0 0-.573.03l-1.068.964a.5.5 0 0 0-.054.718l1.323 1.618a.5.5 0 0 0 .756.055l1.626-1.322a.5.5 0 0 0 .054-.718l-1.068-1.037a.5.5 0 0 0-.573-.03l-1.92 1.37a.5.5 0 0 0-.21.518l.525 2.222a.5.5 0 0 0 .756.35l.242-.311A9.75 9.75 0 0 1 16.5 18.75Zm-9-1.5a.5.5 0 0 0-.5.5v2.25a.5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5v-2.25a.5.5 0 0 0-.5-.5h-9Z" />
-        <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" />
-    </svg>
-  ),
-  EarningChat: (props: React.SVGProps<SVGSVGElement>) => (
-    <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18.75a60.07 60.07 0 0 1 15.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 0 1 3 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 0 0-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 0 1-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 0 0 3 15h-.75M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-    </svg>
-  ),
-  GovtApps: (props: React.SVGProps<SVGSVGElement>) => (
-    <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6M3 9v11.25a2.25 2.25 0 0 0 2.25 2.25h13.5A2.25 2.25 0 0 0 21 20.25V9M3 9h18" />
-    </svg>
-  ),
-  Shield: (props: React.SVGProps<SVGSVGElement>) => (
-    <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
-      <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.286Zm0 13.036h.008v.008h-.008v-.008Z" />
-    </svg>
-  ),
-  HeartPlus: (props: React.SVGProps<SVGSVGElement>) => (
-    <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
-      <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
-      <path strokeLinecap="round" strokeLinejoin="round" d="M12 7.5h.008v.008H12V7.5Z" />
-    </svg>
-  ),
-  Lightbulb: (props: React.SVGProps<SVGSVGElement>) => (
-    <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
-      <path strokeLinecap="round" strokeLinejoin="round" d="M12 18v-5.25m0 0a6.01 6.01 0 0 0 1.5-4.665a5.98 5.98 0 0 0-1.5-2.085a5.98 5.98 0 0 0-1.5 2.085a6.01 6.01 0 0 0 1.5 4.665ZM12 18v-5.25m-3-1.5v5.25m3-5.25v5.25m6-5.25v5.25m-12-5.25v5.25" />
-      <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 21a2.25 2.25 0 0 1-2.25-2.25H12a2.25 2.25 0 0 1-2.25 2.25Z" />
-      <path strokeLinecap="round" strokeLinejoin="round" d="M14.25 21a2.25 2.25 0 0 0 2.25-2.25H12a2.25 2.25 0 0 0 2.25 2.25Z" />
-    </svg>
-  ),
-  Rupee: (props: React.SVGProps<SVGSVGElement>) => (
-    <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
-      <path strokeLinecap="round" strokeLinejoin="round" d="M14.25 7.756a4.5 4.5 0 1 0 0 8.488M7.5 10.5h5.25m-5.25 3h5.25M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-    </svg>
-  ),
-  PersonalizedPath: (props: React.SVGProps<SVGSVGElement>) => (
-    <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
-      <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0h9.75m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75" />
-    </svg>
-  ),
-  FinancialManagement: (props: React.SVGProps<SVGSVGElement>) => (
-    <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-      <path strokeLinecap="round" strokeLinejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z" />
-    </svg>
-  ),
   Updates: (props: React.SVGProps<SVGSVGElement>) => (
     <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-      <path strokeLinecap="round" strokeLinejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0" />
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 0 1-2.25 2.25M16.5 7.5V18a2.25 2.25 0 0 0 2.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 0 0 2.25 2.25h13.5M6 7.5h3v3H6v-3Z" />
     </svg>
   ),
   Offers: (props: React.SVGProps<SVGSVGElement>) => (
-    <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+     <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
       <path strokeLinecap="round" strokeLinejoin="round" d="M9.568 3H5.25A2.25 2.25 0 0 0 3 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 0 0 5.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 0 0 9.568 3Z" />
       <path strokeLinecap="round" strokeLinejoin="round" d="M6 6h.008v.008H6V6Z" />
+    </svg>
+  ),
+  Lightbulb: (props: React.SVGProps<SVGSVGElement>) => (
+     <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 18v-5.25m0 0a6.01 6.01 0 0 0 1.5-.189m-1.5.189a6.01 6.01 0 0 1-1.5-.189m3.75 7.478a12.06 12.06 0 0 1-4.5 0m3.75 2.311a7.5 7.5 0 0 1-7.5 0c.401-.02.802-.039 1.203-.058m5.094.058c.399.02.801.039 1.202.058M4.5 12a7.5 7.5 0 0 1 15 0m-15 0a7.5 7.5 0 1 1 15 0" />
+    </svg>
+  ),
+  Shield: (props: React.SVGProps<SVGSVGElement>) => (
+     <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.75c0 5.592 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.57-.598-3.75h-.152c-3.196 0-6.1-1.248-8.25-3.286Z" />
+    </svg>
+  ),
+  GovtApps: (props: React.SVGProps<SVGSVGElement>) => (
+     <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0 0 12 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75Z" />
+    </svg>
+  ),
+  Trophy: (props: React.SVGProps<SVGSVGElement>) => (
+     <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 18.75h-9a9.75 9.75 0 0 1 9 0Zm0 0c0 .546-.022 1.088-.065 1.624a3.375 3.375 0 0 1-6.868 0c-.043-.536-.065-1.078-.065-1.624M16.5 18.75C18.433 18.75 20 17.183 20 15.25V9.75A2.25 2.25 0 0 0 17.75 7.5h-1.375c-.322 0-.638.113-.88.318l-1.042.871-1.042-.871a1.125 1.125 0 0 0-.88-.318H9.625A2.25 2.25 0 0 0 7.375 9.75v5.5c0 1.933 1.567 3.5 3.5 3.5h.065Z" />
+    </svg>
+  ),
+  Upvote: (props: React.SVGProps<SVGSVGElement>) => (
+     <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m6-6H6" />
+    </svg>
+  ),
+  FarmChat: (props: React.SVGProps<SVGSVGElement>) => (
+    <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M8.625 9.75a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375m-13.5 3.01c0 1.6 1.125 2.902 2.563 3.445l.504.202a12.01 12.01 0 0 0 3.425 0l.504-.202c1.438-.543 2.563-1.845 2.563-3.445V9.75a2.25 2.25 0 0 0-2.25-2.25H6.75A2.25 2.25 0 0 0 4.5 9.75v3.01Zm0 0h6.375m-6.375 0a1.5 1.5 0 0 1-1.5-1.5V9.75c0-1.03.843-1.875 1.875-1.875h1.5c1.032 0 1.875.845 1.875 1.875v1.5a1.5 1.5 0 0 1-1.5 1.5H5.25m-1.5 0h9.375c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.75c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125Z" />
+    </svg>
+  ),
+  MarketChat: (props: React.SVGProps<SVGSVGElement>) => (
+     <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c.51 0 .962-.343 1.087-.835l1.858-6.446a.75.75 0 0 0-.7-1.028H5.613L4.247 3H2.25M3.375 20.25a1.125 1.125 0 0 1-1.125-1.125V6.75m11.25 0c0 .565-.224 1.11-.622 1.5H5.613m10.763-1.5a.75.75 0 0 0-.7-1.028H5.613L4.247 3h-1.995m11.368 0a1.125 1.125 0 0 1-1.125 1.125H3.375m11.25 0a1.125 1.125 0 0 1 1.125 1.125v9.75" />
+    </svg>
+  ),
+  Expert: (props: React.SVGProps<SVGSVGElement>) => (
+     <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
+    </svg>
+  ),
+  EarningChat: (props: React.SVGProps<SVGSVGElement>) => (
+     <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18.75a60.07 60.07 0 0 1 15.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 0 1 3 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 0 0-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 0 1-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 0 0 3 15h-.75M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm3 0h.008v.008H18V10.5Zm-12 0h.008v.008H6V10.5Z" />
+    </svg>
+  ),
+  Document: (props: React.SVGProps<SVGSVGElement>) => (
+    <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
+    </svg>
+  ),
+  Upload: (props: React.SVGProps<SVGSVGElement>) => (
+    <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5" />
+    </svg>
+  ),
+  View: (props: React.SVGProps<SVGSVGElement>) => (
+    <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639l4.43-4.43a1.012 1.012 0 0 1 1.431 0l3.05 3.05a1.012 1.012 0 0 1 0 1.432l-3.05 3.05a1.012 1.012 0 0 1-1.431 0l-4.43-4.43Z" />
+      <path strokeLinecap="round" strokeLinejoin="round" d="M21.964 12.322a1.012 1.012 0 0 0 0-.639l-4.43-4.43a1.012 1.012 0 0 0-1.431 0l-3.05 3.05a1.012 1.012 0 0 0 0 1.432l3.05 3.05a1.012 1.012 0 0 0 1.431 0l4.43-4.43Z" />
+    </svg>
+  ),
+  Delete: (props: React.SVGProps<SVGSVGElement>) => (
+    <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.134-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.067-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+    </svg>
+  ),
+  Settings: (props: React.SVGProps<SVGSVGElement>) => (
+    <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.24-.438.613-.43.992a6.759 6.759 0 0 1 0 1.25c.008.379.137.752.43.992l1.003.827c.424.35.534.954.26 1.431l-1.298 2.247a1.125 1.125 0 0 1-1.37.49l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 0 1-.22.127c-.332.183-.582.495-.645.87l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.063-.374-.313-.686-.645-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.37-.49l-1.296-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.759 6.759 0 0 1 0-1.25c-.007-.379-.137-.752-.43-.992l-1.004-.827a1.125 1.125 0 0 1-.26-1.431l1.297-2.247a1.125 1.125 0 0 1 1.37-.49l1.217.456c.355.133.75.072 1.076-.124.072-.044.146-.087.22-.127.332-.183.582-.495.645-.87l.213-1.281Z" />
+      <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+    </svg>
+  ),
+  DigiLocker: (props: React.SVGProps<SVGSVGElement>) => (
+    <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
     </svg>
   ),
 };
 
 export const SECTIONS = [
   { key: 'students', path: '/students', Icon: ICONS.Student },
-  { key: 'women', path: '/women-empowerment', Icon: ICONS.Women },
   { key: 'farmers', path: '/farmers', Icon: ICONS.Farmer },
+  { key: 'women', path: '/women-empowerment', Icon: ICONS.Women },
   { key: 'workers', path: '/workers', Icon: ICONS.Worker },
   { key: 'seniors', path: '/senior-citizens', Icon: ICONS.Senior },
   { key: 'entrepreneurs', path: '/entrepreneurs', Icon: ICONS.Entrepreneur },
+  { key: 'services', path: '/services', Icon: ICONS.Services },
+  { key: 'healthcare', path: '/healthcare', Icon: ICONS.Shield }
+];
+
+export const STUDENT_FEATURES = [
+    { path: '/students/scholarships', titleKey: 'features.student.scholarships.title', descriptionKey: 'features.student.scholarships.description', Icon: ICONS.Student },
+    { path: '/students/resume-builder', titleKey: 'features.student.resume.title', descriptionKey: 'features.student.resume.description', Icon: ICONS.Lightbulb },
+    { path: '/students/career-roadmaps', titleKey: 'features.student.roadmaps.title', descriptionKey: 'features.student.roadmaps.description', Icon: ICONS.Farmer },
+    { path: '/students/learning-paths', titleKey: 'features.student.learningPaths.title', descriptionKey: 'features.student.learningPaths.description', Icon: ICONS.Entrepreneur },
+    { path: '/students/financial-management', titleKey: 'features.student.financialManagement.title', descriptionKey: 'features.student.financialManagement.description', Icon: ICONS.MyBharat },
+    { path: '/students/coding-toolkit', titleKey: 'features.student.coding.title', descriptionKey: 'features.student.coding.description', Icon: ICONS.Services },
+    { path: '/students/doubt-solving', titleKey: 'features.student.doubtSolver.title', descriptionKey: 'features.student.doubtSolver.description', Icon: ICONS.SOS },
+    { path: '/students/project-ideas', titleKey: 'features.student.innovation.title', descriptionKey: 'features.student.innovation.description', Icon: ICONS.Lightbulb },
+    { path: '/students/earning-hub', titleKey: 'features.student.earning.title', descriptionKey: 'features.student.earning.description', Icon: ICONS.Entrepreneur },
+    { path: '/students/smart-apps', titleKey: 'features.student.smartApps.title', descriptionKey: 'features.student.smartApps.description', Icon: ICONS.Services },
+    { path: '/students/free-resources', titleKey: 'features.student.freeLearning.title', descriptionKey: 'features.student.freeLearning.description', Icon: ICONS.MyBharat },
+    { path: '/students/internships-placements', titleKey: 'features.student.internships.title', descriptionKey: 'features.student.internships.description', Icon: ICONS.Worker },
+];
+
+export const MOCK_SCHOLARSHIPS: Scholarship[] = [
+  { id: 1, title: 'National Merit Scholarship', provider: 'Government of India', award: '₹12,000/year', eligibility: 'Class 12 Pass', deadline: '31 Oct 2024', link: '#' },
+  { id: 2, title: 'Inspire Scholarship', provider: 'DST, Government of India', award: '₹80,000/year', eligibility: 'Top 1% in Class 12', deadline: '15 Nov 2024', link: '#' },
+  { id: 3, title: 'Reliance Foundation Scholarship', provider: 'Reliance Foundation', award: 'Up to ₹2,00,000', eligibility: 'Undergraduate Students', deadline: '30 Sep 2024', link: '#' },
 ];
 
 export const FARMER_FEATURES = [
-  { titleKey: 'features.farmer.cropDoctor.title', descriptionKey: 'features.farmer.cropDoctor.description', path: '/farmers/crop-doctor', Icon: ICONS.Farmer },
-  { titleKey: 'features.farmer.marketAccess.title', descriptionKey: 'features.farmer.marketAccess.description', path: '/farmers/direct-market', Icon: ICONS.MarketChat },
-  { titleKey: 'features.farmer.fertilizer.title', descriptionKey: 'features.farmer.fertilizer.description', path: '/farmers/fertilizer-optimizer', Icon: ICONS.Lightbulb },
-  { titleKey: 'features.farmer.contractFarming.title', descriptionKey: 'features.farmer.contractFarming.description', path: '/farmers/contract-farming', Icon: ICONS.Worker },
-  { titleKey: 'features.farmer.weatherAlerts.title', descriptionKey: 'features.farmer.weatherAlerts.description', path: '/farmers/weather-alerts', Icon: ICONS.Rupee },
-  { titleKey: 'features.farmer.cropRecommender.title', descriptionKey: 'features.farmer.cropRecommender.description', path: '/farmers/crop-recommendation', Icon: ICONS.Student },
-  { titleKey: 'features.farmer.financialNeeds.title', descriptionKey: 'features.farmer.financialNeeds.description', path: '/farmers/financial-needs', Icon: ICONS.HeartPlus },
-  { titleKey: 'features.farmer.expertGuides.title', descriptionKey: 'features.farmer.expertGuides.description', path: '/farmers/expert-guides', Icon: ICONS.Expert },
-  { titleKey: 'features.farmer.marketPrices.title', descriptionKey: 'features.farmer.marketPrices.description', path: '/farmers/market-prices', Icon: ICONS.Entrepreneur },
+  { path: '/farmers/crop-doctor', titleKey: 'features.farmer.cropDoctor.title', descriptionKey: 'features.farmer.cropDoctor.description', Icon: ICONS.SOS },
+  { path: '/farmers/direct-market', titleKey: 'features.farmer.marketAccess.title', descriptionKey: 'features.farmer.marketAccess.description', Icon: ICONS.Entrepreneur },
+  { path: '/farmers/fertilizer-optimizer', titleKey: 'features.farmer.fertilizer.title', descriptionKey: 'features.farmer.fertilizer.description', Icon: ICONS.Lightbulb },
+  { path: '/farmers/contract-farming', titleKey: 'features.farmer.contractFarming.title', descriptionKey: 'features.farmer.contractFarming.description', Icon: ICONS.Worker },
+  { path: '/farmers/weather-alerts', titleKey: 'features.farmer.weatherAlerts.title', descriptionKey: 'features.farmer.weatherAlerts.description', Icon: ICONS.SOS },
+  { path: '/farmers/crop-recommendation', titleKey: 'features.farmer.cropRecommender.title', descriptionKey: 'features.farmer.cropRecommender.description', Icon: ICONS.Farmer },
+  { path: '/farmers/financial-needs', titleKey: 'features.farmer.financialNeeds.title', descriptionKey: 'features.farmer.financialNeeds.description', Icon: ICONS.MyBharat },
+  { path: '/farmers/expert-guides', titleKey: 'features.farmer.expertGuides.title', descriptionKey: 'features.farmer.expertGuides.description', Icon: ICONS.Student },
+  { path: '/farmers/market-prices', titleKey: 'features.farmer.marketPrices.title', descriptionKey: 'features.farmer.marketPrices.description', Icon: ICONS.Services },
 ];
-
 
 export const CATEGORIZED_SCHEMES = [
     {
         categoryKey: 'data.schemes.incomeSupport.category',
         schemes: [
-            {
-                title: 'Pradhan Mantri Kisan Samman Nidhi (PM-KISAN)',
-                benefitKey: 'data.schemes.incomeSupport.pmkisan.benefit',
-                eligibilityKey: 'data.schemes.incomeSupport.pmkisan.eligibility',
-                applyProcessKeys: [
-                    'data.schemes.incomeSupport.pmkisan.apply1',
-                    'data.schemes.incomeSupport.pmkisan.apply2',
-                    'data.schemes.incomeSupport.pmkisan.apply3',
-                    'data.schemes.incomeSupport.pmkisan.apply4',
-                ],
-                link: 'https://pmkisan.gov.in/'
-            },
-            {
-                title: 'Kisan Credit Card (KCC)',
-                benefitKey: 'data.schemes.incomeSupport.kcc.benefit',
-                eligibilityKey: 'data.schemes.incomeSupport.kcc.eligibility',
-                applyProcessKeys: [
-                    'data.schemes.incomeSupport.kcc.apply1',
-                    'data.schemes.incomeSupport.kcc.apply2',
-                    'data.schemes.incomeSupport.kcc.apply3',
-                ],
-                link: 'https://www.sbi.co.in/web/agri-rural/agriculture-banking/crop-finance/kisan-credit-card'
-            }
-        ]
+            { title: 'PM-KISAN', benefitKey: 'data.schemes.incomeSupport.pmkisan.benefit', eligibilityKey: 'data.schemes.incomeSupport.pmkisan.eligibility', applyProcessKeys: ['data.schemes.incomeSupport.pmkisan.apply1', 'data.schemes.incomeSupport.pmkisan.apply2', 'data.schemes.incomeSupport.pmkisan.apply3', 'data.schemes.incomeSupport.pmkisan.apply4'], link: 'https://pmkisan.gov.in/' },
+            { title: 'Kisan Credit Card (KCC)', benefitKey: 'data.schemes.incomeSupport.kcc.benefit', eligibilityKey: 'data.schemes.incomeSupport.kcc.eligibility', applyProcessKeys: ['data.schemes.incomeSupport.kcc.apply1', 'data.schemes.incomeSupport.kcc.apply2', 'data.schemes.incomeSupport.kcc.apply3'], link: 'https://www.sbi.co.in/web/agri-rural/agriculture-banking/crop-loan/kisan-credit-card' },
+        ],
     },
     {
         categoryKey: 'data.schemes.cropInsurance.category',
         schemes: [
-            {
-                title: 'Pradhan Mantri Fasal Bima Yojana (PMFBY)',
-                benefitKey: 'data.schemes.cropInsurance.pmfby.benefit',
-                eligibilityKey: 'data.schemes.cropInsurance.pmfby.eligibility',
-                applyProcessKeys: [
-                    'data.schemes.cropInsurance.pmfby.apply1',
-                    'data.schemes.cropInsurance.pmfby.apply2',
-                    'data.schemes.cropInsurance.pmfby.apply3',
-                ],
-                link: 'https://pmfby.gov.in/'
-            }
-        ]
+            { title: 'Pradhan Mantri Fasal Bima Yojana (PMFBY)', benefitKey: 'data.schemes.cropInsurance.pmfby.benefit', eligibilityKey: 'data.schemes.cropInsurance.pmfby.eligibility', applyProcessKeys: ['data.schemes.cropInsurance.pmfby.apply1', 'data.schemes.cropInsurance.pmfby.apply2', 'data.schemes.cropInsurance.pmfby.apply3'], link: 'https://pmfby.gov.in/' },
+        ],
     },
     {
         categoryKey: 'data.schemes.fertilizers.category',
         schemes: [
-            {
-                title: 'Soil Health Card Scheme',
-                benefitKey: 'data.schemes.fertilizers.soilHealth.benefit',
-                eligibilityKey: 'data.schemes.fertilizers.soilHealth.eligibility',
-                applyProcessKeys: [
-                    'data.schemes.fertilizers.soilHealth.apply1',
-                    'data.schemes.fertilizers.soilHealth.apply2',
-                    'data.schemes.fertilizers.soilHealth.apply3',
-                ],
-                link: 'https://soilhealth.dac.gov.in/'
-            },
-            {
-                title: 'Subsidy on Agricultural Machinery (SMAM)',
-                benefitKey: 'data.schemes.fertilizers.smam.benefit',
-                eligibilityKey: 'data.schemes.fertilizers.smam.eligibility',
-                applyProcessKeys: [
-                    'data.schemes.fertilizers.smam.apply1',
-                    'data.schemes.fertilizers.smam.apply2',
-                    'data.schemes.fertilizers.smam.apply3',
-                ],
-                link: 'https://agrimachinery.nic.in/'
-            }
-        ]
-    }
+            { title: 'Soil Health Card', benefitKey: 'data.schemes.fertilizers.soilHealth.benefit', eligibilityKey: 'data.schemes.fertilizers.soilHealth.eligibility', applyProcessKeys: ['data.schemes.fertilizers.soilHealth.apply1', 'data.schemes.fertilizers.soilHealth.apply2', 'data.schemes.fertilizers.soilHealth.apply3'], link: 'https://soilhealth.dac.gov.in/' },
+            { title: 'Sub-Mission on Agricultural Mechanization (SMAM)', benefitKey: 'data.schemes.fertilizers.smam.benefit', eligibilityKey: 'data.schemes.fertilizers.smam.eligibility', applyProcessKeys: ['data.schemes.fertilizers.smam.apply1', 'data.schemes.fertilizers.smam.apply2', 'data.schemes.fertilizers.smam.apply3'], link: 'https://farmech.gov.in/' },
+        ],
+    },
 ];
 
 export const MOCK_PRODUCE_LISTINGS = [
-  { id: 1, name: 'Fresh Tomatoes', price: '₹35 / kg', quantity: '100 kg available', seller: 'Ram Singh', location: 'Nashik, Maharashtra', image: 'https://images.unsplash.com/photo-1582284540020-8acbe03f4924?q=80&w=2070&auto=format&fit=crop' },
-  { id: 2, name: 'Organic Mangoes', price: '₹120 / kg', quantity: '50 kg available', seller: 'Sita Devi', location: 'Anantapur, AP', image: 'https://images.unsplash.com/photo-1591078381907-2c93541887a2?q=80&w=2070&auto=format&fit=crop' },
-  { id: 3, name: 'Basmati Rice', price: '₹80 / kg', quantity: '500 kg available', seller: 'Gurpreet Singh', location: 'Karnal, Haryana', image: 'https://images.unsplash.com/photo-1586512210048-a025ef34ebc2?q=80&w=2070&auto=format&fit=crop' },
-  { id: 4, name: 'Potatoes', price: '₹20 / kg', quantity: '250 kg available', seller: 'Lakshmi Patel', location: 'Indore, MP', image: 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?q=80&w=2070&auto=format&fit=crop' },
+  { id: 1, name: 'Fresh Tomatoes', price: '₹35 / kg', quantity: '50 kg available', seller: 'Ram Singh', location: 'Nashik, Maharashtra', image: 'https://images.unsplash.com/photo-1561155749-d6b9a4a2e499?q=80&w=1974&auto.format&fit=crop' },
+  { id: 2, name: 'Organic Mangoes', price: '₹120 / kg', quantity: '100 kg available', seller: 'Sita Devi', location: 'Anantapur, AP', image: 'https://images.unsplash.com/photo-1591078440058-c2a412a8319f?q=80&w=1974&auto.format&fit=crop' },
+  { id: 3, name: 'Basmati Rice', price: '₹90 / kg', quantity: '500 kg available', seller: 'Gurpreet Singh', location: 'Amritsar, Punjab', image: 'https://images.unsplash.com/photo-1586201375761-83865758e5d3?q=80&w=1974&auto.format&fit=crop' },
+  { id: 4, name: 'Potatoes', price: '₹25 / kg', quantity: '200 kg available', seller: 'M. Reddy', location: 'Chittoor, AP', image: 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?q=80&w=2070&auto=format&fit=crop' },
 ];
 
-// FIX: Added missing properties to the Contract object to match the type definition.
 export const AVAILABLE_CONTRACTS: Contract[] = [
-  { 
-    id: 1, 
-    title: 'Export Quality Basmati Rice', 
-    buyerName: 'Global Grains Pvt. Ltd.', 
-    buyerVerified: true, 
-    crop: 'Basmati Rice',
-    quantity: '100 Tonnes', 
-    price: '₹7,500 / quintal', 
-    timeline: { startDate: '2024-09-01', endDate: '2025-01-30' },
-    status: 'Pending',
-    fullText: 'This agreement is for the supply of 100 tonnes of Grade A export quality Basmati rice. Payment will be made in two installments...',
-    paymentStatus: 'Pending'
-  },
-  { 
-    id: 2, 
-    title: 'Organic Turmeric Supply', 
-    buyerName: 'Healthy Spices Co.', 
-    buyerVerified: true, 
-    crop: 'Turmeric',
-    quantity: '20 Tonnes', 
-    price: '₹8,000 / quintal', 
-    timeline: { startDate: '2024-10-15', endDate: '2025-03-15' },
-    status: 'Pending',
-    fullText: 'Contract for 20 tonnes of certified organic turmeric. Buyer will provide quality testing support.',
-    paymentStatus: 'Pending'
-  },
-  { 
-    id: 3, 
-    title: 'Fresh Mangoes for Pulp', 
-    buyerName: 'Juicy Foods Ltd.', 
-    buyerVerified: false, 
-    crop: 'Mangoes (Totapuri)',
-    quantity: '50 Tonnes', 
-    price: '₹25 / kg', 
-    timeline: { startDate: '2025-05-01', endDate: '2025-06-30' },
-    status: 'Pending',
-    fullText: 'Agreement for the supply of 50 tonnes of Totapuri mangoes suitable for pulp processing.',
-    paymentStatus: 'Pending'
-  },
+  { id: 1, title: 'Corporate Bulk Purchase', buyerName: 'FreshHarvest Pvt. Ltd.', buyerVerified: true, crop: 'High-Grade Tomatoes', quantity: '5 Tons', price: '₹22,000 / Ton', timeline: { startDate: '01 Oct 2024', endDate: '31 Dec 2024' }, status: 'Pending', fullText: 'Full contract text here...', paymentStatus: 'Pending' },
+  { id: 2, title: 'Export Quality Mangoes', buyerName: 'Global Fruits Inc.', buyerVerified: true, crop: 'Alphonso Mangoes', quantity: '10 Tons', price: '₹80,000 / Ton', timeline: { startDate: '01 Apr 2025', endDate: '30 Jun 2025' }, status: 'Pending', fullText: 'Full contract text here...', paymentStatus: 'Pending' },
 ];
-
-// START: ADDED MISSING CONSTANTS
 
 export const MY_CONTRACTS: Contract[] = [
-    { 
-        id: 101, 
-        title: 'High-Grade Cotton Supply', 
-        buyerName: 'National Textiles', 
-        buyerVerified: true, 
-        crop: 'Cotton',
-        quantity: '50 Tonnes', 
-        price: '₹6,000 / quintal', 
-        timeline: { startDate: '2024-03-01', endDate: '2024-08-30' },
-        status: 'Active',
-        fullText: 'This is an active contract for 50 tonnes of high-grade cotton. First quality check is due next month.',
-        paymentStatus: 'Pending'
-    },
-    { 
-        id: 102, 
-        title: 'Wheat for Local Mill', 
-        buyerName: 'Annapurna Flour Mill', 
-        buyerVerified: true, 
-        crop: 'Wheat',
-        quantity: '200 Tonnes', 
-        price: '₹2,200 / quintal', 
-        timeline: { startDate: '2024-01-10', endDate: '2024-05-20' },
-        status: 'Completed',
-        fullText: 'Completed contract for 200 tonnes of wheat. Final payment received.',
-        paymentStatus: 'Paid'
-    }
-];
-
-export const MOCK_MARKET_PRICES: MarketPrice[] = [
-  { crop: 'Tomato', price: '₹32 / kg', market: 'Nashik Mandi', trend: 'up' },
-  { crop: 'Onion', price: '₹25 / kg', market: 'Lasalgaon Mandi', trend: 'stable' },
-  { crop: 'Potato', price: '₹20 / kg', market: 'Indore Mandi', trend: 'down' },
-  { crop: 'Wheat', price: '₹2100 / quintal', market: 'Karnal Mandi', trend: 'stable' },
-  { crop: 'Cotton', price: '₹6500 / quintal', market: 'Adilabad Mandi', trend: 'up' },
+  { id: 3, title: 'Organic Wheat Supply', buyerName: 'SafeFoods Retail', buyerVerified: true, crop: 'Organic Wheat', quantity: '2 Tons', price: '₹35,000 / Ton', timeline: { startDate: '15 Aug 2024', endDate: '15 Nov 2024' }, status: 'Active', fullText: 'Full contract text here...', paymentStatus: 'Pending' },
+  { id: 4, title: 'Premium Cotton', buyerName: 'National Textiles', buyerVerified: false, crop: 'Long-staple Cotton', quantity: '5 Tons', price: '₹70,000 / Ton', timeline: { startDate: '01 Jul 2024', endDate: '30 Sep 2024' }, status: 'Harvesting', fullText: 'Full contract text here...', paymentStatus: 'Paid' },
 ];
 
 export const MOCK_EXPERT_GUIDES: ExpertGuide[] = [
-  { id: 1, title: 'Mastering Drip Irrigation', category: 'Water Management', summary: 'Learn how to set up and maintain a drip irrigation system for maximum water efficiency and crop yield.', thumbnail: 'https://images.unsplash.com/photo-1549558729-6d649a35871b?q=80&w=2070&auto=format&fit=crop' },
-  { id: 2, title: 'Organic Pest Control', category: 'Sustainable Farming', summary: 'A complete guide to using natural methods to control pests and diseases without chemical pesticides.', thumbnail: 'https://images.unsplash.com/photo-1621160219148-52758352b027?q=80&w=2070&auto=format&fit=crop' },
-  { id: 3, title: 'Soil Health & Composting', category: 'Soil Management', summary: 'Understand the basics of soil health and how to create nutrient-rich compost at home.', thumbnail: 'https://images.unsplash.com/photo-1617153293838-5a3d5b0d9e9f?q=80&w=2070&auto=format&fit=crop' },
+    { id: 1, title: 'Mastering Drip Irrigation', category: 'Water Management', summary: 'Learn how to set up and maintain a drip irrigation system for maximum water efficiency.', thumbnail: 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?q=80&w=2070&auto.format&fit=crop' },
+    { id: 2, title: 'Organic Pest Control', category: 'Pest Management', summary: 'Discover natural and effective methods to control pests without using harmful chemicals.', thumbnail: 'https://images.unsplash.com/photo-1595088039384-98442524a1b0?q=80&w=2070&auto.format&fit=crop' },
+    { id: 3, title: 'Improving Soil Health', category: 'Soil Management', summary: 'A guide to composting, crop rotation, and other techniques to enrich your soil naturally.', thumbnail: 'https://images.unsplash.com/photo-1553112139-9352e82a3959?q=80&w=1974&auto.format&fit=crop' },
+];
+
+export const MOCK_MARKET_PRICES: MarketPrice[] = [
+    { crop: 'Tomato', price: '₹2,500 / quintal', market: 'Madanapalle', trend: 'up' },
+    { crop: 'Onion', price: '₹1,800 / quintal', market: 'Lasalgaon', trend: 'stable' },
+    { crop: 'Potato', price: '₹1,500 / quintal', market: 'Agra', trend: 'down' },
+    { crop: 'Wheat', price: '₹2,100 / quintal', market: 'Ludhiana', trend: 'stable' },
+];
+
+// --- START OF MISSING DATA ---
+
+// EARNING HUB DATA
+export const EARNING_METHODS: EarningMethod[] = [
+    { title: 'Freelancing', description: 'Offer skills like writing, design, or coding on freelance platforms.', earnings: ['₹500 - ₹5000 per project'], platforms: [{ name: 'Fiverr', link: 'https://www.fiverr.com/' }, { name: 'Upwork', link: 'https://www.upwork.com/' }], videos: [{ title: 'How to Start Freelancing', link: 'https://www.youtube.com/watch?v=RjWaDgp-L4U' }] },
+    { title: 'Content Creation', description: 'Start a YouTube channel, blog, or Instagram page on a topic you love.', earnings: ['Ad Revenue', 'Sponsorships'], platforms: [{ name: 'YouTube', link: 'https://www.youtube.com/' }, { name: 'Instagram', link: 'https://www.instagram.com/' }], videos: [{ title: 'How to Become a Content Creator', link: 'https://www.youtube.com/watch?v=x-w3L-p_qgA' }] },
+    { title: 'Online Tutoring', description: 'Teach subjects you are good at to students online.', earnings: ['₹300 - ₹1000 per hour'], platforms: [{ name: 'Chegg Tutors', link: 'https://www.chegg.com/tutors' }, { name: 'Vedantu', link: 'https://www.vedantu.com/' }], videos: [{ title: 'Online Tutoring Guide', link: 'https://www.youtube.com/watch?v=1t_8_V3-3wA' }] },
+];
+
+export const REFERRAL_APPS: ReferralApp[] = [
+    { name: 'Google Pay', referralEarnings: '₹101 per referral', link: '#' },
+    { name: 'PhonePe', referralEarnings: '₹100 per referral', link: '#' },
+    { name: 'CRED', referralEarnings: '₹750 per referral', link: '#' },
+    { name: 'Upstox', referralEarnings: '₹500 per referral', link: '#' },
+];
+
+export const CASHBACK_APPS: CashbackApp[] = [
+    { name: 'CRED', rewards: ['Cashback on bill payments', 'CRED coins for rewards'], referral: ['₹750 per successful referral'], downloadLink: '#' },
+    { name: 'CashKaro', rewards: ['Cashback on shopping at 1500+ sites'], referral: ['10% of friends\' cashback for life'], downloadLink: '#' },
+];
+
+export const CRYPTO_APPS: CryptoApp[] = [
+    { name: 'WazirX', price: '₹15', marketCap: '₹5B', supply: '325M', predictions: ['Potential for growth in the Indian market'], downloadLink: '#' },
+    { name: 'CoinSwitch Kuber', price: 'N/A', marketCap: 'N/A', supply: 'N/A', predictions: ['User-friendly interface for beginners'], downloadLink: '#' },
+];
+
+export const STUDENT_BANK_ACCOUNTS: StudentBankAccount[] = [
+    { bank: 'Kotak 811', features: ['Zero balance account', 'Virtual Debit Card'], link: '#' },
+    { bank: 'SBI YONO', features: ['Digital account opening', 'Student benefits'], link: '#' },
+];
+
+export const STUDENT_LOANS: StudentLoanOffer[] = [
+    { provider: 'SBI Student Loan', highlights: 'Low interest rates, govt subsidies', link: '#' },
+    { provider: 'HDFC Bank Education Loan', highlights: 'Quick processing, loans up to ₹75 lakh', link: '#' },
+];
+
+export const STUDENT_CARDS: StudentCard[] = [
+    { card: 'Slice Card', features: ['No-cost EMIs', 'Instant cashback'], link: '#' },
+    { card: 'Uni Pay 1/3rd Card', features: ['Pay in 3 parts over 3 months, 0 interest'], link: '#' },
+];
+
+export const STUDENT_DEALS: StudentDeal[] = [
+    { platform: 'UNiDAYS', offer: 'Student discounts on various brands like Apple, Nike', link: '#' },
+    { platform: 'StudentBeans', offer: 'Exclusive deals for students on tech, fashion, and food', link: '#' },
+];
+
+
+// FREE RESOURCES DATA
+export const INDIAN_GOV_PLATFORMS: PlatformInfo[] = [
+    { name: 'SWAYAM', website: '#', about: 'Free online courses from top Indian universities.' },
+    { name: 'NPTEL', website: '#', about: 'Engineering and science video courses by IITs/IISc.' },
+    { name: 'DIKSHA', website: '#', about: 'School curriculum-based resources for teachers and students.' },
+];
+export const GLOBAL_PLATFORMS: PlatformInfo[] = [
+    { name: 'Coursera', website: '#', about: 'Courses from world-class universities and companies.' },
+    { name: 'edX', website: '#', about: 'Free courses from Harvard, MIT, and more.' },
+    { name: 'Khan Academy', website: '#', about: 'Free learning for all subjects, all ages.' },
+];
+export const CODING_PLATFORMS: PlatformInfo[] = [
+    { name: 'freeCodeCamp', website: '#', about: 'Learn to code with free certifications.' },
+    { name: 'LeetCode', website: '#', about: 'Practice coding problems for interviews.' },
+    { name: 'GeeksforGeeks', website: '#', about: 'A computer science portal for geeks.' },
+];
+export const SOFT_SKILLS_PLATFORMS: PlatformInfo[] = [
+    { name: 'TCS iON Career Edge', website: '#', about: '15-day free course on soft skills.' },
+    { name: 'LinkedIn Learning', website: '#', about: 'Free trial for thousands of courses.' },
+];
+export const EXAM_PREP_PLATFORMS: PlatformInfo[] = [
+    { name: 'Unacademy', website: '#', about: 'Free live classes for various competitive exams.' },
+    { name: 'Gradeup', website: '#', about: 'Exam preparation for SSC, Banking, etc.' },
+];
+export const TEACHER_PLATFORMS: PlatformInfo[] = [
+    { name: 'NISHTHA', website: '#', about: 'Teacher training modules by NCERT.' },
+];
+export const JOB_PORTALS: PlatformInfo[] = [
+    { name: 'NCS Portal', website: '#', about: 'National Career Service by Govt. of India.' },
+    { name: 'LinkedIn', website: '#', about: 'Professional networking and job searching.' },
+];
+export const LEARNING_ARTICLES: Article[] = [
+    { id: 1, title: 'How to Learn Effectively', content: 'Use techniques like spaced repetition and active recall.' },
+    { id: 2, title: 'Time Management for Students', content: 'Prioritize tasks using the Eisenhower Matrix.' },
+];
+
+
+// INTERNSHIPS AND PLACEMENTS DATA
+export const INTERNSHIPS: { [key: string]: Internship[] } = {
+    'FAANG & Top MNCs': [
+        { company: 'Google', eligibility: 'B.Tech/M.Tech', period: 'Summer', stipend: '₹80,000+', link: 'https://careers.google.com/students/' },
+        { company: 'Microsoft', eligibility: 'B.Tech/M.Tech', period: 'Summer', stipend: '₹80,000+', link: 'https://careers.microsoft.com/students/us/en/indias-careers' },
+        { company: 'Amazon', eligibility: 'B.Tech/M.Tech', period: 'Summer/Winter', stipend: '₹70,000+', link: 'https://www.amazon.jobs/en/student-programs' },
+    ]
+};
+export const POPULAR_INTERNSHIPS: PopularInternship[] = [
+    { company: 'Microsoft', program: 'Engage Mentorship', eligibility: '2nd Year B.Tech', period: 'Summer', stipend: 'Mentorship', link: '#' },
+    { company: 'Google', program: 'STEP Intern', eligibility: '2nd Year Women in CS', period: 'Summer', stipend: '₹60,000+', link: '#' },
+];
+export const PLACEMENTS: Placement[] = [
+    { company: 'TCS Ninja', link: '#' },
+    { company: 'Infosys', link: '#' },
+    { company: 'Wipro Elite', link: '#' },
+    { company: 'Capgemini', link: '#' },
+];
+
+// SMART APPS DATA
+export const GOVERNMENT_APPS: { [key: string]: SmartApp[] } = {
+    'Digital Identity & Docs': [
+        { name: 'DigiLocker', purpose: 'Digital document wallet', appLink: '#' },
+        { name: 'mAadhaar', purpose: 'Official Aadhaar app', appLink: '#' },
+    ],
+    'Citizen Services': [
+        { name: 'UMANG', purpose: 'All-in-one government services app', appLink: '#' },
+        { name: 'MyGov', purpose: 'Citizen engagement platform', appLink: '#' },
+    ]
+};
+export const UTILITY_APPS: SmartApp[] = [
+    { name: 'Google Pay', purpose: 'UPI Payments & Bill Pay', appLink: '#' },
+    { name: 'Paytm', purpose: 'Digital wallet and payments', appLink: '#' },
+];
+export const EDUCATIONAL_APPS_LIST: SmartApp[] = [
+    { name: 'BYJU\'S', purpose: 'K-12 learning app', appLink: '#' },
+    { name: 'Unacademy', purpose: 'Competitive exam prep', appLink: '#' },
+];
+export const YOUTH_APPS: SmartApp[] = [
+    { name: 'LinkedIn', purpose: 'Professional networking', appLink: '#' },
+    { name: 'Internshala', purpose: 'Internship search', appLink: '#' },
+];
+export const WOMEN_APPS: SmartApp[] = [
+    { name: '112 India', purpose: 'Emergency response app', appLink: '#' },
+    { name: 'Sheroes', purpose: 'Women-only social network', appLink: '#' },
+];
+export const ENVIRONMENT_APPS: SmartApp[] = [
+    { name: 'Sameer', purpose: 'Air quality index monitoring', appLink: '#' },
+];
+
+// --- END OF MISSING DATA ---
+
+export const ALL_APP_ROUTES = [
+  ...NAV_LINKS.map(l => ({ path: l.path, description: `Navigate to ${l.key} page`})),
+  ...SECTIONS.map(s => ({ path: s.path, description: `Navigate to ${s.key} section`})),
+  ...STUDENT_FEATURES.map(f => ({ path: f.path, description: `Navigate to student feature: ${f.titleKey}`})),
+  ...FARMER_FEATURES.map(f => ({ path: f.path, description: `Navigate to farmer feature: ${f.titleKey}`})),
+  { path: '/login', description: 'Navigate to login page' },
+  { path: '/privacy', description: 'Navigate to privacy policy page' }
 ];
 
 export const UPDATE_CATEGORIES = ['All', 'Students', 'Women', 'Farmers', 'Workers', 'Seniors', 'Entrepreneurs', 'General'];
 
 export const MOCK_UPDATES: Update[] = [
-    {
-        id: 1,
-        category: 'General',
-        title: 'New "One Nation, One ID" Program Announced',
-        summary: 'The central government has announced a new initiative to consolidate various citizen IDs into a single digital identity, aimed at simplifying access to services.',
-        date: '2 hours ago',
-        pinned: true,
-        link: '#',
-    },
-    {
-        id: 2,
-        category: 'Students',
-        title: 'National Scholarship Portal (NSP) Deadline Extended to Dec 31st',
-        summary: 'The deadline for applying to various central government scholarships on the NSP has been extended. Students are advised to complete their applications soon.',
-        date: '1 day ago',
-        pinned: true,
-        link: 'https://scholarships.gov.in/',
-    },
-    {
-        id: 3,
-        category: 'Farmers',
-        title: 'PM-KISAN 19th Installment to be Released Next Week',
-        summary: 'The next installment of the Pradhan Mantri Kisan Samman Nidhi (PM-KISAN) scheme will be credited to eligible farmers\' accounts starting next week.',
-        date: '3 days ago',
-        link: '#',
-    },
-    {
-        id: 4,
-        category: 'Women',
-        title: 'New Training Program for Women in Tech Launched',
-        summary: 'The Ministry of Women and Child Development has launched "Tech Shakti," a new program to provide free coding and AI training to 50,000 women across India.',
-        date: '4 days ago',
-        link: '#',
-    },
-    {
-        id: 5,
-        category: 'Workers',
-        title: 'E-Shram Card Holders to Get Additional Insurance Benefits',
-        summary: 'The government has announced an enhancement of insurance coverage under the E-Shram scheme for unorganized sector workers.',
-        date: '5 days ago',
-        link: '#',
-    },
-    {
-        id: 6,
-        category: 'Entrepreneurs',
-        title: 'Startup India Announces "Seed Fund Scheme 2.0"',
-        summary: 'Applications are now open for the second phase of the Startup India Seed Fund Scheme, offering up to ₹50 lakhs for innovative early-stage startups.',
-        date: '1 week ago',
-        link: 'https://www.startupindia.gov.in/',
-    },
-    {
-        id: 7,
-        category: 'Seniors',
-        title: 'Digital Literacy Camps for Senior Citizens to be Held in Major Cities',
-        summary: 'The Ministry of Social Justice and Empowerment will organize camps to help senior citizens learn how to use smartphones and digital payment apps.',
-        date: '1 week ago',
-        link: '#',
-    }
+  { id: 1, category: 'Students', title: 'PM Scholarship Scheme 2024 registration opens', summary: 'The registration for the Prime Minister\'s Scholarship Scheme for the academic year 2024-25 has started. Eligible students can apply on the official portal.', date: '25 Aug 2024', pinned: true, link: '#' },
+  { id: 2, category: 'Farmers', title: 'Government announces increased MSP for Kharif crops', summary: 'The Minimum Support Price for several Kharif crops, including paddy and pulses, has been increased to ensure better returns for farmers.', date: '24 Aug 2024', pinned: true, link: '#' },
+  { id: 3, category: 'General', title: 'Aadhaar-Voter ID linking deadline extended', summary: 'The deadline for linking Aadhaar with Voter ID has been extended to March 31, 2025. Citizens are encouraged to complete the process online.', date: '23 Aug 2024', link: '#' },
+  { id: 4, category: 'Women', title: 'New self-help group (SHG) funding scheme launched', summary: 'A new scheme has been launched to provide low-interest loans and training to women\'s self-help groups across the country.', date: '22 Aug 2024', link: '#' },
 ];
 
 export const OFFER_CATEGORIES = ['All', 'Students', 'Women', 'Farmers', 'Workers', 'Seniors', 'Entrepreneurs', 'General'];
 
 export const MOCK_OFFERS: Offer[] = [
-  {
-    id: 1,
-    category: 'Students',
-    title: 'GitHub Student Developer Pack',
-    provider: 'GitHub Education',
-    description: 'Get free access to over 100 premium developer tools, including Canva Pro, Heroku, Notion, and free domains.',
-    eligibility: 'Verified students aged 13+',
-    redeemMethod: 'Apply with your student ID or college email.',
-    expiry: 'While you are a student',
-    link: 'https://education.github.com/pack',
-    type: 'Freebie',
-  },
-  {
-    id: 2,
-    category: 'Entrepreneurs',
-    title: 'Free AWS Credits for Startups',
-    provider: 'Amazon Web Services',
-    description: 'Get up to $1,000 in free AWS cloud credits for your new startup through the AWS Activate program.',
-    eligibility: 'Early-stage, unfunded startups.',
-    redeemMethod: 'Apply on the AWS Activate portal.',
-    expiry: 'Limited time offer',
-    link: 'https://aws.amazon.com/activate/',
-    type: 'Grant',
-  },
-  {
-    id: 3,
-    category: 'Farmers',
-    title: 'Fertilizer Subsidy under PM-PRANAM',
-    provider: 'Govt. of India',
-    description: 'Receive subsidies on various fertilizers to reduce the cost of farming inputs and promote balanced nutrient application.',
-    eligibility: 'All eligible farmers.',
-    redeemMethod: 'Automatically applied at point of sale via PoS devices.',
-    link: 'https://pib.gov.in/PressReleasePage.aspx?PRID=1936054',
-    type: 'Subsidy',
-  },
-  {
-    id: 4,
-    category: 'Women',
-    title: 'Mudra Yojana Loans for Women Entrepreneurs',
-    provider: 'Govt. of India',
-    description: 'Access collateral-free loans up to ₹10 lakh to start or expand your small business under the Pradhan Mantri Mudra Yojana.',
-    eligibility: 'Women entrepreneurs with a viable business plan.',
-    redeemMethod: 'Apply at your nearest bank or financial institution.',
-    link: 'https://www.mudra.org.in/',
-    type: 'Info',
-  },
-  {
-    id: 5,
-    category: 'Seniors',
-    title: 'Senior Citizen Train Ticket Concession',
-    provider: 'Indian Railways (IRCTC)',
-    description: 'Eligible senior citizens can avail concessions on base fares for all classes of Mail/Express/Rajdhani/Shatabdi/Jan Shatabdi/Duronto group of trains.',
-    eligibility: 'Men aged 60+ and women aged 58+.',
-    redeemMethod: 'Provide proof of age while booking tickets.',
-    link: 'https://indianrailways.gov.in/railwayboard/view_section.jsp?lang=0&id=0,1,304,366,537,1090',
-    type: 'Deal',
-  },
-  {
-    id: 6,
-    category: 'Workers',
-    title: 'Free Skill Training under PMKVY',
-    provider: 'Skill India (PMKVY)',
-    description: 'Enroll in free short-term skill training programs across various sectors to improve employability and earn a government-recognized certificate.',
-    eligibility: 'Indian nationals, especially unemployed youth.',
-    redeemMethod: 'Find and enroll in a training center near you.',
-    link: 'https://www.pmkvyofficial.org/',
-    type: 'Freebie',
-  }
-];
-
-export const STUDENT_FEATURES = [
-  { titleKey: 'features.student.scholarships.title', descriptionKey: 'features.student.scholarships.description', path: '/students/scholarships', Icon: ICONS.Student },
-  { titleKey: 'features.student.resume.title', descriptionKey: 'features.student.resume.description', path: '/students/resume-builder', Icon: ICONS.Trophy },
-  { titleKey: 'features.student.roadmaps.title', descriptionKey: 'features.student.roadmaps.description', path: '/students/career-roadmaps', Icon: ICONS.PersonalizedPath },
-  { titleKey: 'features.student.learningPaths.title', descriptionKey: 'features.student.learningPaths.description', path: '/students/learning-paths', Icon: ICONS.PersonalizedPath },
-  { titleKey: 'features.student.financialManagement.title', descriptionKey: 'features.student.financialManagement.description', path: '/students/financial-management', Icon: ICONS.FinancialManagement },
-  { titleKey: 'features.student.coding.title', descriptionKey: 'features.student.coding.description', path: '/students/coding-toolkit', Icon: ICONS.GitHub },
-  { titleKey: 'features.student.doubtSolver.title', descriptionKey: 'features.student.doubtSolver.description', path: '/students/doubt-solving', Icon: ICONS.Lightbulb },
-  { titleKey: 'features.student.innovation.title', descriptionKey: 'features.student.innovation.description', path: '/students/project-ideas', Icon: ICONS.Upvote },
-  { titleKey: 'features.student.earning.title', descriptionKey: 'features.student.earning.description', path: '/students/earning-hub', Icon: ICONS.EarningChat },
-  { titleKey: 'features.student.smartApps.title', descriptionKey: 'features.student.smartApps.description', path: '/students/smart-apps', Icon: ICONS.GovtApps },
-  { titleKey: 'features.student.freeLearning.title', descriptionKey: 'features.student.freeLearning.description', path: '/students/free-resources', Icon: ICONS.Expert },
-  { titleKey: 'features.student.internships.title', descriptionKey: 'features.student.internships.description', path: '/students/internships-placements', Icon: ICONS.Worker },
-];
-
-export const MOCK_SCHOLARSHIPS: Scholarship[] = [
-    { id: 1, title: 'National Talent Search Examination (NTSE)', provider: 'NCERT', award: '₹1250/month', eligibility: 'Class 10 students', deadline: 'Varies by State', link: 'https://ncert.nic.in/ntse.php' },
-    { id: 2, title: 'INSPIRE Scholarship', provider: 'DST, Govt. of India', award: '₹80,000/year', eligibility: 'Top 1% in Class 12 Boards', deadline: 'Oct 31, 2024', link: 'https://www.online-inspire.gov.in/' },
-    { id: 3, title: 'Reliance Foundation Scholarship', provider: 'Reliance Foundation', award: 'Up to ₹2,00,000', eligibility: 'Meritorious students from all streams', deadline: 'Dec 15, 2024', link: 'https://www.reliancefoundation.org/scholarships' },
+    { id: 1, category: 'Students', title: '50% Off on Student Laptops', provider: 'TechStore', description: 'Get a flat 50% discount on select laptop models with a valid student ID.', eligibility: 'All college students', redeemMethod: 'Use code STUDENT50 at checkout', expiry: '30 Sep 2024', link: '#', type: 'Deal' },
+    { id: 2, category: 'Farmers', title: 'Solar Pump Subsidy', provider: 'Ministry of New & Renewable Energy', description: 'Up to 90% subsidy available for installing solar-powered water pumps under the PM-KUSUM scheme.', eligibility: 'Farmers with agricultural land', redeemMethod: 'Apply through the state energy department portal', link: '#', type: 'Subsidy' },
+    { id: 3, category: 'Women', title: 'Free Skill Development Course', provider: 'National Skill Development Corporation', description: 'Enroll in free certified courses for digital marketing, tailoring, and more.', eligibility: 'All women aged 18-45', redeemMethod: 'Register on the Skill India portal', link: '#', type: 'Freebie' },
 ];
 
 export const MOCK_PROJECTS: Project[] = [
-    { id: 1, title: 'AI-Powered Crop Disease Detection App', description: 'An app that allows farmers to take a picture of a crop and get an instant diagnosis of any diseases, along with treatment advice.', problemStatement: "Farmers in rural areas lack quick access to experts for identifying crop diseases, leading to significant losses.", objectives: "Develop a mobile app with a user-friendly interface. Train a machine learning model to identify at least 10 common crop diseases. Provide actionable treatment suggestions.", technologies: ['Python', 'TensorFlow', 'React Native', 'Firebase'], expectedOutcomes: 'A functional mobile app that can correctly identify crop diseases with over 90% accuracy.', category: 'Agri', fundingNeeded: 50000, votes: 128, status: 'top_voted', team: [{ fullName: 'Riya Sharma', institution: 'IIT Delhi', academicYear: '3rd Year', course: 'Computer Science', email: 'riya@iitd.ac.in', phone: '1234567890' }] },
-    { id: 2, title: 'Hyperlocal Job Portal for Daily Wage Workers', description: 'A platform connecting daily wage laborers (plumbers, electricians, construction workers) with local employers for short-term jobs.', problemStatement: "Unorganized laborers struggle to find consistent work, and local residents find it hard to hire verified workers for small tasks.", objectives: "Create a simple, multilingual web and mobile platform. Implement a rating and verification system. Facilitate payments through UPI.", technologies: ['Node.js', 'React', 'MongoDB', 'Twilio'], expectedOutcomes: "A platform with at least 500 active workers and 1000 users in a pilot city within 6 months.", category: 'Social', fundingNeeded: 80000, votes: 95, status: 'under_review', team: [{ fullName: 'Amit Patel', institution: 'NIT Warangal', academicYear: 'Final Year', course: 'Civil Engineering', email: 'amit@nitw.ac.in', phone: '1234567890' }] },
-    { id: 3, title: 'Low-Cost Water Purifier for Rural Homes', description: 'A sustainable and affordable water purification system using locally sourced materials like sand, charcoal, and clay.', problemStatement: "Access to clean drinking water is a major challenge in many villages, causing health issues.", objectives: "Design a filter that removes common impurities and bacteria. Make the design open-source and easy to build. Distribute the first 100 units for free.", technologies: ['Material Science', 'Basic Filtration', 'Community Outreach'], expectedOutcomes: "A proven design that provides potable water and a plan for community-led manufacturing.", category: 'Health', fundingNeeded: 120000, votes: 210, status: 'funded', team: [{ fullName: 'Sunita Singh', institution: 'IISc Bangalore', academicYear: '2nd Year', course: 'Environmental Science', email: 'sunita@iisc.ac.in', phone: '1234567890' }] },
+    { id: 1, title: 'AI-Powered Crop Disease Detector', description: 'A mobile app that uses machine learning to identify crop diseases from a photo, providing instant treatment advice to farmers.', problemStatement: 'Lack of timely access to expert advice for crop diseases.', objectives: 'Develop an accurate ML model and an easy-to-use mobile app.', technologies: ['Python', 'TensorFlow', 'React Native'], expectedOutcomes: 'Reduced crop loss and increased yield for small farmers.', category: 'Agri', fundingNeeded: 50000, votes: 128, status: 'top_voted', team: [{ fullName: 'Riya Sharma', institution: 'IIT Bombay', academicYear: '3rd Year', course: 'CSE', email: 'riya@iitb.ac.in', phone: '1234567890' }] },
+    { id: 2, title: 'Hyperlocal Job Portal for Daily Wage Workers', description: 'A platform connecting daily wage laborers with local employers for short-term jobs, ensuring fair wages and verified opportunities.', problemStatement: 'Difficulty for laborers to find consistent work.', objectives: 'Create a simple, location-based job matching system.', technologies: ['Node.js', 'React', 'MongoDB', 'Maps API'], expectedOutcomes: 'Increased income and job security for unorganized workers.', category: 'Social', fundingNeeded: 75000, votes: 95, status: 'under_review', team: [{ fullName: 'Arjun Verma', institution: 'NIT Warangal', academicYear: 'Final Year', course: 'ECE', email: 'arjun@nitw.ac.in', phone: '1234567890' }] },
+    { id: 3, title: 'Smart Medicine Reminder for Seniors', description: 'An IoT device and app that reminds senior citizens to take their medication on time, with alerts sent to family members.', problemStatement: 'Seniors often forget to take their medications on schedule.', objectives: 'Build a reliable IoT device and a user-friendly app.', technologies: ['Arduino', 'Flutter', 'Firebase'], expectedOutcomes: 'Improved health management for the elderly.', category: 'Health', fundingNeeded: 120000, votes: 210, status: 'funded', team: [{ fullName: 'Priya Patel', institution: 'VIT Vellore', academicYear: '2nd Year', course: 'IT', email: 'priya@vit.ac.in', phone: '1234567890' }] },
 ];
 
 export const REFERRAL_PARTNERS = [
-  { name: 'Startup India', logo: 'https://upload.wikimedia.org/wikipedia/en/thumb/3/3b/Startup_India_Logo.svg/1200px-Startup_India_Logo.svg.png' },
-  { name: 'NASSCOM', logo: 'https://www.nasscom.in/sites/default/files/Nasscom-logo.png' },
-  { name: 'TiE', logo: 'https://tie.org/wp-content/uploads/2021/01/logo.png' },
+  { name: 'NASSCOM', logo: 'https://via.placeholder.com/120x40?text=NASSCOM' },
+  { name: 'T-Hub', logo: 'https://via.placeholder.com/120x40?text=T-Hub' },
+  { name: 'Invest India', logo: 'https://via.placeholder.com/120x40?text=Invest+India' },
 ];
-
-export const EARNING_METHODS: EarningMethod[] = [
-    {
-        title: 'Start a YouTube Channel',
-        description: 'Make videos on coding, college life, finance, reviews, or tutorials.',
-        earnings: ['Google Ads', 'Affiliate links', 'Brand Sponsorships'],
-        tools: [
-            { name: 'YouTube Studio', link: 'https://studio.youtube.com/' },
-            { name: 'Canva', link: 'https://www.canva.com/' },
-            { name: 'CapCut', link: 'https://www.capcut.com/' }
-        ],
-        videos: [
-            { title: 'How to Start a YouTube Channel – Beginner Guide', link: '#' },
-            { title: 'How Much YouTube Paid Me for 1M Views', link: '#' }
-        ]
-    },
-    {
-        title: 'Sell Digital Products',
-        description: 'Sell PDFs, resumes, templates, planners, coding projects, or notes.',
-        earnings: [],
-        platforms: [
-            { name: 'Gumroad', link: 'https://gumroad.com/' },
-            { name: 'Sellfy', link: 'https://sellfy.com/' },
-            { name: 'Notion Templates', link: 'https://notionmarketplace.com/' }
-        ],
-        videos: [
-            { title: 'How to Make Money Selling Digital Products', link: '#' },
-            { title: 'Earn Money Selling Notion Templates', link: '#' }
-        ]
-    },
-    {
-        title: 'Affiliate Marketing',
-        description: 'Promote apps, courses, or products and earn a commission per sale.',
-        earnings: [],
-        programs: [
-            { name: 'Amazon Affiliate', link: 'https://affiliate-program.amazon.in/' },
-            { name: 'Coursera Affiliate', link: '#' }
-        ],
-        videos: [
-            { title: 'Affiliate Marketing for Beginners', link: '#' },
-            { title: 'Earn ₹50,000/Month With Affiliate Marketing', link: '#' }
-        ]
-    },
-    {
-        title: 'Print on Demand',
-        description: 'Design t-shirts, mugs, etc. No inventory needed!',
-        earnings: [],
-        platforms: [
-            { name: 'Redbubble', link: 'https://www.redbubble.com/' },
-            { name: 'Teespring', link: 'https://www.teespring.com/' }
-        ],
-        videos: [
-            { title: 'Redbubble Beginner Guide', link: '#' },
-            { title: 'Print-on-Demand Full Guide', link: '#' }
-        ]
-    },
-     {
-        title: 'Blogging / Website',
-        description: 'Write on tech, career tips, tutorials, college hacks.',
-        earnings: [],
-        platforms: [
-            { name: 'WordPress', link: 'https://wordpress.com/' },
-            { name: 'Blogger', link: 'https://www.blogger.com/about/' }
-        ],
-        videos: [
-            { title: 'Start a Blog for Free', link: '#' },
-            { title: '5 Ways Blogs Make Money', link: '#' }
-        ]
-    },
-    {
-        title: 'Invest in Stocks or Mutual Funds',
-        description: 'Start with small amounts & earn long-term growth or dividends.',
-        earnings: [],
-        apps: [
-            { name: 'Groww', link: 'https://groww.in/' },
-            { name: 'Zerodha', link: 'https://zerodha.com/' },
-            { name: 'Kuvera', link: 'https://kuvera.in/' }
-        ],
-        videos: [
-            { title: 'Mutual Funds for Beginners', link: '#' },
-            { title: 'Invest in Stocks as a Student', link: '#' }
-        ]
-    },
-];
-export const CASHBACK_APPS: CashbackApp[] = [
-    { name: 'Navi UPI', rewards: ['Users often get opportunities to earn rewards or cashback whenever they make payments', 'Pay any bill over ₹200 (mobile, electricity, credit card), and you\'ll get ₹25 back.'], referral: ['₹100 per referral (limited time offer)', 'Average cashback of ₹2–4 per UPI transaction'], downloadLink: 'https://r.navi.com/fjI4KB', referralLink: 'https://r.navi.com/fjI4KB' },
-    { name: 'Super.money', rewards: ['Provides real cashback on every UPI merchant payment, advertised up to 5%', '₹1–₹5 per transaction, especially on low-value transfers', 'Engaging rewards like Super Drop, Meme Money, and Raffle events'], referral: ['New users typically get a fixed cashback reward — around ₹11 per referral', 'The app limits each user to share up to 10 memes/day'], downloadLink: 'https://link.super.money/gUX04VXK5Pb', referralLink: 'https://link.super.money/gUX04VXK5Pb' },
-    { name: 'MobiKwik', rewards: ['Cashback is credited as SuperCash, which can be used for bill payments or recharges', 'Offers on mobile recharge, electronics, travel bookings and more'], referral: ['You and your friend each get ₹100 SuperCash once your friend adds ₹50 or more', 'Earning limit: up to ₹5,000 SuperCash per month'], downloadLink: 'https://sak38.app.goo.gl/nNJuvJUCbT3eA63w8', referralLink: 'https://sak38.app.goo.gl/nNJuvJUCbT3eA63w8' },
-    { name: 'Pawns.app', rewards: ['Bandwidth sharing: Around $0.20–$0.80 per GB shared', 'Surveys: Around $0.25 to $2 per survey', 'Monthly total (realistic): $5–$30'], referral: [], downloadLink: 'https://discoverpawns.eu/14983216', referralLink: 'https://discoverpawns.eu/14983216' },
-    { name: 'BHIM App', rewards: ['₹100 cashback for first-time users (complete 3 transactions of ₹50+)', 'Merchant Cashback: ₹50–₹500 per month based on volume', 'Festival & Event Offers', 'QR Scan Bonus at partner stores'], referral: ['Invite friends to use BHIM App', 'Earn ₹25–₹50 per successful referral'], downloadLink: 'https://bhimnpci.page.link/app', referralLink: 'https://bhimnpci.page.link/app' },
-];
-export const CRYPTO_APPS: CryptoApp[] = [
-    { name: 'PI COIN', price: '~$0.444 USD per PI', marketCap: '~$3.5 billion', supply: '~7.7 billion PI', predictions: ['CoinCodex: $0.34–$0.67 by 2026, $0.91–$2.81 by 2028', 'CoinPedia: $0.85–$3.50 in 2026, $5.50–$22.00 by 2030'], downloadLink: 'https://minepi.com/Rupesh9502' },
-    { name: 'Sidra Chain', price: '~$3.31 × 10⁻¹¹ USD', marketCap: '~$2,230', supply: '~1.00 billion tokens', predictions: [], downloadLink: 'https://www.sidrachain.com/u/rupesh9502' },
-    { name: 'Interlink', price: '~$0.000758 USD', marketCap: '~$74,500', supply: '~98.39 million INTL', predictions: [], downloadLink: 'https://interlinklabs.ai/referral?refCode=7997401678' },
-    { name: 'Bee Coin', price: '~$0.000024 USD', marketCap: '~$24,000', supply: '~999.9 million BEE', predictions: [], downloadLink: 'https://j.bee.com/s?a=rupesh9502' },
-    { name: 'Sweatcoin', price: '~$0.0027 per token', marketCap: '$18–$20 million', supply: '~7.2–7.7 billion SWEAT', predictions: ['CoinCodex predicts SWEAT may slide to $0.0016–$0.0024 by mid 2025'], downloadLink: '#' },
-];
-export const STUDENT_BANK_ACCOUNTS: StudentBankAccount[] = [
-    { bank: 'ICICI Bank Campus Power', features: ['Zero balance', 'Free debit card, insurance', 'Special education loan rates', 'Discounts on coaching, gadgets'], link: 'https://www.icicibank.com/personal-banking/accounts/campus-power-account' },
-    { bank: 'SBI Student Plus Account', features: ['Linked with Education Loan', 'Global debit card', 'Waived minimum balance'], link: 'https://sbi.co.in/web/personal-banking/accounts/saving-account/student-plus-savings-bank-account' },
-    { bank: 'Kotak 811 Edge', features: ['₹0 balance requirement (with 811 Lite)', 'Virtual debit card', 'Easy KYC from home'], link: 'https://www.kotak.com/en/digital-banking/811.html' },
-    { bank: 'HDFC DigiSave Youth Account', features: ['For age 18–25', 'Zero balance + rewards', 'SmartBuy discounts, Amazon vouchers'], link: 'https://www.hdfcbank.com/personal/save/accounts/savings-accounts/digisave-youth-account' },
-    { bank: 'Airtel Axis Bank Digital Savings', features: ['₹0 balance with 4% interest', 'Digital onboarding', 'Free virtual card'], link: 'https://www.airtel.in/bank/open-account' },
-];
-export const REFERRAL_APPS: ReferralApp[] = [
-    { name: 'CashKaro', referralEarnings: '₹150–₹500', link: '#' },
-    { name: 'Cred', referralEarnings: '₹100–₹500', link: '#' },
-    { name: 'Groww', referralEarnings: '₹25–₹100', link: '#' },
-    { name: 'Upstox', referralEarnings: '₹200–₹1200', link: '#' },
-];
-export const STUDENT_LOANS: StudentLoanOffer[] = [
-    { provider: 'SBI Education Loan', highlights: 'Up to ₹7.5 lakh (no collateral), interest ~8.15%, 0.5% female concession', link: 'https://sbi.co.in/web/personal-banking/loans/education-loans' },
-    { provider: 'Bank of Baroda', highlights: 'Up to ₹80 lakh (domestic & abroad), flexible EMI, BOB Vidya scheme', link: 'https://www.bankofbaroda.in/personal-banking/loans/education-loan' },
-    { provider: 'HDFC Credila', highlights: 'Custom EMI, flexible moratorium, fast approval', link: 'https://www.hdfccredila.com/' },
-    { provider: 'Govt. Credit Scheme (CSIS/GSCCS)', highlights: 'Interest subsidy up to ₹15 lakh loans', link: 'https://www.myscheme.gov.in/schemes/gsccs' },
-];
-export const STUDENT_CARDS: StudentCard[] = [
-    { card: 'IDFC FIRST WoW Card', features: ['No income required', 'FD-backed', 'zero fees'], link: 'https://www.idfcfirstbank.com/credit-card/wow/student' },
-    { card: 'Kotak 811 DreamDifferent', features: ['FD-based', 'free forever'], link: 'https://www.kotak.com/en/credit-card/811-dream-different.html' },
-    { card: 'SBI Student Plus', features: ['Linked to education loan', 'reward points'], link: 'https://www.sbicard.com/en/personal/credit-cards/student/sbi-student-plus-advantage-card.page' },
-];
-export const STUDENT_DEALS: StudentDeal[] = [
-    { platform: 'BookMyForex - Student Special', offer: '₹7,500 cashback on forex card, ₹15,000 cashback on overseas tuition fee transfers, Zero markup fees', link: 'https://www.bookmyforex.com/student-card' },
-    { platform: 'Apple India Back to School', offer: 'Free AirPods/Magic Keyboard with Mac/iPad', link: '#' },
-    { platform: 'Amazon Prime Student', offer: '6-month trial + ₹500 off', link: 'https://www.amazon.in/amazonprime?ref_=nav_cs_primelink_nonmember' },
-    { platform: 'GitHub Student Pack', offer: 'Free domain, Canva, Replit, coding tools', link: 'https://education.github.com/pack' },
-    { platform: 'LinkedIn Premium', offer: 'Free for 1 month with resume tools, courses', link: '#' },
-];
-export const INDIAN_GOV_PLATFORMS: PlatformInfo[] = [ /* Indian gov platforms data */ ];
-export const GLOBAL_PLATFORMS: PlatformInfo[] = [ /* Global platforms data */ ];
-export const CODING_PLATFORMS: PlatformInfo[] = [ /* Coding platforms data */ ];
-export const SOFT_SKILLS_PLATFORMS: PlatformInfo[] = [ /* Soft skills platforms data */ ];
-export const EXAM_PREP_PLATFORMS: PlatformInfo[] = [ /* Exam prep platforms data */ ];
-export const TEACHER_PLATFORMS: PlatformInfo[] = [ /* Teacher platforms data */ ];
-export const JOB_PORTALS: PlatformInfo[] = [ /* Job portals data */ ];
-export const LEARNING_ARTICLES: Article[] = [ /* Learning articles data */ ];
-export const GOVERNMENT_APPS: Record<string, SmartApp[]> = { /* Government apps data */ };
-export const UTILITY_APPS: SmartApp[] = [ /* Utility apps data */ ];
-export const EDUCATIONAL_APPS_LIST: SmartApp[] = [ /* Educational apps data */ ];
-export const YOUTH_APPS: SmartApp[] = [ /* Youth apps data */ ];
-export const WOMEN_APPS: SmartApp[] = [ /* Women apps data */ ];
-export const ENVIRONMENT_APPS: SmartApp[] = [ /* Environment apps data */ ];
-export const INTERNSHIPS: Record<string, any[]> = { /* Internships data */ };
-export const POPULAR_INTERNSHIPS: any[] = [ /* Popular internships data */ ];
-export const PLACEMENTS: any[] = [ /* Placements data */ ];
-
-const studentFeatureRoutes = STUDENT_FEATURES.map(f => ({ path: f.path, title: f.titleKey.split('.').pop() || '', description: f.descriptionKey.split('.').pop() || '' }));
-const farmerFeatureRoutes = FARMER_FEATURES.map(f => ({ path: f.path, title: f.titleKey.split('.').pop() || '', description: f.descriptionKey.split('.').pop() || '' }));
-
-export const ALL_APP_ROUTES = [
-    { path: '/', title: 'Home', description: 'The main landing page with an overview of all sections.' },
-    { path: '/updates', title: 'Updates', description: 'Latest news and announcements about government schemes and services.' },
-    { path: '/offers', title: 'Offers', description: 'Find deals, subsidies, grants, and exclusive offers.' },
-    { path: '/login', title: 'Login', description: 'Log in to your Voice of Bharat account.' },
-    { path: '/students', title: 'Students', description: 'A hub for students with tools for scholarships, resume building, and career guidance.' },
-    { path: '/women-empowerment', title: 'Women Empowerment', description: 'Resources and schemes for women\'s safety, health, and financial independence.' },
-    { path: '/farmers', title: 'Farmers', description: 'Tools and information for farmers, including crop management, market prices, and schemes.' },
-    { path: '/workers', title: 'Workers', description: 'A portal for laborers to find jobs, understand their rights, and access social security.' },
-    { path: '/senior-citizens', title: 'Senior Citizens', description: 'Information on pension schemes, healthcare, and services for senior citizens.' },
-    { path: '/entrepreneurs', title: 'Entrepreneurs', description: 'A guide for starting and growing a business, with resources on funding and legalities.' },
-    { path: '/about', title: 'About Us', description: 'Learn about the mission and team behind Voice of Bharat.' },
-    { path: '/contact', title: 'Contact Us', description: 'Get in touch with the Voice of Bharat team for support or inquiries.' },
-    { path: '/privacy', title: 'Privacy Policy', description: 'Read our privacy policy to understand how we handle your data.' },
-    ...studentFeatureRoutes.map(f => ({ ...f, description: `Student tool for ${f.description}` })),
-    ...farmerFeatureRoutes.map(f => ({ ...f, description: `Farmer tool for ${f.description}` })),
-];
-// END: ADDED MISSING CONSTANTS

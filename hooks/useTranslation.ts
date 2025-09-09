@@ -4,8 +4,6 @@ import { translations } from '../i18n/locales';
 export const useTranslation = () => {
     const { language } = useLanguage();
 
-    // FIX: Updated `t` function to accept an optional `options` object for string interpolation.
-    // This allows replacing placeholders like `{year}` in translation strings.
     const t = (key: string, options?: { [key: string]: string | number }): string => {
         const keys = key.split('.');
         

@@ -1,6 +1,4 @@
-
 import React, { useState } from 'react';
-// FIX: Renamed InvestmentGuide component to avoid conflict with the imported type. The type is used here.
 import type { BudgetPlan, LoanAnalysis, InvestmentGuide } from '../types';
 import { generateBudgetPlan, analyzeStudentLoan, generateInvestmentGuide } from '../services/geminiService';
 import BackButton from '../components/BackButton';
@@ -243,7 +241,6 @@ const InvestmentGuideTool: React.FC = () => {
                             {guide.nextSteps.map((step, i) => <li key={i}>{step}</li>)}
                         </ul>
                     </div>
-                     {/* FIX: Completed truncated code and added disclaimer display. */}
                      <div className="p-4 bg-yellow-50 border border-yellow-300 text-yellow-800 rounded-lg text-sm">
                         <h5 className="font-bold">Disclaimer</h5>
                         <p>{guide.disclaimer}</p>
@@ -287,5 +284,4 @@ const FinancialManagementPage: React.FC = () => {
     );
 };
 
-// FIX: Added default export for the component.
 export default FinancialManagementPage;

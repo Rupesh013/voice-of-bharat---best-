@@ -8,14 +8,18 @@ const LoginPage: React.FC = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const [notification, setNotification] = useState('');
 
     const handleLogin = (e: React.FormEvent) => {
         e.preventDefault();
         setError('');
+        setNotification('');
         // Mock login validation for demonstration
         if (email === 'user@example.com' && password === 'password') {
-            alert('Login successful! Redirecting to homepage...');
-            navigate('/');
+            setNotification('Login successful! Redirecting to homepage...');
+            setTimeout(() => {
+                navigate('/');
+            }, 2000);
         } else {
             setError('Invalid email or password. Use user@example.com and password.');
         }
@@ -23,7 +27,11 @@ const LoginPage: React.FC = () => {
 
     const handleLinkClick = (e: React.MouseEvent, feature: string) => {
         e.preventDefault();
-        alert(`${feature} feature is coming soon!`);
+        setError('');
+        setNotification(`${feature} feature is coming soon!`);
+        setTimeout(() => {
+            setNotification('');
+        }, 4000); // Hide notification after 4 seconds
     };
 
     return (
@@ -69,9 +77,16 @@ const LoginPage: React.FC = () => {
                             />
                         </div>
                     </div>
-
+                    
                     {error && (
-                        <p className="text-sm text-red-600 text-center">{error}</p>
+                        <div className="text-center p-3 rounded-md bg-red-100 text-red-800 text-sm" role="alert">
+                            {error}
+                        </div>
+                    )}
+                    {notification && !error && (
+                        <div className={`text-center p-3 rounded-md text-sm ${notification.includes('successful') ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800'}`} role="alert">
+                            {notification}
+                        </div>
                     )}
 
                     <div className="flex items-center justify-end">
@@ -108,6 +123,7 @@ const LoginPage: React.FC = () => {
                 <div>
                     <button
                         type="button"
+                        onClick={(e) => handleLinkClick(e, 'Google Login')}
                         className="w-full inline-flex justify-center py-3 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50"
                     >
                          <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 48 48">

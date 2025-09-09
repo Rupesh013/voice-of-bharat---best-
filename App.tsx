@@ -36,9 +36,11 @@ import LearningPathsPage from './pages/LearningPathsPage';
 import FinancialManagementPage from './pages/FinancialManagementPage';
 import VoiceControl from './components/VoiceControl';
 import { LanguageProvider } from './contexts/LanguageContext';
-import UpdatesPage from './pages/UpdatesPage';
-import OffersPage from './pages/OffersPage';
+import NewsAndOffersPage from './pages/NewsAndOffersPage';
 import LoginPage from './pages/LoginPage';
+import HealthcarePage from './pages/HealthcarePage';
+import MyBharatPage from './pages/MyBharatPage';
+import ServicesPage from './pages/ServicesPage';
 
 const AppLayout: React.FC = () => {
   const location = useLocation();
@@ -52,9 +54,10 @@ const AppLayout: React.FC = () => {
       <main className="flex-grow">
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/updates" element={<UpdatesPage />} />
-          <Route path="/offers" element={<OffersPage />} />
+          <Route path="/news-and-offers" element={<NewsAndOffersPage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/my-bharat" element={<MyBharatPage />} />
+          <Route path="/services" element={<ServicesPage />} />
           <Route path="/students" element={<StudentsPage />} />
           <Route path="/students/scholarships" element={<ScholarshipsPage />} />
           <Route path="/students/resume-builder" element={<ResumeBuilderPage />} />
@@ -82,6 +85,7 @@ const AppLayout: React.FC = () => {
           <Route path="/farmers/expert-guides" element={<ExpertGuidesPage />} />
           <Route path="/farmers/market-prices" element={<MarketPricesPage />} />
           <Route path="/entrepreneurs" element={<EntrepreneursPage />} />
+          <Route path="/healthcare" element={<HealthcarePage />} />
           <Route path="/about" element={<AboutUsPage />} />
           <Route path="/contact" element={<ContactUsPage />} />
           <Route path="/privacy" element={<PrivacyPolicyPage />} />

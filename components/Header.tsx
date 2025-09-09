@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { NAV_LINKS } from '../constants';
 import { useTranslation } from '../hooks/useTranslation';
-// FIX: Module '"../contexts/LanguageContext"' declares 'Language' locally, but it is not exported. The `Language` type should be imported from `../types` instead.
 import { useLanguage } from '../contexts/LanguageContext';
 import type { Language } from '../types';
 
