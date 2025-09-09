@@ -67,11 +67,11 @@ const MyBharatPage: React.FC = () => {
 
     return (
         <div className="min-h-screen bg-gray-100">
-            <section className="bg-gray-800 text-white py-20 text-center" style={{backgroundImage: "url('https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=2070&auto.format&fit=crop')"}}>
-                 <div className="absolute inset-0 bg-black opacity-60"></div>
+            <section className="relative bg-gray-800 text-white py-20 text-center" style={{backgroundImage: "url('https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=2070&auto.format&fit=crop')"}}>
+                 <div className="absolute inset-0 bg-black opacity-50"></div>
                 <div className="container mx-auto px-6 relative z-10">
-                    <h1 className="text-4xl md:text-5xl font-bold">My Bharat Dashboard</h1>
-                    <p className="mt-4 text-lg text-gray-300 max-w-2xl mx-auto">
+                    <h1 className="text-4xl md:text-5xl font-bold" style={{ textShadow: '0 2px 4px rgba(0,0,0,0.7)' }}>My Bharat Dashboard</h1>
+                    <p className="mt-4 text-lg text-gray-200 max-w-2xl mx-auto" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.7)' }}>
                         Your personal space to manage documents, track applications, and access services.
                     </p>
                 </div>
