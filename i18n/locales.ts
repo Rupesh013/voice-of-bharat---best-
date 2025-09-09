@@ -575,13 +575,244 @@ export const translations = {
               "title": "Chatbot Support",
               "description": "Ask questions in plain language like 'How to get pension?' and get instant help."
             },
-// Fix: Corrected shorthand property to a key-value pair and closed all parent objects.
             forum: {
               "title": "Q&A Forum",
               "description": "Connect with other workers, ask questions, and share experiences."
             }
         }
+      },
+       healthcare: {
+            heroTitle: 'Health & Wellness Hub',
+            heroSubtitle: 'Your trusted source for health information, scheme access, and wellness support.',
+            accordion: {
+                schemes: { title: "Government Health Schemes" },
+                services: { title: "Digital Health Services" },
+                nutrition: { title: "Nutrition & Wellness" },
+                diseases: { title: "Disease Information Center" },
+                emergency: { title: "Emergency Helplines" }
+            },
+            schemes: {
+                ai: {
+                    title: "AI Scheme Finder",
+                    description: "Describe your needs to find relevant health schemes.",
+                    placeholder: "e.g., I need insurance for my family",
+                    button: "Find Schemes",
+                    loading: "Searching...",
+                    resultsTitle: "Recommended Health Schemes:"
+                },
+                ayushman: "Ayushman Bharat (PM-JAY)",
+                janAushadhi: "Pradhan Mantri Bhartiya Janaushadhi Pariyojana (PMBJP)",
+                nhm: "National Health Mission",
+                rashtriyaBal: "Rashtriya Bal Swasthya Karyakram (RBSK)"
+            },
+            services: {
+                abha: "ABHA Health ID Card",
+                nhp: "National Health Portal",
+                practo: "Practo (Doctor Booking)",
+                blood: "eRaktKosh (Blood Bank)"
+            },
+            nutrition: {
+                ai: {
+                    title: "AI Nutrition Advisor",
+                    placeholder: "e.g., What is a balanced diet?",
+                    button: "Get Advice",
+                    loading: "Getting info...",
+                    resultsTitle: "AI Nutrition Advisor:"
+                },
+                poshan: "POSHAN Abhiyaan",
+                eatRight: "Eat Right India",
+                mentalHealth: "NIMHANS (Mental Health)"
+            },
+            diseases: {
+                search: {
+                    title: "Search for Disease Information",
+                    placeholder: "e.g., Diabetes, Tuberculosis",
+                    button: "Search",
+                    loading: "Fetching Info..."
+                },
+                categories: {
+                    infectious: 'Common Infectious Diseases',
+                    nonInfectious: 'Common Non-Infectious Diseases',
+                    degenerative: 'Degenerative Diseases',
+                    genetic: 'Genetic Diseases',
+                    deficiency: 'Deficiency Diseases',
+                    pathological: 'Pathological Diseases',
+                    topographical: 'Topographical Diseases'
+                },
+                results: {
+                    title: "Information on",
+                    symptoms: 'Symptoms',
+                    causes: 'Causes',
+                    diagnosis: 'Diagnosis',
+                    treatment: 'Treatment',
+                    prevention: 'Prevention',
+                    medications: 'Medications',
+                    disclaimer: "DISCLAIMER: This information is for educational purposes only. Always consult a qualified doctor for medical advice and treatment."
+                }
+            },
+            emergency: {
+                ambulance: "Ambulance: 108/102",
+                healthHelpline: "Health Helpline: 104",
+                emergency: "National Emergency: 112"
+            }
+        }
+    },
+    components: {
+        backButton: {
+            back: 'Back'
+        },
+        schemeAccordion: {
+            recommended: 'Recommended',
+            eligibility: 'Eligibility',
+            howToApply: 'How to Apply',
+            visitPortal: 'Visit Official Portal'
+        },
+        addProduceModal: {
+            title: 'List Your Produce',
+            name: 'Produce Name',
+            description: 'Description',
+            generate: 'Generate with AI',
+            generating: 'Generating...',
+            quantity: 'Quantity',
+            price: 'Price per Unit (e.g., /kg)',
+            suggest: 'Suggest Price',
+            suggesting: 'Suggesting...',
+            image: 'Upload Image',
+            cancel: 'Cancel',
+            add: 'Add Produce'
+        },
+        contractCard: {
+            verified: 'Verified Buyer',
+            by: 'By',
+            crop: 'Crop:',
+            quantity: 'Quantity:',
+            price: 'Price:',
+            view: 'View & Apply'
+        },
+        contractDetailModal: {
+            analyzing: 'Analyzing...',
+            simplify: 'Simplify with AI',
+            summary: 'AI Summary',
+            close: 'Close',
+            apply: 'Apply for Contract'
+        },
+        contractStatusCard: {
+            status: {
+                Pending: 'Pending',
+                Active: 'Active',
+                Harvesting: 'Harvesting',
+                Completed: 'Completed',
+                Disputed: 'Disputed'
+            },
+            steps: {
+                Active: 'Active',
+                Harvesting: 'Harvesting',
+                Completed: 'Completed'
+            },
+            with: 'with',
+            view: 'View Details',
+            contact: 'Contact Buyer',
+            report: 'Report Issue'
+        },
+        marketAssistant: {
+            greeting: "Welcome to Farm Connect! I'm your AI assistant. I can help you write a good description for your produce or suggest a fair price.",
+            title: 'Market Assistant',
+            placeholder: 'Ask for listing help...',
+            send: 'Send',
+            sending: '...'
+        },
+        produceCard: {
+            seller: 'Seller:',
+            buyNow: 'Buy Now',
+            contactSeller: 'Contact Seller'
+        },
+        scholarshipCard: {
+            award: 'Award',
+            eligibility: 'Eligibility',
+            deadline: 'Deadline',
+            applyNow: 'Apply Now'
+        }
+    },
+    features: {
+      student: {
+        scholarships: { title: 'Scholarships & Coaching', description: 'Find scholarships, coaching, and study abroad resources.' },
+        resume: { title: 'AI Resume Builder', description: 'Create a professional resume and cover letter in minutes with AI.' },
+        roadmaps: { title: 'AI Career Roadmaps', description: 'Get a personalized step-by-step guide to your dream career.' },
+        learningPaths: { title: 'AI Learning Paths', description: 'Create a custom study plan with the best free resources.' },
+        financialManagement: { title: 'Financial Management', description: 'AI tools for budgeting, loan analysis, and investment guidance.' },
+        coding: { title: 'Coding & Development Toolkit', description: 'Master LeetCode, GitHub, and essential developer tools.' },
+        doubtSolver: { title: 'Doubt Solving', description: 'Get instant AI-powered solutions or ask expert mentors.' },
+        innovation: { title: 'Innovation Portal', description: 'Submit project ideas, get community feedback, and find funding.' },
+        earning: { title: 'Student Earning Hub', description: 'Discover ways to earn, save, and invest while studying.' },
+        smartApps: { title: 'Smart App Directory', description: 'A curated list of essential government and utility apps.' },
+        freeLearning: { title: 'Free Learning Hub', description: 'Access India\'s largest directory of free educational resources.' },
+        internships: { title: 'Internships & Placements', description: 'Find top internships and prepare for placement drives.' }
+      },
+      farmer: {
+        cropDoctor: { title: 'AI Crop Doctor', description: 'Upload a photo to instantly diagnose crop diseases and pests.' },
+        marketAccess: { title: 'Direct Market Access', description: 'Sell your produce directly to buyers, eliminating middlemen.' },
+        fertilizer: { title: 'AI Fertilizer Optimizer', description: 'Get a custom fertilizer plan for your specific crop and soil.' },
+        contractFarming: { title: 'Contract Farming', description: 'Secure your income with verified and transparent contracts.' },
+        weatherAlerts: { title: 'AI Weather Alerts', description: 'Receive hyper-local weather forecasts and crop advisories.' },
+        cropRecommender: { title: 'AI Crop Recommender', description: 'Discover the most profitable crops for your land.' },
+        financialNeeds: { title: 'Financial Needs Advisor', description: 'Find suitable loans, insurance, and government schemes.' },
+        expertGuides: { title: 'Expert Farming Guides', description: 'Access a knowledge base and an AI expert for farming queries.' },
+        marketPrices: { title: 'Market Price Intelligence', description: 'Track live mandi prices and get AI-powered selling advice.' }
       }
+    },
+    data: {
+        schemes: {
+            incomeSupport: {
+                category: 'Income Support & Credit',
+                pmkisan: {
+                    benefit: '₹6,000 per year direct income support',
+                    eligibility: 'All landholding farmer families',
+                    apply1: 'Visit PM-KISAN official portal.',
+                    apply2: 'Click on "New Farmer Registration".',
+                    apply3: 'Enter Aadhaar number and fill the form.',
+                    apply4: 'Upload land documents and submit.'
+                },
+                kcc: {
+                    benefit: 'Short-term credit for cultivation, post-harvest expenses, etc.',
+                    eligibility: 'Farmers, oral lessees, sharecroppers',
+                    apply1: 'Visit your nearest bank branch.',
+                    apply2: 'Fill the KCC application form.',
+                    apply3: 'Submit land documents, identity and address proof.'
+                }
+            },
+            cropInsurance: {
+                category: 'Crop Insurance',
+                pmfby: {
+                    benefit: 'Insurance coverage against crop failure due to natural calamities',
+                    eligibility: 'All farmers including sharecroppers and tenant farmers',
+                    apply1: 'Contact your nearest bank, insurance company, or CSC.',
+                    apply2: 'Provide details of the crop sown and land records.',
+                    apply3: 'Pay the premium amount.'
+                }
+            },
+            fertilizers: {
+                category: 'Fertilizers & Mechanization',
+                soilHealth: {
+                    benefit: 'Get a detailed report of your soil\'s nutrient status',
+                    eligibility: 'All farmers',
+                    apply1: 'Contact the local agriculture department or Krishi Vigyan Kendra.',
+                    apply2: 'They will collect soil samples from your field.',
+                    apply3: 'Receive the Soil Health Card with recommendations.'
+                },
+                smam: {
+                    benefit: 'Subsidy on purchase of agricultural machinery and equipment',
+                    eligibility: 'Individual farmers, SHGs, Co-operative Societies',
+                    apply1: 'Visit the state agriculture department portal.',
+                    apply2: 'Register as a farmer.',
+                    apply3: 'Apply for the desired machinery with required documents.'
+                }
+            }
+        }
+    },
+    footer: {
+        tagline: 'Empowering Every Voice of Bharat.',
+        privacy: 'Privacy Policy',
+        copyright: '© {year} Voice of Bharat. All rights reserved.'
     }
   }
 };

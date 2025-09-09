@@ -2,6 +2,23 @@ import React from 'react';
 
 export type Language = 'en' | 'hi' | 'te' | 'ta' | 'ur' | 'bn' | 'mr' | 'gu' | 'kn' | 'or' | 'ml';
 
+export interface UserProfile {
+    fullName: string;
+    email: string;
+    phone: string;
+    dateOfBirth: string; // YYYY-MM-DD for date input
+    address: {
+        street: string;
+        city: string;
+        state: string;
+        pincode: string;
+    };
+    language: Language;
+    occupation: 'Student' | 'Farmer' | 'Worker' | 'Entrepreneur' | 'Senior Citizen' | 'Other';
+    annualIncome: '< ₹1 Lakh' | '₹1-3 Lakh' | '₹3-5 Lakh' | '₹5-10 Lakh' | '> ₹10 Lakh';
+    profilePictureUrl?: string;
+}
+
 export interface VoiceCommandResult {
   action: 'navigate' | 'speak' | 'fill_input' | 'change_language' | 'unknown';
   path: string;

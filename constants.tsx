@@ -161,6 +161,11 @@ export const ICONS = {
       <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
     </svg>
   ),
+  Save: (props: React.SVGProps<SVGSVGElement>) => (
+    <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+    </svg>
+  ),
 };
 
 export const SECTIONS = [
@@ -402,6 +407,7 @@ export const ALL_APP_ROUTES = [
   ...STUDENT_FEATURES.map(f => ({ path: f.path, description: `Navigate to student feature: ${f.titleKey}`})),
   ...FARMER_FEATURES.map(f => ({ path: f.path, description: `Navigate to farmer feature: ${f.titleKey}`})),
   { path: '/login', description: 'Navigate to login page' },
+  { path: '/profile', description: 'Navigate to user profile page' },
   { path: '/privacy', description: 'Navigate to privacy policy page' }
 ];
 

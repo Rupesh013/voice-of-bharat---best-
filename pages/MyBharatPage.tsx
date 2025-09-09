@@ -68,7 +68,7 @@ const MyBharatPage: React.FC = () => {
     return (
         <div className="min-h-screen bg-gray-100">
             <section className="relative bg-gray-800 text-white py-20 text-center" style={{backgroundImage: "url('https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=2070&auto.format&fit=crop')"}}>
-                 <div className="absolute inset-0 bg-black opacity-50"></div>
+                 <div className="absolute inset-0 bg-black opacity-60"></div>
                 <div className="container mx-auto px-6 relative z-10">
                     <h1 className="text-4xl md:text-5xl font-bold" style={{ textShadow: '0 2px 4px rgba(0,0,0,0.7)' }}>My Bharat Dashboard</h1>
                     <p className="mt-4 text-lg text-gray-200 max-w-2xl mx-auto" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.7)' }}>
@@ -147,7 +147,7 @@ const MyBharatPage: React.FC = () => {
                                 <ICONS.DigiLocker className="w-6 h-6 text-gray-500 group-hover:text-orange-600"/>
                                 <span className="ml-3 font-semibold text-gray-800">Connect DigiLocker</span>
                            </Link>
-                           <Link to="#" className="flex items-center p-3 bg-gray-50 rounded-md hover:bg-orange-50 transition-colors group">
+                           <Link to="/profile" className="flex items-center p-3 bg-gray-50 rounded-md hover:bg-orange-50 transition-colors group">
                                 <ICONS.Settings className="w-6 h-6 text-gray-500 group-hover:text-orange-600"/>
                                 <span className="ml-3 font-semibold text-gray-800">Profile Settings</span>
                            </Link>
