@@ -1,7 +1,7 @@
 
 
-import { GoogleGenAI, Type } from "@google/genai";
-import type { ChatMessage, CropDiagnosis, FertilizerRecommendation, SchemeRecommendation, WeatherAlert, CropRecommendation, FinancialProduct, MarketPrice, ResumeData, CareerRoadmap, LearningPath, BudgetPlan, LoanAnalysis, InvestmentGuide, JobSearchParams, Job, WageInfo, AIUpdateResult, GroundingSource, AIOfferResult, VoiceCommandResult, DiseaseInfo, NewsArticle, CategorizedOffer, PortalInfo, ServiceProvider, LegalAnalysisResult, UserProfile, JeevanChakraSuggestions, CivicIssueAnalysis } from '../types';
+import { GoogleGenAI, Type, Chat } from "@google/genai";
+import type { ChatMessage, CropDiagnosis, FertilizerRecommendation, SchemeRecommendation, WeatherAlert, CropRecommendation, FinancialProduct, MarketPrice, ResumeData, CareerRoadmap, LearningPath, BudgetPlan, LoanAnalysis, InvestmentGuide, JobSearchParams, Job, WageInfo, AIUpdateResult, GroundingSource, AIOfferResult, VoiceCommandResult, DiseaseInfo, NewsArticle, CategorizedOffer, PortalInfo, ServiceProvider, LegalAnalysisResult, UserProfile, JeevanChakraSuggestions, CivicIssueAnalysis, CareerPathResult, InterviewConfig, InterviewReport, FitnessPlan } from '../types';
 import { ALL_APP_ROUTES, ICONS } from '../constants';
 
 if (!process.env.API_KEY) {
@@ -1356,4 +1356,194 @@ export async function analyzeCivicIssue(base64Image: string, mimeType: string, d
     console.error("Error analyzing civic issue:", error);
     throw new Error("Failed to analyze the civic issue with AI. The image might be unclear or the issue unrecognizable.");
   }
+}
+
+export async function generateCareerPath(profile: UserProfile, dreamJob: string): Promise<CareerPathResult> {
+    const systemInstruction = `You are an expert AI Career Co-Pilot for Indian citizens. Your goal is to provide a comprehensive, actionable, and encouraging career roadmap. You must heavily prioritize free and government-provided resources like SWAYAM, NPTEL, and Skill India Portal.`;
+
+    const prompt = `
+        Based on the user's profile and their dream job, generate a complete career path.
+        User Profile: ${JSON.stringify(profile, null, 2)}
+        Dream Job: "${dreamJob}"
+
+        Follow these steps:
+        1.  **Skill Gap Analysis**: Compare the user's listed skills with the typical skills required for the dream job in India. Clearly list what they have and what they need to learn.
+        2.  **Personalized Learning Path**: Create a step-by-step learning plan to acquire the "gap skills". For each step, suggest specific, FREE resources, prioritizing Indian government portals (SWAYAM, NPTEL, DIKSHA, Skill India). Also include high-quality YouTube or article links.
+        3.  **Interview Preparation**: List 5-7 common technical and HR interview questions for this role in India.
+        4.  **Job Matching**: Use Google Search to find 3-4 current, real job listings for this role in India. Provide the title, company, location, and a direct link.
+    `;
+
+    const responseSchema = {
+        type: Type.OBJECT,
+        properties: {
+            roadmapTitle: { type: Type.STRING, description: `A motivational title, e.g., "Your AI-Powered Roadmap to Becoming a ${dreamJob}"` },
+            summary: { type: Type.STRING, description: "A brief, encouraging summary of the career path." },
+            skillAnalysis: {
+                type: Type.OBJECT,
+                properties: {
+                    requiredSkills: { type: Type.ARRAY, items: { type: Type.STRING } },
+                    userSkills: { type: Type.ARRAY, items: { type: Type.STRING } },
+                    gapSkills: { type: Type.ARRAY, items: { type: Type.STRING } }
+                },
+                required: ["requiredSkills", "userSkills", "gapSkills"]
+            },
+            learningPath: {
+                type: Type.ARRAY,
+                items: {
+                    type: Type.OBJECT,
+                    properties: {
+                        step: { type: Type.NUMBER },
+                        title: { type: Type.STRING },
+                        description: { type: Type.STRING },
+                        duration: { type: Type.STRING },
+                        resources: {
+                            type: Type.ARRAY,
+                            items: {
+                                type: Type.OBJECT,
+                                properties: {
+                                    name: { type: Type.STRING },
+                                    link: { type: Type.STRING },
+                                    type: { type: Type.STRING, enum: ['Govt. Free Course', 'Video', 'Article', 'Practice'] }
+                                },
+                                required: ["name", "link", "type"]
+                            }
+                        }
+                    },
+                    required: ["step", "title", "description", "duration", "resources"]
+                }
+            },
+            interviewQuestions: { type: Type.ARRAY, items: { type: Type.STRING } },
+            suggestedJobs: {
+                type: Type.ARRAY,
+                items: {
+                    type: Type.OBJECT,
+                    properties: {
+                        title: { type: Type.STRING },
+                        company: { type: Type.STRING },
+                        location: { type: Type.STRING },
+                        link: { type: Type.STRING },
+                        wage: { type: Type.STRING }, // Added for consistency
+                        type: { type: Type.STRING }, // Added for consistency
+                        contact: { type: Type.STRING }, // Added for consistency
+                    },
+                    required: ["title", "company", "location", "link"]
+                }
+            }
+        },
+        required: ["roadmapTitle", "summary", "skillAnalysis", "learningPath", "interviewQuestions", "suggestedJobs"]
+    };
+    
+    try {
+        const response = await ai.models.generateContent({
+            model,
+            contents: prompt,
+            config: {
+                systemInstruction,
+                responseMimeType: "application/json",
+                responseSchema,
+                tools: [{ googleSearch: {} }],
+            }
+        });
+        return parseGeminiJson(response.text);
+    } catch (error) {
+        console.error("Error generating career path:", error);
+        throw new Error("Failed to generate a personalized career path. Please ensure your profile is up-to-date and try again.");
+    }
+}
+
+export async function generateFitnessPlan(age: string, fitnessLevel: string, goals: string): Promise<FitnessPlan> {
+    const systemInstruction = `You are an AI fitness and wellness coach. Your goal is to provide a safe, encouraging, and practical daily fitness plan for Indian users. IMPORTANT: You are not a medical professional. Every response MUST end with a strong, clear disclaimer.`;
+    
+    const prompt = `
+        Create a personalized daily fitness and wellness plan based on the following user profile:
+        - Age: ${age}
+        - Current Fitness Level: ${fitnessLevel}
+        - Goals: ${goals}
+
+        The plan should be broken down into Morning, Afternoon, and Evening sections with simple, actionable activities. Also, provide a few general diet tips suitable for a healthy Indian lifestyle.
+        The activities should be easy to do at home with minimal equipment.
+        Finally, include a very clear disclaimer that this is not medical advice and a doctor should be consulted before starting any new fitness program.
+        Return the result in the specified JSON format.
+    `;
+    
+    const responseSchema = {
+        type: Type.OBJECT,
+        properties: {
+            summary: { type: Type.STRING, description: "A brief, motivational summary of the plan." },
+            dailyRoutine: {
+                type: Type.OBJECT,
+                properties: {
+                    morning: { type: Type.OBJECT, properties: { title: { type: Type.STRING }, activities: { type: Type.ARRAY, items: { type: Type.STRING } } }, required: ["title", "activities"] },
+                    afternoon: { type: Type.OBJECT, properties: { title: { type: Type.STRING }, activities: { type: Type.ARRAY, items: { type: Type.STRING } } }, required: ["title", "activities"] },
+                    evening: { type: Type.OBJECT, properties: { title: { type: Type.STRING }, activities: { type: Type.ARRAY, items: { type: Type.STRING } } }, required: ["title", "activities"] }
+                },
+                required: ["morning", "afternoon", "evening"]
+            },
+            dietTips: { type: Type.ARRAY, items: { type: Type.STRING }, description: "A list of simple, healthy diet tips." },
+            disclaimer: { type: Type.STRING, description: "A mandatory medical disclaimer." }
+        },
+        required: ["summary", "dailyRoutine", "dietTips", "disclaimer"]
+    };
+
+    try {
+        const response = await ai.models.generateContent({
+            model,
+            contents: prompt,
+            config: {
+                systemInstruction,
+                responseMimeType: "application/json",
+                responseSchema,
+            }
+        });
+        return parseGeminiJson(response.text);
+    } catch (error) {
+        console.error("Error generating fitness plan:", error);
+        throw new Error("Failed to generate a fitness plan. Please try again.");
+    }
+}
+
+export function createInterviewChat(config: InterviewConfig): Chat {
+  const systemInstruction = `You are an AI Interviewer for the "Voice of Bharat" platform. You will conduct a mock interview.
+- The user's goal is: ${config.type}.
+- The difficulty level is: ${config.difficulty}.
+- If a resume is provided, ask questions relevant to their experience and projects.
+
+Your task is to ask one question at a time. After the user answers, you MUST respond in two parts separated by the exact delimiter '|||'.
+1.  The first part is your feedback on the answer. It must be a JSON object with this exact structure: {"feedback": "...", "scores": {"communication": 0-100, "knowledge": 0-100, "confidence": 0-100}, "suggestions": ["...", "..."]}.
+2.  The second part is the next interview question.
+
+Start the interview now by asking the first question directly. Do not add any greetings.`;
+
+  return ai.chats.create({ model, config: { systemInstruction } });
+}
+
+export async function generateInterviewReport(transcript: { question: string; answer: string; }[]): Promise<InterviewReport> {
+    const prompt = `You are an expert AI interview analyst. Analyze the following interview transcript. Provide a detailed performance report in the specified JSON format. The scores and feedback should be constructive and encouraging.
+
+Transcript:
+${JSON.stringify(transcript, null, 2)}
+`;
+    const responseSchema = {
+        type: Type.OBJECT,
+        properties: {
+            overallScore: { type: Type.NUMBER },
+            strengths: { type: Type.ARRAY, items: { type: Type.STRING } },
+            weaknesses: { type: Type.ARRAY, items: { type: Type.STRING } },
+            commonMistakes: { type: Type.ARRAY, items: { type: Type.STRING } },
+            recommendedResources: { type: Type.ARRAY, items: { type: Type.OBJECT, properties: { name: { type: Type.STRING }, link: { type: Type.STRING } } } },
+            transcript: { type: Type.ARRAY, items: { type: Type.OBJECT, properties: { question: { type: Type.STRING }, answer: { type: Type.STRING } } } }
+        },
+        required: ["overallScore", "strengths", "weaknesses", "commonMistakes", "recommendedResources", "transcript"]
+    };
+
+    try {
+        const response = await ai.models.generateContent({ model, contents: prompt, config: { responseMimeType: "application/json", responseSchema } });
+        const parsed = parseGeminiJson(response.text);
+        // Ensure the transcript from the original input is used for consistency
+        parsed.transcript = transcript;
+        return parsed;
+    } catch (error) {
+        console.error("Error generating interview report:", error);
+        throw new Error("Failed to generate the interview report.");
+    }
 }

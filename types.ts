@@ -455,6 +455,7 @@ export interface Job {
   type: 'Daily Wage' | 'Skilled' | 'Full-time' | 'Part-time';
   wage: string;
   contact: string;
+  link: string;
 }
 
 export interface WorkerProfile {
@@ -627,4 +628,73 @@ export interface CivicIssueReport extends CivicIssueAnalysis {
   image: string; // data URL for display
   dateReported: string;
   status: 'Submitted' | 'In Review' | 'Resolved';
+}
+
+// AI Career Co-Pilot Types
+export interface SkillGapAnalysis {
+  requiredSkills: string[];
+  userSkills: string[];
+  gapSkills: string[];
+}
+
+export interface PersonalizedLearningStep {
+  step: number;
+  title: string;
+  description: string;
+  duration: string;
+  resources: {
+    name: string;
+    link: string;
+    type: 'Govt. Free Course' | 'Video' | 'Article' | 'Practice';
+  }[];
+}
+
+export interface CareerPathResult {
+  roadmapTitle: string;
+  summary: string;
+  skillAnalysis: SkillGapAnalysis;
+  learningPath: PersonalizedLearningStep[];
+  interviewQuestions: string[];
+  suggestedJobs: Job[];
+}
+
+// AI Interview Studio Types
+export type InterviewType = 'Campus Placement' | 'Tech Job' | 'MBA' | 'Startup Pitch' | 'Govt. Job';
+export type InterviewDifficulty = 'Beginner' | 'Intermediate' | 'Expert';
+
+export interface InterviewConfig {
+  type: InterviewType;
+  difficulty: InterviewDifficulty;
+  resume?: File;
+}
+
+export interface AnswerFeedback {
+    feedback: string;
+    scores: {
+        communication: number;
+        knowledge: number;
+        confidence: number;
+    };
+    suggestions: string[];
+}
+
+export interface InterviewReport {
+    overallScore: number;
+    strengths: string[];
+    weaknesses: string[];
+    commonMistakes: string[];
+    recommendedResources: { name: string; link: string; }[];
+    transcript: { question: string; answer: string; }[];
+}
+
+// Fitness Hub Types
+export interface FitnessPlan {
+  summary: string;
+  dailyRoutine: {
+    morning: { title: string; activities: string[] };
+    afternoon: { title: string; activities: string[] };
+    evening: { title: string; activities: string[] };
+  };
+  dietTips: string[];
+  disclaimer: string;
 }

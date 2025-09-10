@@ -176,9 +176,25 @@ export const ICONS = {
       <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m0 0v12m0-12L3 15" />
     </svg>
   ),
+  Career: (props: React.SVGProps<SVGSVGElement>) => (
+    <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M15.59 14.37a6 6 0 0 1-5.84 7.38v-4.82m5.84-2.56a16.381 16.381 0 0 0-5.84-2.56m0 0A16.381 16.381 0 0 0 9.75 2.25m0 9.562a16.383 16.383 0 0 1-5.841 2.56m5.841-2.56a16.383 16.383 0 0 1 5.841 2.56m0 0A16.381 16.381 0 0 0 21.75 11.812m0 0A16.381 16.381 0 0 0 15.59 14.37m5.841-2.56a16.383 16.383 0 0 1-5.841-2.56" />
+    </svg>
+  ),
+  Interview: (props: React.SVGProps<SVGSVGElement>) => (
+    <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+    </svg>
+  ),
+  Fitness: (props: React.SVGProps<SVGSVGElement>) => (
+    <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 12h3l3-9 3 18 3-9h3" />
+    </svg>
+  ),
 };
 
 export const SECTIONS = [
+  { key: 'career', path: '/career-copilot', Icon: ICONS.Career },
   { key: 'students', path: '/students', Icon: ICONS.Student },
   { key: 'farmers', path: '/farmers', Icon: ICONS.Farmer },
   { key: 'women', path: '/women-empowerment', Icon: ICONS.Women },
@@ -187,6 +203,7 @@ export const SECTIONS = [
   { key: 'entrepreneurs', path: '/entrepreneurs', Icon: ICONS.Entrepreneur },
   { key: 'nagarPalak', path: '/local-governance', Icon: ICONS.Civic },
   { key: 'healthcare', path: '/healthcare', Icon: ICONS.Shield },
+  { key: 'fitness', path: '/fitness', Icon: ICONS.Fitness },
   { key: 'aiLawyer', path: '/ai-lawyer', Icon: ICONS.Lawyer }
 ];
 
@@ -195,6 +212,7 @@ export const STUDENT_FEATURES = [
     { path: '/students/resume-builder', titleKey: 'features.student.resume.title', descriptionKey: 'features.student.resume.description', Icon: ICONS.Lightbulb },
     { path: '/students/career-roadmaps', titleKey: 'features.student.roadmaps.title', descriptionKey: 'features.student.roadmaps.description', Icon: ICONS.Farmer },
     { path: '/students/learning-paths', titleKey: 'features.student.learningPaths.title', descriptionKey: 'features.student.learningPaths.description', Icon: ICONS.Entrepreneur },
+    { path: '/students/interview-studio', titleKey: 'features.student.interviewStudio.title', descriptionKey: 'features.student.interviewStudio.description', Icon: ICONS.Interview },
     { path: '/students/financial-management', titleKey: 'features.student.financialManagement.title', descriptionKey: 'features.student.financialManagement.description', Icon: ICONS.MyBharat },
     { path: '/students/coding-toolkit', titleKey: 'features.student.coding.title', descriptionKey: 'features.student.coding.description', Icon: ICONS.Services },
     { path: '/students/doubt-solving', titleKey: 'features.student.doubtSolver.title', descriptionKey: 'features.student.doubtSolver.description', Icon: ICONS.SOS },

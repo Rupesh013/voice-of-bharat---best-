@@ -30,6 +30,10 @@ export const translations = {
       servicesSubtitle: "Tailored resources for every citizen's needs.",
     },
     sections: {
+      career: {
+        title: 'AI Career Co-Pilot',
+        description: 'Get a personalized career roadmap, skill analysis, and AI-powered interview practice.'
+      },
       students: {
         title: 'Students',
         description: 'Scholarships, career guidance, and skill development.',
@@ -62,12 +66,166 @@ export const translations = {
         title: 'Healthcare & Nutrition',
         description: 'General resources for health services and welfare.'
       },
+      fitness: {
+        title: 'AI Fitness & Wellness Hub',
+        description: 'Get personalized fitness plans, yoga guides, and wellness tips powered by AI.'
+      },
       aiLawyer: {
         title: 'AI Lawyer Assistant',
         description: 'Get legal information, remedies, and draft legal documents with AI assistance.'
       }
     },
+    features: {
+        student: {
+            scholarships: { title: "Scholarships & Coaching", description: "Find government and private scholarships for all levels of education." },
+            resume: { title: "AI Resume & Cover Letter", description: "Build a professional resume and cover letter with AI assistance." },
+            roadmaps: { title: "AI Career Roadmaps", description: "Get a personalized, step-by-step guide to your dream career." },
+            learningPaths: { title: "AI Learning Paths", description: "Create a custom study plan with free resources for any skill." },
+            interviewStudio: { title: "AI Interview Studio", description: "Practice mock interviews with an AI and get real-time feedback." },
+            financialManagement: { title: "Financial Management", description: "AI tools for budgeting, loan analysis, and investment guidance." },
+            coding: { title: "Coding & Dev Toolkit", description: "Master essential tools like LeetCode, GitHub, and LinkedIn." },
+            doubtSolver: { title: "24/7 Doubt Solving", description: "Get instant answers to academic questions from our AI tutor." },
+            innovation: { title: "Innovation Hub", description: "Submit your project ideas, get votes, and find funding support." },
+            earning: { title: "Student Earning Hub", description: "Discover ways to earn, save, and invest while you study." },
+            smartApps: { title: "Smart App Directory", description: "Find essential government and utility apps all in one place." },
+            freeLearning: { title: "Free Learning Resources", description: "Access a curated list of free courses from top platforms." },
+            internships: { title: "Internships & Placements", description: "A comprehensive guide to finding top internships and jobs." }
+        },
+        farmer: {
+             cropDoctor: { title: "AI Crop Doctor", description: "Upload a photo of your crop to instantly diagnose diseases and get treatment advice." },
+             marketAccess: { title: "Direct Market Access", description: "Sell your produce directly to buyers across the country, eliminating middlemen." },
+             fertilizer: { title: "Fertilizer Optimizer", description: "Get a custom fertilizer plan based on your crop and soil to maximize yield." },
+             contractFarming: { title: "Contract Farming", description: "Secure your income by connecting with companies for contract farming opportunities." },
+             weatherAlerts: { title: "Weather Alerts", description: "Receive hyper-local weather forecasts and AI-powered advisories for your crops." },
+             cropRecommender: { title: "Crop Recommender", description: "Our AI analyzes your land and climate to suggest the most profitable crops." },
+             financialNeeds: { title: "Financial Needs", description: "Find the right loans, insurance, and government schemes for your farm." },
+             expertGuides: { title: "Expert Guides", description: "Access a library of guides on modern farming techniques and best practices." },
+             marketPrices: { title: "Market Prices", description: "Track live mandi prices and get AI insights on the best time to sell." }
+        }
+    },
     pages: {
+      fitness: {
+        heroTitle: "AI Fitness & Wellness Hub",
+        heroSubtitle: "Your personal AI coach for a healthier, more active life. Get personalized plans, yoga guides, and sports tips.",
+        accordion: {
+          aiPlan: { title: "AI Personalized Plan" },
+          sports: { title: "Sports Guide" },
+          yoga: { title: "Yoga & Meditation" },
+          tracker: { title: "Progress Tracker" }
+        },
+        aiPlan: {
+          title: "✨ Get Your AI-Personalized Daily Plan",
+          description: "Answer a few questions to get a custom fitness and wellness routine for your day.",
+          ageLabel: "Your Age",
+          agePlaceholder: "e.g., 25",
+          levelLabel: "Your Current Fitness Level",
+          goalsLabel: "Your Fitness Goals",
+          goalsPlaceholder: "e.g., lose weight, build strength, increase flexibility",
+          button: "Generate My Plan",
+          loading: "Generating Your Plan...",
+          resultsTitle: "Your AI-Generated Fitness Plan",
+          morning: "Morning Routine",
+          afternoon: "Afternoon Activity",
+          evening: "Evening Wind-Down",
+          diet: "Diet & Nutrition Tips",
+          disclaimer: "Disclaimer"
+        },
+        sports: {
+          title: "Learn a New Sport",
+          description: "Basic guides and video tutorials to get you started.",
+          cricket: "Cricket Basics",
+          badminton: "Badminton for Beginners",
+          running: "How to Start Running"
+        },
+        yoga: {
+          title: "Find Your Calm",
+          description: "Explore yoga poses and meditation techniques for a balanced mind and body.",
+          suryaNamaskar: "Surya Namaskar (Sun Salutation)",
+          pranayama: "Pranayama (Breathing)",
+          meditation: "5-Minute Guided Meditation"
+        },
+        tracker: {
+          title: "Track Your Progress",
+          description: "Log your workouts, build streaks, and earn badges to stay motivated.",
+          comingSoon: "Coming Soon!"
+        }
+      },
+      interviewStudio: {
+        heroTitle: "AI Interview Studio",
+        heroSubtitle: "Practice, get feedback, and build the confidence to ace any interview. Your personal AI interview coach is ready.",
+        setup: {
+            title: "Prepare for Your Mock Interview",
+            typeLabel: "Interview Type",
+            difficultyLabel: "Difficulty Level",
+            resumeLabel: "Upload Resume (Optional)",
+            resumeHelp: "AI will ask questions based on your resume.",
+            button: "Start Interview"
+        },
+        active: {
+            question: "Question",
+            yourAnswer: "Your Answer",
+            recordButton: "Record Answer",
+            stopButton: "Stop & Submit",
+            recording: "Recording...",
+            processing: "AI is analyzing your answer...",
+            feedbackTitle: "AI Feedback",
+            scores: {
+                communication: "Communication",
+                knowledge: "Knowledge",
+                confidence: "Confidence"
+            },
+            suggestions: "Suggestions for Improvement",
+            nextQuestion: "Next Question",
+            endButton: "End Interview & Get Report"
+        },
+        report: {
+            generating: "Generating your detailed performance report...",
+            title: "Your Interview Performance Report",
+            download: "Download PDF Report",
+            overallScore: "Overall Score",
+            strengths: "Strengths",
+            weaknesses: "Areas for Improvement",
+            mistakes: "Common Mistakes",
+            resources: "Recommended Resources",
+            transcript: "Interview Transcript",
+            startOver: "Start a New Interview"
+        }
+      },
+      career: {
+        heroTitle: "AI Career & Skilling Co-Pilot",
+        heroSubtitle: "Your personal guide to chart a course from your current skills to your dream job, with AI-powered analysis, learning plans, and interview practice.",
+        form: {
+            title: "Chart Your Career Path",
+            placeholder: "Enter your dream job or field (e.g., Data Analyst, Digital Marketing)",
+            button: "✨ Generate My Path",
+            loading: "Generating Your Personalized Path..."
+        },
+        results: {
+            title: "Your Personalized Roadmap",
+            summary: "AI Summary",
+            skillGap: {
+                title: "Skill Gap Analysis",
+                have: "Skills You Have",
+                need: "Skills You Need",
+                gap: "Skills to Learn"
+            },
+            learningPlan: {
+                title: "Your Personalized Learning Plan",
+                step: "Step",
+                resources: "Key Resources"
+            },
+            interviewPrep: {
+                title: "AI Interview Studio",
+                intro: "Practice these common questions for your target role. Use the voice button to start a mock interview!",
+                start: "Start AI Mock Interview"
+            },
+            jobMatches: {
+                title: "Live Job Opportunities",
+                description: "We found these current job openings that match your career goal:"
+            },
+            error: "Could not generate a career path. Please ensure your profile is up-to-date and try a more specific job title."
+        }
+      },
       localGovernance: {
         heroTitle: "AI Nagar Palak",
         heroSubtitle: "Your AI-powered tool to report local issues and improve your community.",

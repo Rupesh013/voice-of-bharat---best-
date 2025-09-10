@@ -43,6 +43,9 @@ import MyBharatPage from './pages/MyBharatPage';
 import ProfilePage from './pages/ProfilePage';
 import AiLawyerPage from './pages/AiLawyerPage';
 import LocalGovernancePage from './pages/LocalGovernancePage';
+import CareerAndSkillingPage from './pages/CareerAndSkillingPage';
+import AiInterviewStudioPage from './pages/AiInterviewStudioPage';
+import FitnessPage from './pages/FitnessPage';
 
 const AppLayout: React.FC = () => {
   const location = useLocation();
@@ -61,11 +64,13 @@ const AppLayout: React.FC = () => {
           <Route path="/ai-jeevan-chakra" element={<MyBharatPage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/local-governance" element={<LocalGovernancePage />} />
+          <Route path="/career-copilot" element={<CareerAndSkillingPage />} />
           <Route path="/students" element={<StudentsPage />} />
           <Route path="/students/scholarships" element={<ScholarshipsPage />} />
           <Route path="/students/resume-builder" element={<ResumeBuilderPage />} />
           <Route path="/students/career-roadmaps" element={<CareerRoadmapsPage />} />
           <Route path="/students/learning-paths" element={<LearningPathsPage />} />
+          <Route path="/students/interview-studio" element={<AiInterviewStudioPage />} />
           <Route path="/students/financial-management" element={<FinancialManagementPage />} />
           <Route path="/students/coding-toolkit" element={<CodingToolkitPage />} />
           <Route path="/students/doubt-solving" element={<DoubtSolvingPage />} />
@@ -89,6 +94,7 @@ const AppLayout: React.FC = () => {
           <Route path="/farmers/market-prices" element={<MarketPricesPage />} />
           <Route path="/entrepreneurs" element={<EntrepreneursPage />} />
           <Route path="/healthcare" element={<HealthcarePage />} />
+          <Route path="/fitness" element={<FitnessPage />} />
           <Route path="/ai-lawyer" element={<AiLawyerPage />} />
           <Route path="/about" element={<AboutUsPage />} />
           <Route path="/contact" element={<ContactUsPage />} />
