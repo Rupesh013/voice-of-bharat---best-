@@ -171,6 +171,11 @@ export const ICONS = {
       <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v17.25m0 0c-1.472 0-2.882.265-4.185.75M12 20.25c1.472 0 2.882.265 4.185.75M18.75 4.97A48.416 48.416 0 0012 4.5c-2.291 0-4.545.16-6.75.47m13.5 0c1.01.143 2.01.317 3 .52m-3-.52l2.62 10.726c.122.499-.106 1.028-.589 1.202a5.988 5.988 0 01-2.036.243c-2.132 0-4.14-.356-6.032-.998a5.982 5.982 0 01-2.036-.243c-.483-.174-.711-.703-.59-1.202L12 4.5m-6.75.47v.001" />
     </svg>
   ),
+  Civic: (props: React.SVGProps<SVGSVGElement>) => (
+    <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m0 0v12m0-12L3 15" />
+    </svg>
+  ),
 };
 
 export const SECTIONS = [
@@ -180,7 +185,7 @@ export const SECTIONS = [
   { key: 'workers', path: '/workers', Icon: ICONS.Worker },
   { key: 'seniors', path: '/senior-citizens', Icon: ICONS.Senior },
   { key: 'entrepreneurs', path: '/entrepreneurs', Icon: ICONS.Entrepreneur },
-  { key: 'services', path: '/services', Icon: ICONS.Services },
+  { key: 'nagarPalak', path: '/local-governance', Icon: ICONS.Civic },
   { key: 'healthcare', path: '/healthcare', Icon: ICONS.Shield },
   { key: 'aiLawyer', path: '/ai-lawyer', Icon: ICONS.Lawyer }
 ];

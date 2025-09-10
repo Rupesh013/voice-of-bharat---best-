@@ -613,3 +613,18 @@ export interface LegalAnalysisResult {
   generalAdvice: string;
   legalProvisions: string;
 }
+
+// AI Nagar Palak (Civic Guardian) Types
+export interface CivicIssueAnalysis {
+  issueCategory: string;
+  severity: 'Low' | 'Medium' | 'High';
+  draftedComplaint: string;
+}
+
+export interface CivicIssueReport extends CivicIssueAnalysis {
+  id: number;
+  userDescription: string;
+  image: string; // data URL for display
+  dateReported: string;
+  status: 'Submitted' | 'In Review' | 'Resolved';
+}

@@ -40,9 +40,9 @@ import NewsAndOffersPage from './pages/NewsAndOffersPage';
 import LoginPage from './pages/LoginPage';
 import HealthcarePage from './pages/HealthcarePage';
 import MyBharatPage from './pages/MyBharatPage';
-import ServicesPage from './pages/ServicesPage';
 import ProfilePage from './pages/ProfilePage';
 import AiLawyerPage from './pages/AiLawyerPage';
+import LocalGovernancePage from './pages/LocalGovernancePage';
 
 const AppLayout: React.FC = () => {
   const location = useLocation();
@@ -60,7 +60,7 @@ const AppLayout: React.FC = () => {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/ai-jeevan-chakra" element={<MyBharatPage />} />
           <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/services" element={<ServicesPage />} />
+          <Route path="/local-governance" element={<LocalGovernancePage />} />
           <Route path="/students" element={<StudentsPage />} />
           <Route path="/students/scholarships" element={<ScholarshipsPage />} />
           <Route path="/students/resume-builder" element={<ResumeBuilderPage />} />

@@ -131,9 +131,14 @@ const ConnectLawyer: React.FC = () => {
         <div className="text-center">
             <h3 className="text-xl font-bold text-gray-800">{t('pages.aiLawyer.connect.title')}</h3>
             <p className="text-gray-600 my-4 max-w-xl mx-auto">{t('pages.aiLawyer.connect.description')}</p>
-            <a href="https://www.justdial.com/Tirupati/Lawyers/nct-10296083" target="_blank" rel="noopener noreferrer" className="inline-block bg-green-600 text-white font-bold px-8 py-3 rounded-md hover:bg-green-700 transition-transform transform hover:scale-105">
-                {t('pages.aiLawyer.connect.linkText')}
-            </a>
+            <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mt-4">
+                <a href="https://www.justdial.com/Tirupati/Lawyers/nct-10296083" target="_blank" rel="noopener noreferrer" className="inline-block bg-green-600 text-white font-bold px-8 py-3 rounded-md hover:bg-green-700 transition-transform transform hover:scale-105">
+                    {t('pages.aiLawyer.connect.linkText')}
+                </a>
+                <a href="https://lawrato.com/lawyers" target="_blank" rel="noopener noreferrer" className="inline-block bg-blue-600 text-white font-bold px-8 py-3 rounded-md hover:bg-blue-700 transition-transform transform hover:scale-105">
+                    {t('pages.aiLawyer.connect.linkText2')}
+                </a>
+            </div>
         </div>
     );
 };

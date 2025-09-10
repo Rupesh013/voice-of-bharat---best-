@@ -54,9 +54,9 @@ export const translations = {
         title: 'Entrepreneurs',
         description: 'Tools and resources to start and grow your business.',
       },
-      services: {
-        title: 'Civic Services',
-        description: 'Pay bills, file grievances, and find local service providers.',
+      nagarPalak: {
+        title: 'AI Nagar Palak (Civic Guardian)',
+        description: 'Report local issues like potholes or garbage, and track their resolution with AI assistance.',
       },
       healthcare: {
         title: 'Healthcare & Nutrition',
@@ -68,6 +68,62 @@ export const translations = {
       }
     },
     pages: {
+      localGovernance: {
+        heroTitle: "AI Nagar Palak",
+        heroSubtitle: "Your AI-powered tool to report local issues and improve your community.",
+        accordion: {
+          report: { "title": "Report a Civic Issue" },
+          bills: { "title": "Utility Bill Payments" },
+          grievance: { "title": "Grievance Redressal" },
+          seva: { "title": "Seva Connect: Find Local Services" }
+        },
+        bills: {
+          "description": "Pay your electricity, water, gas, and other utility bills online. Use our AI assistant to find the official payment portal for your provider.",
+          "billerPlaceholder": "Biller Name (e.g., TNEB, BWSSB)",
+          "statePlaceholder": "Your State (e.g., Tamil Nadu, Karnataka)",
+          "button": "✨ Find Payment Portal",
+          "loading": "Searching...",
+          "portalFound": "Portal Found:",
+          "goToPortal": "Go to Portal →"
+        },
+        grievance: {
+          "description": "Facing an issue with a government service? Describe your problem, and our AI will help you draft a formal grievance letter.",
+          "placeholder": "Describe your issue in detail. Include department, location, and what happened.",
+          "button": "✨ Draft Grievance with AI",
+          "loading": "Drafting...",
+          "draftTitle": "AI-Generated Grievance Draft",
+          "copyButton": "Copy Text"
+        },
+        seva: {
+          "description": "Need a reliable local service provider? Use our AI-powered search to find electricians, plumbers, mechanics, and more in your area.",
+          "servicePlaceholder": "Service needed (e.g., Electrician, Plumber)",
+          "locationPlaceholder": "Your City or Area (e.g., Koramangala, Bangalore)",
+          "button": "✨ Find Providers",
+          "loading": "Searching..."
+        },
+        reportIssue: {
+            title: "Report a New Issue",
+            description: "Spotted a problem? Take a photo, describe it, and let our AI handle the rest.",
+            uploadLabel: "Upload Photo of the Issue",
+            uploadButton: "Choose Image",
+            descriptionLabel: "Describe the Issue",
+            descriptionPlaceholder: "e.g., 'Large pothole on the main road near the bus stop.'",
+            submitButton: "Analyze & Submit Issue",
+            loading: "Analyzing with AI..."
+        },
+        aiAnalysis: {
+            title: "AI Analysis & Drafted Complaint",
+            category: "Issue Category",
+            severity: "Assessed Severity",
+            complaint: "Drafted Complaint",
+            copyButton: "Copy Complaint",
+            submitToAuthority: "Submit to Authority (Coming Soon)"
+        },
+        myReports: {
+            title: "My Reported Issues",
+            noReports: "You haven't reported any issues yet."
+        }
+      },
       profile: {
         title: "Edit Your Profile",
         subtitle: "Keep your information up to date for better service recommendations.",
@@ -156,7 +212,8 @@ export const translations = {
         connect: {
             title: "Find a Lawyer in Your City",
             description: "The information provided by AI is for educational purposes only and is not a substitute for professional legal advice. Connect with a qualified lawyer for your case.",
-            linkText: "Find Lawyers in Tirupati on Justdial"
+            linkText: "Find Lawyers in Tirupati on Justdial",
+            linkText2: "Find Lawyers on Lawrato"
         },
         disclaimer: "IMPORTANT: The AI Lawyer Assistant provides information for educational purposes only and does not constitute legal advice. You should consult with a qualified legal professional for advice regarding your individual situation."
       },
@@ -264,26 +321,10 @@ export const translations = {
         },
         visionMissionTitle: 'Our Vision & Mission',
         visionTitle: 'Our Vision',
-        visionText: 'To create a digitally inclusive India where every citizen, whether in a remote village or a metro city, can easily access growth opportunities, government schemes, and support services with just their voice.',
+        visionText: 'To create a single, intelligent, and proactive digital companion for every Indian, transforming access to governance, opportunities, and essential services into a seamless, personalized experience.',
         missionTitle: 'Our Mission',
-        missionItems: [
-          'Government schemes and welfare programs',
-          'Scholarships, jobs, and skill training',
-          'Health, pension, and insurance services',
-          'Agricultural tools and support',
-          'Document storage and digital identity tools',
-        ],
+        missionText: 'To integrate all essential citizen services into one AI-driven platform. We aim to empower users with proactive scheme applications, personalized career and financial planning, and instant access to health and civic utilities, all through a simple, voice-first interface.',
         offerTitle: 'What We Offer',
-        offerFeatures: {
-            students: 'Scholarships, career roadmaps, AI resume builder, project funding, internships',
-            farmers: 'PM-KISAN, fertilizer advisory, crop disease detection, direct market access',
-            workers: 'MNREGA, E-Shram, job alerts, insurance, skill development via PMKVY',
-            women: 'SHG support, Ujjwala Yojana, safety apps (Disha), entrepreneurship, financial literacy',
-            seniors: 'Pension schemes, Ayushman Bharat, healthcare and discounts',
-            voice: 'Available in Telugu, Hindi, and English',
-            vault: 'Secure storage of important documents',
-            kiosk: 'Designed for villages and remote users',
-        },
         journeyTitle: 'Our Journey',
         journeyText: '“Voice of Bharat” began as a college project—but has grown into a potential national platform. We hope to collaborate with government bodies, social organizations, and incubators to scale this into a real-world digital transformation tool for every Indian.',
         poweredByTitle: 'Powered By',
@@ -743,7 +784,6 @@ export const translations = {
             Active: 'Active',
             Harvesting: 'Harvesting',
             Completed: 'Completed',
-// FIX: Completed the 'Disputed' property key-value pair.
             Disputed: 'Disputed'
         },
         steps: {

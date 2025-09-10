@@ -1,7 +1,7 @@
 
 
 import { GoogleGenAI, Type } from "@google/genai";
-import type { ChatMessage, CropDiagnosis, FertilizerRecommendation, SchemeRecommendation, WeatherAlert, CropRecommendation, FinancialProduct, MarketPrice, ResumeData, CareerRoadmap, LearningPath, BudgetPlan, LoanAnalysis, InvestmentGuide, JobSearchParams, Job, WageInfo, AIUpdateResult, GroundingSource, AIOfferResult, VoiceCommandResult, DiseaseInfo, NewsArticle, CategorizedOffer, PortalInfo, ServiceProvider, LegalAnalysisResult, UserProfile, JeevanChakraSuggestions } from '../types';
+import type { ChatMessage, CropDiagnosis, FertilizerRecommendation, SchemeRecommendation, WeatherAlert, CropRecommendation, FinancialProduct, MarketPrice, ResumeData, CareerRoadmap, LearningPath, BudgetPlan, LoanAnalysis, InvestmentGuide, JobSearchParams, Job, WageInfo, AIUpdateResult, GroundingSource, AIOfferResult, VoiceCommandResult, DiseaseInfo, NewsArticle, CategorizedOffer, PortalInfo, ServiceProvider, LegalAnalysisResult, UserProfile, JeevanChakraSuggestions, CivicIssueAnalysis } from '../types';
 import { ALL_APP_ROUTES, ICONS } from '../constants';
 
 if (!process.env.API_KEY) {
@@ -1327,4 +1327,33 @@ export async function getJeevanChakraSuggestions(profile: UserProfile): Promise<
         console.error("Error getting Jeevan Chakra suggestions:", error);
         throw new Error("Failed to generate personalized suggestions. Please ensure your profile is complete.");
     }
+}
+
+export async function analyzeCivicIssue(base64Image: string, mimeType: string, description: string): Promise<CivicIssueAnalysis> {
+  const imagePart = { inlineData: { data: base64Image, mimeType } };
+  const textPart = { text: `Analyze the attached image and the user's description of a civic issue in India.
+    User description: "${description}"
+    Based on the image and text, classify the issue into a specific category, suggest a severity level, and draft a formal but simple complaint letter addressed to a generic 'Municipal Corporation'. Return the response in the specified JSON format.` };
+  
+  const responseSchema = {
+    type: Type.OBJECT,
+    properties: {
+      issueCategory: { type: Type.STRING, description: 'e.g., Road Damage, Waste Management, Water Leakage, Streetlight Outage, Public Nuisance' },
+      severity: { type: Type.STRING, enum: ['Low', 'Medium', 'High'], description: 'Assess the severity of the issue.' },
+      draftedComplaint: { type: Type.STRING, description: 'A formal, simple complaint letter based on the user description and image analysis. Include placeholders like [Your Name] and [Date].' },
+    },
+    required: ['issueCategory', 'severity', 'draftedComplaint']
+  };
+
+  try {
+    const response = await ai.models.generateContent({
+      model,
+      contents: { parts: [imagePart, textPart] },
+      config: { responseMimeType: "application/json", responseSchema },
+    });
+    return parseGeminiJson(response.text);
+  } catch (error) {
+    console.error("Error analyzing civic issue:", error);
+    throw new Error("Failed to analyze the civic issue with AI. The image might be unclear or the issue unrecognizable.");
+  }
 }
