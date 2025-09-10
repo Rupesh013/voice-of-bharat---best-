@@ -1,158 +1,235 @@
-import React, { useState, useRef } from 'react';
-import { useTranslation } from '../hooks/useTranslation';
+import React from 'react';
+import { Link }from 'react-router-dom';
 import BackButton from '../components/BackButton';
-import { Link } from 'react-router-dom';
 import { ICONS } from '../constants';
-import type { Document } from '../types';
+import type { LifeMilestone, ProactiveAction, Opportunity, RiskAlert, Document } from '../types';
 
-const initialDocuments: Document[] = [
-    { id: 1, name: 'Aadhaar Card.pdf', type: 'Aadhaar', dateAdded: '15 Aug 2024' },
-    { id: 2, name: 'PAN Card.jpg', type: 'PAN Card', dateAdded: '10 Aug 2024' },
-    { id: 3, name: 'Driving License.pdf', type: 'Driving License', dateAdded: '05 Aug 2024' },
+const mockUserProfile = {
+    fullName: 'Rupesh Reddy',
+    profilePictureUrl: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1976&auto=format&fit=crop'
+};
+
+const mockTimeline: LifeMilestone[] = [
+    { name: 'Secondary Education', date: 'Completed 2020', status: 'completed', description: 'Completed SSC with a focus on science and mathematics.', icon: ICONS.Services },
+    { name: 'Diploma in CSE', date: '2023 - 2026', status: 'current', description: 'Currently in the final year, specializing in AI and full-stack development.', icon: ICONS.Student },
+    { name: 'First Internship', date: 'Predicted: 2025', status: 'upcoming', description: 'AI suggests applying for internships at product-based startups.', icon: ICONS.Worker },
+    { name: 'Graduation', date: 'Predicted: 2026', status: 'upcoming', description: 'Projected to graduate with a first-class distinction.', icon: ICONS.Student },
+    { name: 'First Job', date: 'Predicted: 2026', status: 'upcoming', description: 'Targeting a Software Development Engineer role in a leading tech company.', icon: ICONS.Worker },
 ];
 
-const ApplicationStatusItem: React.FC<{ scheme: string; status: 'Approved' | 'Pending' | 'Rejected'; date: string }> = ({ scheme, status, date }) => {
-    const statusClasses = {
-        Approved: 'bg-green-100 text-green-800',
-        Pending: 'bg-yellow-100 text-yellow-800',
-        Rejected: 'bg-red-100 text-red-800',
-    };
+const mockNextStep: ProactiveAction = {
+    title: "Your 'Campus to Corporate' plan is ready",
+    description: "Based on your final year status, it's the perfect time to build your placement resume and start applying for top tech internships. We've prepared a checklist for you.",
+    cta: "Start Transition Plan",
+    link: "/students/internships-placements",
+    icon: ICONS.Student,
+};
 
+const mockOpportunities: Opportunity[] = [
+    { category: 'Scheme', title: 'AICTE Pragati Scholarship', description: 'You have a 90% eligibility score for this scholarship for diploma students.', link: '/students/scholarships', icon: ICONS.Trophy },
+    { category: 'Upskilling', title: 'Advanced React Course', description: 'To match your "Full Stack Developer" goal, learning React Hooks is the next step.', link: '/students/learning-paths', icon: ICONS.Lightbulb },
+    { category: 'Job', title: 'Jr. Developer Internship', description: 'A new remote internship at TechCorp matches your Java and Python skills.', link: '/students/internships-placements', icon: ICONS.Worker },
+    { category: 'Financial', title: 'Start a ₹500 SIP', description: 'Your savings pattern allows for a small SIP. Potential corpus in 5 years: ₹35,000.', link: '/students/financial-management', icon: ICONS.EarningChat },
+];
+
+const mockRisks: RiskAlert[] = [
+    { severity: 'Medium', title: 'Skill Gap Identified', description: 'The demand for "Cloud Computing" skills in your desired roles is high. Your profile currently lacks this.', recommendation: 'Start a free course on AWS or Azure.', link: '/students/free-resources', icon: ICONS.Services },
+    { severity: 'Low', title: 'Digital Footprint', description: 'Your public project repositories could be better documented to attract recruiters.', recommendation: 'Update your GitHub READMEs.', link: '/students/coding-toolkit', icon: ICONS.GitHub },
+];
+
+const mockDocuments: Document[] = [
+    { id: 1, name: "Aadhaar Card", type: "Aadhaar", dateAdded: "2023-01-15" },
+    { id: 2, name: "PAN Card", type: "PAN Card", dateAdded: "2023-02-20" },
+    { id: 3, name: "Diploma Certificate", type: "Other", dateAdded: "2023-06-10" }
+];
+
+const LifeTimeline: React.FC = () => {
+    const statusConfig = {
+        completed: { bg: 'bg-green-500', border: 'border-green-600', text: 'text-green-700' },
+        current: { bg: 'bg-orange-500', border: 'border-orange-600', text: 'text-orange-700' },
+        upcoming: { bg: 'bg-gray-400', border: 'border-gray-500', text: 'text-gray-700' },
+    };
+    
     return (
-        <div className="flex justify-between items-center p-3 bg-gray-50 rounded-md">
-            <div>
-                <p className="font-semibold text-gray-900 text-sm">{scheme}</p>
-                <p className="text-xs text-gray-500">Applied on: {date}</p>
-            </div>
-            <span className={`text-xs font-bold px-3 py-1 rounded-full ${statusClasses[status]}`}>
-                {status}
-            </span>
+        <div className="relative border-l-2 border-orange-200 ml-6 pl-10 py-4">
+            {mockTimeline.map((milestone, index) => {
+                const config = statusConfig[milestone.status];
+                return (
+                    <div key={index} className={`relative ${index < mockTimeline.length - 1 ? 'pb-12' : ''}`}>
+                        <div className={`absolute -left-[54px] top-0 w-12 h-12 rounded-full ${config.bg} flex items-center justify-center ring-4 ring-white`}>
+                            <milestone.icon className="w-6 h-6 text-white" />
+                        </div>
+                        <div className="bg-gray-50 p-4 rounded-lg shadow-sm">
+                             <div className="flex justify-between items-center">
+                                <h4 className={`font-bold text-lg ${config.text}`}>{milestone.name}</h4>
+                                <span className="text-xs font-semibold text-gray-500">{milestone.date}</span>
+                            </div>
+                            <p className="text-sm text-gray-600 mt-1">{milestone.description}</p>
+                        </div>
+                    </div>
+                );
+            })}
         </div>
     );
 };
 
-const SidebarCard: React.FC<{ title: string; children: React.ReactNode; }> = ({ title, children }) => (
-    <div className="bg-white p-6 rounded-lg shadow-md">
-        <h2 className="text-xl font-bold text-gray-800 mb-4 pb-2 border-b">{title}</h2>
-        <div className="space-y-4">{children}</div>
+const SarathiNextStep: React.FC<{ action: ProactiveAction }> = ({ action }) => (
+    <div className="bg-gradient-to-br from-orange-500 to-red-500 text-white p-6 rounded-xl shadow-2xl flex flex-col md:flex-row items-center gap-6">
+        <div className="bg-white/20 p-4 rounded-full">
+            <action.icon className="w-12 h-12" />
+        </div>
+        <div className="flex-grow text-center md:text-left">
+            <h2 className="text-2xl font-bold">{action.title}</h2>
+            <p className="mt-2 text-orange-100">{action.description}</p>
+        </div>
+        <Link to={action.link} className="flex-shrink-0 bg-white text-orange-600 font-bold px-6 py-3 rounded-lg hover:bg-orange-100 transition-transform transform hover:scale-105">
+            {action.cta}
+        </Link>
     </div>
 );
 
+const OpportunityCard: React.FC<{ item: Opportunity }> = ({ item }) => (
+    <div className="bg-white p-4 rounded-lg shadow-md border-l-4 border-green-500 hover:shadow-xl transition-shadow duration-300">
+        <div className="flex items-start gap-3">
+            <item.icon className="w-8 h-8 text-green-500 flex-shrink-0 mt-1" />
+            <div>
+                <span className="text-xs font-bold uppercase text-green-700">{item.category}</span>
+                <h4 className="font-semibold text-gray-800">{item.title}</h4>
+                <p className="text-sm text-gray-600 mt-1">{item.description}</p>
+                <Link to={item.link} className="text-sm text-green-600 font-semibold hover:underline mt-2 inline-block">View &rarr;</Link>
+            </div>
+        </div>
+    </div>
+);
+
+const RiskCard: React.FC<{ item: RiskAlert }> = ({ item }) => {
+    const severityClasses = {
+        High: 'border-red-500',
+        Medium: 'border-yellow-500',
+        Low: 'border-blue-500',
+    };
+    const severityText = {
+        High: 'text-red-700',
+        Medium: 'text-yellow-700',
+        Low: 'text-blue-700',
+    }
+    return (
+        <div className={`bg-white p-4 rounded-lg shadow-md border-l-4 ${severityClasses[item.severity]} hover:shadow-xl transition-shadow duration-300`}>
+            <div className="flex items-start gap-3">
+                <item.icon className={`w-8 h-8 ${severityText[item.severity]} flex-shrink-0 mt-1`} />
+                <div>
+                    <span className={`text-xs font-bold uppercase ${severityText[item.severity]}`}>{item.severity} Risk</span>
+                    <h4 className="font-semibold text-gray-800">{item.title}</h4>
+                    <p className="text-sm text-gray-600 mt-1">{item.description}</p>
+                    <p className="text-sm text-gray-800 font-medium mt-2 bg-gray-100 p-2 rounded">Recommendation: {item.recommendation}</p>
+                    <Link to={item.link} className={`text-sm ${severityText[item.severity]} font-semibold hover:underline mt-2 inline-block`}>Take Action &rarr;</Link>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+const DigiSarathiVault: React.FC = () => (
+    <div className="bg-white p-6 rounded-lg shadow-lg">
+        <div className="flex flex-col sm:flex-row justify-between sm:items-center mb-4 gap-4">
+            <h2 className="text-2xl font-bold text-gray-800 flex items-center gap-3">
+                <ICONS.DigiLocker className="w-8 h-8 text-blue-500" />
+                My Digi-Sarathi Vault
+            </h2>
+            <button className="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white text-sm font-semibold rounded-md hover:bg-blue-600 transition">
+                <ICONS.Upload className="w-4 h-4" />
+                Upload Document
+            </button>
+        </div>
+        <div className="space-y-3">
+            {mockDocuments.map(doc => (
+                <div key={doc.id} className="bg-gray-50 p-3 rounded-md flex justify-between items-center">
+                    <div className="flex items-center gap-3">
+                        <ICONS.Document className="w-6 h-6 text-gray-500" />
+                        <div>
+                            <p className="font-semibold text-gray-800">{doc.name}</p>
+                            <p className="text-xs text-gray-500">Type: {doc.type} | Added: {doc.dateAdded}</p>
+                        </div>
+                    </div>
+                    <div className="flex items-center gap-3">
+                         <button onClick={() => alert(`Viewing ${doc.name}`)} className="p-2 text-gray-500 hover:text-blue-600" aria-label={`View ${doc.name}`}>
+                            <ICONS.View className="w-5 h-5" />
+                        </button>
+                        <button onClick={() => alert(`Deleting ${doc.name}`)} className="p-2 text-gray-500 hover:text-red-600" aria-label={`Delete ${doc.name}`}>
+                            <ICONS.Delete className="w-5 h-5" />
+                        </button>
+                    </div>
+                </div>
+            ))}
+        </div>
+    </div>
+);
 
 const MyBharatPage: React.FC = () => {
-    const { t } = useTranslation();
-    const [documents, setDocuments] = useState<Document[]>(initialDocuments);
-    const fileInputRef = useRef<HTMLInputElement>(null);
-
-    const handleUploadClick = () => {
-        fileInputRef.current?.click();
-    };
-
-    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files?.[0];
-        if (file) {
-            const newDocument: Document = {
-                id: Date.now(),
-                name: file.name,
-                type: 'Other', // Or deduce from name/type
-                dateAdded: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }),
-            };
-            setDocuments(prev => [newDocument, ...prev]);
-        }
-    };
-
-    const handleDelete = (id: number) => {
-        setDocuments(prev => prev.filter(doc => doc.id !== id));
-    };
-
     return (
         <div className="min-h-screen bg-gray-100">
-            <section className="relative bg-gray-800 text-white py-20 text-center" style={{backgroundImage: "url('https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=2070&auto.format&fit=crop')"}}>
-                 <div className="absolute inset-0 bg-black opacity-60"></div>
-                <div className="container mx-auto px-6 relative z-10">
-                    <h1 className="text-4xl md:text-5xl font-bold" style={{ textShadow: '0 2px 4px rgba(0,0,0,0.7)' }}>My Bharat Dashboard</h1>
-                    <p className="mt-4 text-lg text-gray-200 max-w-2xl mx-auto" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.7)' }}>
-                        Your personal space to manage documents, track applications, and access services.
-                    </p>
+            <section className="bg-gray-800 text-white py-12">
+                 <div className="container mx-auto px-6">
+                    <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4">
+                        <div className="flex items-center gap-4">
+                            <img src={mockUserProfile.profilePictureUrl} alt="User Profile" className="w-16 h-16 rounded-full border-4 border-orange-400" />
+                            <div>
+                                <h1 className="text-3xl font-bold">AI Jeevan Chakra</h1>
+                                <p className="text-gray-300">Your proactive life-cycle dashboard, {mockUserProfile.fullName}.</p>
+                            </div>
+                        </div>
+                        <Link to="/profile" className="flex items-center gap-2 px-4 py-2 bg-gray-700 text-white text-sm font-semibold rounded-md hover:bg-gray-600 transition-colors">
+                            <ICONS.Settings className="w-5 h-5" />
+                            Profile Settings
+                        </Link>
+                    </div>
                 </div>
             </section>
-
+            
             <main className="container mx-auto px-4 md:px-6 py-12">
                 <BackButton to="/" className="mb-8" />
                 
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-                    {/* Main Content Column */}
-                    <div className="lg:col-span-2">
+                <div className="bg-blue-100 border-l-4 border-blue-500 text-blue-800 p-4 rounded-md mb-8" role="alert">
+                    <p className="font-bold">Profile Calibrated</p>
+                    <p>Your life journey is re-calibrated based on your latest profile details.</p>
+                </div>
+
+                <div className="space-y-12">
+                    {/* Section 1: Life Timeline */}
+                    <div className="bg-white p-6 rounded-lg shadow-lg">
+                        <h2 className="text-2xl font-bold text-gray-800 mb-4">Your Modern Life Journey</h2>
+                        <LifeTimeline />
+                    </div>
+
+                    {/* Section 2: Proactive Next Step */}
+                    <SarathiNextStep action={mockNextStep} />
+
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                        {/* Section 3: Opportunities Radar */}
                         <div className="bg-white p-6 rounded-lg shadow-lg">
-                            <div className="flex flex-col sm:flex-row justify-between sm:items-center mb-6 border-b pb-4">
-                                <h2 className="text-2xl font-bold text-gray-800 flex items-center gap-3">
-                                    <ICONS.Document className="w-8 h-8 text-orange-500" />
-                                    Digital Document Vault
-                                </h2>
-                                <input
-                                    type="file"
-                                    ref={fileInputRef}
-                                    onChange={handleFileChange}
-                                    className="hidden"
-                                />
-                                <button 
-                                    onClick={handleUploadClick}
-                                    className="mt-4 sm:mt-0 flex items-center gap-2 px-4 py-2 bg-orange-500 text-white font-semibold rounded-md hover:bg-orange-600 transition duration-300"
-                                >
-                                    <ICONS.Upload className="w-5 h-5"/>
-                                    Upload Document
-                                </button>
-                            </div>
-                            
+                            <h2 className="text-2xl font-bold text-gray-800 flex items-center gap-3 mb-4">
+                                <ICONS.Offers className="w-8 h-8 text-green-500" />
+                                Opportunities Radar
+                            </h2>
                             <div className="space-y-4">
-                                {documents.length > 0 ? documents.map(doc => (
-                                    <div key={doc.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
-                                        <div className="flex items-center gap-4">
-                                            <ICONS.Document className="w-6 h-6 text-gray-500 flex-shrink-0"/>
-                                            <div>
-                                                <p className="font-semibold text-gray-900">{doc.name}</p>
-                                                <p className="text-xs text-gray-500">{doc.type} | Added: {doc.dateAdded}</p>
-                                            </div>
-                                        </div>
-                                        <div className="flex items-center gap-2">
-                                            <button className="p-2 text-gray-500 hover:text-blue-600 rounded-full hover:bg-blue-100" aria-label={`View ${doc.name}`}>
-                                                <ICONS.View className="w-5 h-5"/>
-                                            </button>
-                                            <button onClick={() => handleDelete(doc.id)} className="p-2 text-gray-500 hover:text-red-600 rounded-full hover:bg-red-100" aria-label={`Delete ${doc.name}`}>
-                                                <ICONS.Delete className="w-5 h-5"/>
-                                            </button>
-                                        </div>
-                                    </div>
-                                )) : (
-                                    <div className="text-center py-10 border-2 border-dashed rounded-lg">
-                                        <p className="text-gray-500">Your vault is empty.</p>
-                                        <p className="text-sm text-gray-400">Upload documents to get started.</p>
-                                    </div>
-                                )}
+                                {mockOpportunities.map((item, index) => <OpportunityCard key={index} item={item} />)}
+                            </div>
+                        </div>
+
+                        {/* Section 4: Risk Shield */}
+                        <div className="bg-white p-6 rounded-lg shadow-lg">
+                            <h2 className="text-2xl font-bold text-gray-800 flex items-center gap-3 mb-4">
+                                <ICONS.Shield className="w-8 h-8 text-red-500" />
+                                Risk Shield
+                            </h2>
+                             <div className="space-y-4">
+                                {mockRisks.map((item, index) => <RiskCard key={index} item={item} />)}
                             </div>
                         </div>
                     </div>
-
-                    {/* Sidebar Column */}
-                    <div className="space-y-8">
-                        <SidebarCard title="Track Your Applications">
-                             <ApplicationStatusItem scheme="PM-KISAN Scheme" status="Approved" date="15 Aug 2024" />
-                             <ApplicationStatusItem scheme="Student Scholarship" status="Pending" date="20 Aug 2024" />
-                             <ApplicationStatusItem scheme="Mudra Loan for Business" status="Rejected" date="10 Aug 2024" />
-                             <Link to="#" className="text-sm text-center block text-orange-600 font-semibold hover:underline">View All Applications</Link>
-                        </SidebarCard>
-                        
-                        <SidebarCard title="Account & Settings">
-                           <Link to="#" className="flex items-center p-3 bg-gray-50 rounded-md hover:bg-orange-50 transition-colors group">
-                                <ICONS.DigiLocker className="w-6 h-6 text-gray-500 group-hover:text-orange-600"/>
-                                <span className="ml-3 font-semibold text-gray-800">Connect DigiLocker</span>
-                           </Link>
-                           <Link to="/profile" className="flex items-center p-3 bg-gray-50 rounded-md hover:bg-orange-50 transition-colors group">
-                                <ICONS.Settings className="w-6 h-6 text-gray-500 group-hover:text-orange-600"/>
-                                <span className="ml-3 font-semibold text-gray-800">Profile Settings</span>
-                           </Link>
-                        </SidebarCard>
-                    </div>
+                    
+                    {/* Section 5: Digi-Sarathi Vault */}
+                    <DigiSarathiVault />
                 </div>
             </main>
         </div>

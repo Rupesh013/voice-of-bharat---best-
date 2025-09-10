@@ -3,7 +3,7 @@ export const translations = {
     nav: {
       home: 'Home',
       news: 'News & Offers',
-      myBharat: 'My Bharat',
+      aiJeevanChakra: 'AI Jeevan Chakra',
       about: 'About Us',
       contact: 'Contact',
     },
@@ -61,9 +61,125 @@ export const translations = {
       healthcare: {
         title: 'Healthcare & Nutrition',
         description: 'General resources for health services and welfare.'
+      },
+      aiLawyer: {
+        title: 'AI Lawyer Assistant',
+        description: 'Get legal information, remedies, and draft legal documents with AI assistance.'
       }
     },
     pages: {
+      aiLawyer: {
+        heroTitle: "AI Lawyer Assistant",
+        heroSubtitle: "Your personal AI guide for understanding legal rights and procedures in India.",
+        accordion: {
+            legalQuery: { title: "Get Legal Information" },
+            draftGenerator: { title: "AI Legal Draft Generator" },
+            connect: { title: "Connect with a Lawyer" }
+        },
+        legalQuery: {
+            ai: {
+                title: "✨ AI Legal Query Assistant",
+                description: "Describe your legal issue in simple terms. Our AI will provide a general explanation and relevant legal sections.",
+                placeholder: "e.g., 'My landlord is not returning my security deposit'",
+                button: "Analyze Issue",
+                loading: "Analyzing...",
+                resultsTitle: "AI Legal Analysis:",
+                simpleAdviceTitle: "General Advice (Easy Language)",
+                lawAdviceTitle: "According to Law"
+            }
+        },
+        draftGenerator: {
+            ai: {
+                title: "✨ AI Document Draft Generator",
+                description: "Describe the document you need (e.g., complaint, notice), and our AI will create a draft for you.",
+                placeholder: "e.g., 'Draft a legal notice to my landlord for not returning the security deposit'",
+                button: "Generate Draft",
+                loading: "Generating...",
+                resultsTitle: "AI-Generated Draft:",
+                copyButton: "Copy Draft"
+            }
+        },
+        connect: {
+            title: "Find a Lawyer in Your City",
+            description: "The information provided by AI is for educational purposes only and is not a substitute for professional legal advice. Connect with a qualified lawyer for your case.",
+            linkText: "Find Lawyers in Tirupati on Justdial"
+        },
+        disclaimer: "IMPORTANT: The AI Lawyer Assistant provides information for educational purposes only and does not constitute legal advice. You should consult with a qualified legal professional for advice regarding your individual situation."
+      },
+      healthcare: {
+        heroTitle: "AI Swasthya Rakshak",
+        heroSubtitle: "Your personal AI health guardian for schemes, nutrition advice, and disease information.",
+        accordion: {
+          schemes: { title: "Health Schemes & Services" },
+          nutrition: { title: "AI Nutrition Advisor" },
+          diseases: { title: "A-Z Disease Library" },
+          emergency: { title: "Emergency Services" }
+        },
+        schemes: {
+          ai: {
+            title: "✨ AI Health Scheme Finder",
+            description: "Describe your situation to find government health schemes you may be eligible for.",
+            placeholder: "e.g., 'I am a senior citizen with a low income'",
+            button: "Find Schemes",
+            loading: "Finding schemes...",
+            resultsTitle: "AI Recommended Schemes:"
+          },
+          ayushman: "Ayushman Bharat (PM-JAY)",
+          janAushadhi: "Jan Aushadhi Kendra (Affordable Medicines)",
+          nhm: "National Health Mission",
+          rashtriyaBal: "Rashtriya Bal Swasthya Karyakram (RBSK)"
+        },
+        services: {
+          abha: "Create ABHA ID",
+          nhp: "National Health Portal",
+          practo: "Find Doctors (Practo)",
+          blood: "e-RaktKosh (Blood Bank)"
+        },
+        nutrition: {
+            ai: {
+                title: "✨ AI Nutrition Advisor",
+                placeholder: "e.g., 'What is a good diet for a diabetic person?'",
+                button: "Get Advice",
+                loading: "Getting advice...",
+                resultsTitle: "AI Nutrition Advice:"
+            },
+            poshan: "POSHAN Abhiyaan",
+            eatRight: "Eat Right India Movement",
+            mentalHealth: "NIMHANS (Mental Health)"
+        },
+        diseases: {
+            search: {
+                title: "✨ AI Disease Information Search",
+                placeholder: "Search for a disease... (e.g., Diabetes, Malaria)",
+                button: "Search",
+                loading: "Searching..."
+            },
+            categories: {
+              infectious: "Infectious Diseases",
+              nonInfectious: "Non-Infectious / Lifestyle Diseases",
+              degenerative: "Degenerative Diseases",
+              genetic: "Genetic Diseases",
+              deficiency: "Nutritional Deficiency Diseases",
+              pathological: "Pathological Diseases",
+              topographical: "Topographical (By Body System)"
+            },
+            results: {
+                title: "Information on",
+                symptoms: "Common Symptoms",
+                causes: "Causes & Risk Factors",
+                diagnosis: "Diagnosis",
+                treatment: "Treatment Approaches",
+                prevention: "Prevention",
+                medications: "Medications",
+                disclaimer: "IMPORTANT: This information is for educational purposes only. It is not a substitute for professional medical advice, diagnosis, or treatment. Always seek the advice of your physician or other qualified health provider with any questions you may have regarding a medical condition."
+            }
+        },
+        emergency: {
+          ambulance: "Ambulance: 108",
+          healthHelpline: "Health Helpline: 104",
+          emergency: "National Emergency: 112"
+        }
+      },
       login: {
         title: 'Login to Your Account',
         emailLabel: 'Email address',
@@ -362,457 +478,334 @@ export const translations = {
                 placeholder: "e.g., What to do if harassed at work?",
                 button: "Ask AI",
                 loading: "Getting advice...",
-                resultsTitle: "AI Legal Assistant:"
+                resultsTitle: "Shakti Assistant says:",
             },
             sos: {
-                title: "Community Safety Net & SOS",
-                description: "In an emergency, press the SOS button to see helpline numbers and your location details.",
-                button: "SOS",
-                modalTitle: "Emergency SOS",
-                modalDescription: "Stay calm. Use the information below to get help. This is not an automatic alert system.",
-                yourLocation: "Your Location",
-                locationNotAvailable: "Location not available. Please enable location services in your browser.",
-                copyDetails: "Copy Details",
-                detailsCopied: "Location details copied!",
-                safetyTipsTitle: "Quick Safety Tips:",
+                title: "Emergency SOS",
+                description: "Get your location and alert contacts instantly.",
+                button: "Activate SOS",
+                modalTitle: "Emergency SOS Activated",
+                modalDescription: "Your location has been copied. Use the buttons below to call for help immediately.",
+                yourLocation: "Your Location:",
+                locationNotAvailable: "Could not retrieve location. Please enable location services.",
+                copyDetails: "Copy Location & Message",
+                detailsCopied: "Details Copied!",
+                safetyTipsTitle: "Safety Tips",
                 safetyTip1: "Share your location with a trusted contact.",
-                safetyTip2: "Move to a well-lit, public area if possible.",
-                safetyTip3: "Call a helpline number immediately."
+                safetyTip2: "Move to a public, well-lit area if possible.",
+                safetyTip3: "Stay on the phone with someone until help arrives."
             }
         },
         jobs: {
             platforms: {
-                title: "Job Platforms for Women",
+                title: "Job Platforms",
                 jobsforher: "JobsForHer",
-                sheroes: "SHEROES"
+                sheroes: "Sheroes"
             },
             ai: {
-                title: "✨ Wage & Pay Calculator",
-                skillPlaceholder: "Your skill (e.g., tailoring, data entry)",
-                cityPlaceholder: "Your city (e.g., Hyderabad)",
-                button: "Calculate Wage",
+                title: "✨ AI Wage & Rights Calculator",
+                skillPlaceholder: "Enter your skill (e.g., Tailoring, Data Entry)",
+                cityPlaceholder: "Enter your city",
+                button: "Calculate",
                 loading: "Calculating...",
-                resultsTitle: "Wage & Entitlements Information:"
+                resultsTitle: "Wage & Entitlements Info:"
             }
         },
         health: {
             resources: {
                 title: "Health Resources",
-                nhm: "National Health Mission (NHM)",
+                nhm: "National Health Mission",
                 goonj: "Goonj (Menstrual Health)"
             },
             ai: {
                 title: "✨ AI Health Advisor",
-                placeholder: "e.g., What are sources of iron for women?",
-                button: "Ask Health Question",
-                loading: "Getting info...",
-                resultsTitle: "AI Health Advisor:"
-            }
-        },
-        education: {
-            scholarships: {
-                title: "Scholarships",
-                nsp: "National Scholarship Portal",
-                pragati: "AICTE Pragati Scholarship"
-            },
-            skills: {
-                title: "Skills & Online Courses",
-                skillindia: "Skill India",
-                disha: "Digital Saksharta Abhiyan (DISHA)"
-            }
-        },
-        community: {
-            ngos: {
-                title: "NGOs & Networks",
-                sewa: "SEWA – Women workers’ association",
-                azad: "Azad Foundation – Women livelihood"
+                placeholder: "e.g., What is a balanced diet for anemia?",
+                button: "Ask AI",
+                loading: "Getting advice...",
+                resultsTitle: "Swasthya Saheli says:"
             }
         },
         family: {
-            widowpension: "Indira Gandhi Widow Pension",
-            nmms: "National Means-cum-Merit Scholarship",
             ai: {
-                title: "✨ Family Benefits Finder",
-                placeholder: "e.g., I am a single mother with two daughters in school.",
-                button: "Find Family Schemes",
-                loading: "Searching...",
-                resultsTitle: "Recommended Family Schemes:"
-            }
-        }
-      },
-      farmers: {
-        heroTitle: 'Farm Connect',
-        heroSubtitle: 'Your AI-powered partner for modern, profitable, and sustainable agriculture.',
-        toolsTitle: 'Tools for Modern Farming',
-        toolsSubtitle: 'Leverage technology to improve your yield and income.',
-        schemesTitle: 'Government Schemes & Support',
-        schemesSubtitle: 'Find the right financial support and insurance for your needs.',
-        recommender: {
-            title: '✨ AI Scheme Recommender',
-            description: 'Describe your situation, and our AI will suggest the most relevant schemes for you. (e.g., "I am a small farmer from Maharashtra and I need a loan for buying seeds.")',
-            placeholder: 'Tell us what you need...',
-            button: 'Get Recommendations',
-            loading: 'Thinking...',
-            success: {
-                title: 'Success!',
-                description: 'Your personalized scheme recommendations have been generated below.'
+                title: "✨ AI Family Benefit Finder",
+                placeholder: "Describe your family (e.g., '2 daughters in school, one senior citizen')",
+                button: "Find Benefits",
+                loading: "Finding benefits...",
+                resultsTitle: "Recommended Family Benefits:"
             },
-            resultsTitle: '✨ Our AI Recommends These Schemes For You ✨',
-            reasonLabel: "Why it's for you",
+            widowpension: "Widow Pension Scheme",
+            nmms: "National Means-cum-Merit Scholarship"
         }
       },
       workers: {
-        heroTitle: "Shramik Connect",
-        heroSubtitle: "India's all-in-one platform for workers. Find jobs, access social security, know your rights, and upskill.",
-        findJobButton: 'Find a Job',
-        exploreSchemesButton: 'Explore Schemes',
+        heroTitle: "Workers & Laborers Hub",
+        heroSubtitle: "Find daily work, know your rights, and access social security schemes designed for you.",
+        findJobButton: "Find a Job",
+        exploreSchemesButton: "Explore Schemes",
         accordion: {
-            jobs: { "title": "1️⃣ Find Jobs (Job Portal)" },
-            schemes: { "title": "2️⃣ Social Security (Schemes Hub)" },
-            rights: { "title": "3️⃣ Know Your Rights" },
-            tools: { "title": "4️⃣ Worker Tools & Empowerment" },
-            upskilling: { "title": "5️⃣ Learning & Upskilling" },
-            health: { "title": "6️⃣ Health & Safety Hub" },
-            community: { "title": "7️⃣ Community & Support" }
+            jobs: { title: "Find Jobs" },
+            schemes: { title: "Government Schemes" },
+            rights: { title: "Know Your Rights" },
+            tools: { title: "Tools & Support" },
+            upskilling: { title: "Skill Development" },
+            health: { title: "Health & Safety" },
+            community: { title: "Community Forum" }
         },
         jobs: {
             aiMatching: {
-              "title": "✨ Smart Job Matching (AI)",
-              "description": "Tell us your skills and location, and our AI will find the best jobs for you.",
-              "skillsPlaceholder": "Your skills (e.g., plumbing, driving)",
-              "locationPlaceholder": "Your city (e.g., Mumbai)",
-              "experiencePlaceholder": "Your experience (e.g., 2 years construction)",
-              "button": "Find Matching Jobs",
-              "loading": "Searching...",
-              "resultsTitle": "AI Suggested Jobs for You:"
-            },
-            listings: {
-              "title": "Job Listings",
-              "description": "Browse daily wage and skilled jobs. Use filters to narrow your search.",
-              "callButton": "Call Employer",
-              "whatsappButton": "WhatsApp Apply"
+                title: "✨ AI Job Matcher",
+                description: "Tell us your skills and location, and our AI will find suitable job opportunities for you.",
+                skillsPlaceholder: "Your skills (e.g., Plumber, Electrician)",
+                locationPlaceholder: "Your location (e.g., Hyderabad)",
+                experiencePlaceholder: "Experience (e.g., 2 years)",
+                button: "Find Jobs",
+                loading: "Finding jobs...",
+                resultsTitle: "AI Recommended Jobs:"
             },
             marketplace: {
-              "title": "Worker Marketplace",
-              "description": "List your services and let employers find you.",
-              "example": "e.g., “Mason available – ₹700/day”",
-              "button": "List Your Service"
+                title: "Post Your Availability",
+                description: "List your skills on our marketplace so employers can contact you directly for work.",
+                example: "e.g., 'Construction helper available in Madhapur area. Call me.'",
+                button: "Create Your Listing"
+            },
+            listings: {
+                callButton: "Call",
+                whatsappButton: "WhatsApp"
             }
         },
         schemes: {
             aiFinder: {
-              "title": "✨ AI Scheme Finder",
-              "description": "Describe your situation to find relevant government schemes.",
-              "placeholder": "e.g., I am a 45-year-old construction worker from Bihar...",
-              "button": "Find My Schemes",
-              "loading": "Finding schemes...",
-              "resultsTitle": "Recommended Schemes:"
-            },
-            directory: {
-              "title": "Schemes Directory",
-              "description": "Explore major central and state-wise social security schemes."
-            },
-            guides: {
-              "title": "How to Apply Guides",
-              "description": "Step-by-step tutorials to help you apply for schemes."
+                title: "✨ AI Scheme Finder",
+                description: "Describe your work and family situation to find schemes that can benefit you.",
+                placeholder: "e.g., 'I am a construction worker with two children.'",
+                button: "Find Schemes",
+                loading: "Finding schemes...",
+                resultsTitle: "Recommended Schemes:"
             }
         },
         rights: {
             aiCalculator: {
-              "title": "✨ AI Wage & Rights Calculator",
-              "description": "Enter your skill and city to find out the minimum wage and your entitlements.",
-              "skillPlaceholder": "Your skill (e.g., carpenter)",
-              "cityPlaceholder": "Your city (e.g., Bengaluru)",
-              "button": "Calculate",
-              "loading": "Calculating...",
-              "resultsTitle": "Wage & Entitlements Information:"
-            },
-            awareness: {
-              "title": "Rights Awareness",
-              "description": "Learn about your rights regarding minimum wages, working hours, safety, and more."
+                title: "✨ AI Wage Calculator",
+                description: "Find out the official minimum wage for your skill and city, and learn about your entitlements.",
+                skillPlaceholder: "Your skill (e.g., Mason, Carpenter)",
+                cityPlaceholder: "Your city (e.g., Delhi)",
+                button: "Calculate Wage",
+                loading: "Calculating...",
+                resultsTitle: "Wage & Entitlements Info:"
             }
         },
         tools: {
             aiChatbot: {
-              "title": "✨ Legal Aid AI Chatbot",
-              "description": "Have a question about your rights? Get a simple answer from our AI assistant.",
-              "placeholder": "e.g., What to do if employer doesn’t pay?",
-              "button": "Ask AI",
-              "loading": "Thinking...",
-              "resultsTitle": "AI Assistant:"
-            },
-            digitalId: {
-              "title": "Digital Worker ID",
-              "description": "Create a digital profile with your skills and work history that employers can scan via QR code."
-            }
-        },
-        upskilling: {
-            courses: {
-              "title": "Free Courses",
-              "description": "Learn basic English, digital literacy, and trade skills like electrician or plumbing."
-            },
-            programs: {
-              "title": "Government Programs",
-              "description": "Links to Skill India, NSDC, and PMKVY for certified training."
-            }
-        },
-        health: {
-            safety: {
-              "title": "Workplace Safety Guides",
-              "description": "Safety information for construction, factories, transport, and domestic work."
-            },
-            benefits: {
-              "title": "Health Benefits",
-              "description": "Information on free health checkups under Ayushman Bharat and other low-cost insurance."
-            },
-            sos: {
-              "title": "Emergency SOS",
-              "description": "Instantly dial 112 or a labour helpline in an emergency."
-            }
-        },
-        community: {
-            chatbot: {
-              "title": "Chatbot Support",
-              "description": "Ask questions in plain language like 'How to get pension?' and get instant help."
-            },
-            forum: {
-              "title": "Q&A Forum",
-              "description": "Connect with other workers, ask questions, and share experiences."
+                title: "✨ AI Rights Chatbot",
+                description: "Ask any question about your rights as a worker in simple language.",
+                placeholder: "e.g., 'What is PF? Am I eligible for ESI?'",
+                button: "Ask AI",
+                loading: "Getting information...",
+                resultsTitle: "AI Assistant says:"
             }
         }
       },
-       healthcare: {
-            heroTitle: 'Health & Wellness Hub',
-            heroSubtitle: 'Your trusted source for health information, scheme access, and wellness support.',
-            accordion: {
-                schemes: { title: "Government Health Schemes" },
-                services: { title: "Digital Health Services" },
-                nutrition: { title: "Nutrition & Wellness" },
-                diseases: { title: "Disease Information Center" },
-                emergency: { title: "Emergency Helplines" }
-            },
-            schemes: {
-                ai: {
-                    title: "AI Scheme Finder",
-                    description: "Describe your needs to find relevant health schemes.",
-                    placeholder: "e.g., I need insurance for my family",
-                    button: "Find Schemes",
-                    loading: "Searching...",
-                    resultsTitle: "Recommended Health Schemes:"
-                },
-                ayushman: "Ayushman Bharat (PM-JAY)",
-                janAushadhi: "Pradhan Mantri Bhartiya Janaushadhi Pariyojana (PMBJP)",
-                nhm: "National Health Mission",
-                rashtriyaBal: "Rashtriya Bal Swasthya Karyakram (RBSK)"
-            },
-            services: {
-                abha: "ABHA Health ID Card",
-                nhp: "National Health Portal",
-                practo: "Practo (Doctor Booking)",
-                blood: "eRaktKosh (Blood Bank)"
-            },
-            nutrition: {
-                ai: {
-                    title: "AI Nutrition Advisor",
-                    placeholder: "e.g., What is a balanced diet?",
-                    button: "Get Advice",
-                    loading: "Getting info...",
-                    resultsTitle: "AI Nutrition Advisor:"
-                },
-                poshan: "POSHAN Abhiyaan",
-                eatRight: "Eat Right India",
-                mentalHealth: "NIMHANS (Mental Health)"
-            },
-            diseases: {
-                search: {
-                    title: "Search for Disease Information",
-                    placeholder: "e.g., Diabetes, Tuberculosis",
-                    button: "Search",
-                    loading: "Fetching Info..."
-                },
-                categories: {
-                    infectious: 'Common Infectious Diseases',
-                    nonInfectious: 'Common Non-Infectious Diseases',
-                    degenerative: 'Degenerative Diseases',
-                    genetic: 'Genetic Diseases',
-                    deficiency: 'Deficiency Diseases',
-                    pathological: 'Pathological Diseases',
-                    topographical: 'Topographical Diseases'
-                },
-                results: {
-                    title: "Information on",
-                    symptoms: 'Symptoms',
-                    causes: 'Causes',
-                    diagnosis: 'Diagnosis',
-                    treatment: 'Treatment',
-                    prevention: 'Prevention',
-                    medications: 'Medications',
-                    disclaimer: "DISCLAIMER: This information is for educational purposes only. Always consult a qualified doctor for medical advice and treatment."
-                }
-            },
-            emergency: {
-                ambulance: "Ambulance: 108/102",
-                healthHelpline: "Health Helpline: 104",
-                emergency: "National Emergency: 112"
-            }
+      farmers: {
+        heroTitle: 'AI Farmer Connect',
+        heroSubtitle: 'Empowering Indian farmers with cutting-edge AI tools, market access, and government scheme information.',
+        toolsTitle: 'Your Digital Toolkit',
+        toolsSubtitle: 'Tools to increase yield, reduce costs, and improve income.',
+        schemesTitle: 'Government Schemes',
+        schemesSubtitle: 'Discover and apply for schemes that can help you.',
+        recommender: {
+          title: '✨ AI Scheme Recommender',
+          description: 'Not sure which scheme is right for you? Tell us about your needs, and our AI will suggest the best options.',
+          placeholder: 'e.g., "I have 2 acres of land and need a loan for a tractor"',
+          loading: 'Analyzing...',
+          button: 'Get Recommendations',
+          success: {
+            title: 'Success!',
+            description: 'We found some schemes that match your needs. We have highlighted them below for you.'
+          },
+          resultsTitle: 'Your Personalized Recommendations:',
+          reasonLabel: 'Why it fits'
         }
+      }
+    },
+    footer: {
+      tagline: 'Empowering Bharat, one voice at a time.',
+      privacy: 'Privacy Policy',
+      copyright: '© {year} Voice of Bharat. All rights reserved.',
     },
     components: {
-        backButton: {
-            back: 'Back'
+      backButton: {
+        back: 'Back'
+      },
+      schemeAccordion: {
+        recommended: 'Recommended',
+        eligibility: 'Eligibility',
+        howToApply: 'How to Apply',
+        visitPortal: 'Visit Official Portal',
+      },
+      scholarshipCard: {
+        award: 'Award',
+        eligibility: 'Eligibility',
+        deadline: 'Deadline',
+        applyNow: 'Apply Now'
+      },
+      produceCard: {
+        seller: 'Seller:',
+        buyNow: 'Buy Now',
+        contactSeller: 'Contact Seller',
+      },
+      addProduceModal: {
+        title: 'List Your Produce',
+        name: 'Produce Name',
+        description: 'Description',
+        generate: 'Generate with AI',
+        generating: 'Generating...',
+        quantity: 'Quantity',
+        price: 'Price',
+        suggest: 'Suggest with AI',
+        suggesting: 'Suggesting...',
+        image: 'Product Image',
+        cancel: 'Cancel',
+        add: 'Add Produce',
+      },
+      marketAssistant: {
+        greeting: "Hello! I'm your Market Assistant. How can I help you list your produce today?",
+        title: 'Market Assistant',
+        placeholder: 'Ask about prices, descriptions...',
+        send: 'Send',
+        sending: '...',
+      },
+      contractCard: {
+        verified: 'Verified Buyer',
+        by: 'By',
+        crop: 'Crop:',
+        quantity: 'Quantity:',
+        price: 'Price:',
+        view: 'View & Apply',
+      },
+      contractStatusCard: {
+        with: 'with',
+        status: {
+            Pending: 'Pending',
+            Active: 'Active',
+            Harvesting: 'Harvesting',
+            Completed: 'Completed',
+            Disputed: 'Disputed'
         },
-        schemeAccordion: {
-            recommended: 'Recommended',
-            eligibility: 'Eligibility',
-            howToApply: 'How to Apply',
-            visitPortal: 'Visit Official Portal'
+        steps: {
+            Active: 'Active',
+            Harvesting: 'Harvesting',
+            Completed: 'Completed'
         },
-        addProduceModal: {
-            title: 'List Your Produce',
-            name: 'Produce Name',
-            description: 'Description',
-            generate: 'Generate with AI',
-            generating: 'Generating...',
-            quantity: 'Quantity',
-            price: 'Price per Unit (e.g., /kg)',
-            suggest: 'Suggest Price',
-            suggesting: 'Suggesting...',
-            image: 'Upload Image',
-            cancel: 'Cancel',
-            add: 'Add Produce'
-        },
-        contractCard: {
-            verified: 'Verified Buyer',
-            by: 'By',
-            crop: 'Crop:',
-            quantity: 'Quantity:',
-            price: 'Price:',
-            view: 'View & Apply'
-        },
-        contractDetailModal: {
-            analyzing: 'Analyzing...',
-            simplify: 'Simplify with AI',
-            summary: 'AI Summary',
-            close: 'Close',
-            apply: 'Apply for Contract'
-        },
-        contractStatusCard: {
-            status: {
-                Pending: 'Pending',
-                Active: 'Active',
-                Harvesting: 'Harvesting',
-                Completed: 'Completed',
-                Disputed: 'Disputed'
-            },
-            steps: {
-                Active: 'Active',
-                Harvesting: 'Harvesting',
-                Completed: 'Completed'
-            },
-            with: 'with',
-            view: 'View Details',
-            contact: 'Contact Buyer',
-            report: 'Report Issue'
-        },
-        marketAssistant: {
-            greeting: "Welcome to Farm Connect! I'm your AI assistant. I can help you write a good description for your produce or suggest a fair price.",
-            title: 'Market Assistant',
-            placeholder: 'Ask for listing help...',
-            send: 'Send',
-            sending: '...'
-        },
-        produceCard: {
-            seller: 'Seller:',
-            buyNow: 'Buy Now',
-            contactSeller: 'Contact Seller'
-        },
-        scholarshipCard: {
-            award: 'Award',
-            eligibility: 'Eligibility',
-            deadline: 'Deadline',
-            applyNow: 'Apply Now'
-        }
+        view: 'View Details',
+        contact: 'Contact Buyer',
+        report: 'Report Issue'
+      },
+      contractDetailModal: {
+        analyzing: 'Analyzing...',
+        simplify: 'Simplify with AI',
+        summary: 'AI Summary',
+        close: 'Close',
+        apply: 'Apply for Contract',
+      }
     },
     features: {
       student: {
-        scholarships: { title: 'Scholarships & Coaching', description: 'Find scholarships, coaching, and study abroad resources.' },
-        resume: { title: 'AI Resume Builder', description: 'Create a professional resume and cover letter in minutes with AI.' },
-        roadmaps: { title: 'AI Career Roadmaps', description: 'Get a personalized step-by-step guide to your dream career.' },
-        learningPaths: { title: 'AI Learning Paths', description: 'Create a custom study plan with the best free resources.' },
-        financialManagement: { title: 'Financial Management', description: 'AI tools for budgeting, loan analysis, and investment guidance.' },
-        coding: { title: 'Coding & Development Toolkit', description: 'Master LeetCode, GitHub, and essential developer tools.' },
-        doubtSolver: { title: 'Doubt Solving', description: 'Get instant AI-powered solutions or ask expert mentors.' },
-        innovation: { title: 'Innovation Portal', description: 'Submit project ideas, get community feedback, and find funding.' },
-        earning: { title: 'Student Earning Hub', description: 'Discover ways to earn, save, and invest while studying.' },
-        smartApps: { title: 'Smart App Directory', description: 'A curated list of essential government and utility apps.' },
-        freeLearning: { title: 'Free Learning Hub', description: 'Access India\'s largest directory of free educational resources.' },
-        internships: { title: 'Internships & Placements', description: 'Find top internships and prepare for placement drives.' }
+        scholarships: { title: 'Scholarship Hub', description: 'Find Government, Private, and Abroad scholarships.' },
+        resume: { title: 'AI Resume Builder', description: 'Create a professional resume and cover letter in minutes with AI assistance.' },
+        roadmaps: { title: 'AI Career Roadmaps', description: 'Get a personalized, step-by-step guide for your dream career.' },
+        learningPaths: { title: 'AI Learning Paths', description: 'Generate a custom study plan with free resources for any skill.' },
+        financialManagement: { title: 'Financial Tools', description: 'AI-powered budget planner, loan advisor, and investment guide for students.' },
+        coding: { title: 'Coding Toolkit', description: 'Master LeetCode, GitHub, LinkedIn, and essential developer tools.' },
+        doubtSolver: { title: 'Doubt Solver', description: 'Get instant answers to your academic questions from our AI Tutor.' },
+        innovation: { title: 'Innovation Portal', description: 'Submit project ideas, get votes, and find funding opportunities.' },
+        earning: { title: 'Earning Hub', description: 'Discover ways to earn online through freelancing, referrals, and more.' },
+        smartApps: { title: 'Smart App Directory', description: 'A curated list of essential government and utility apps for daily life.' },
+        freeLearning: { title: 'Free Learning Resources', description: 'Access a massive directory of free courses from top global and Indian platforms.' },
+        internships: { title: 'Internships & Placements', description: 'Find top internships and prepare with our placement roadmap.' },
       },
       farmer: {
-        cropDoctor: { title: 'AI Crop Doctor', description: 'Upload a photo to instantly diagnose crop diseases and pests.' },
-        marketAccess: { title: 'Direct Market Access', description: 'Sell your produce directly to buyers, eliminating middlemen.' },
-        fertilizer: { title: 'AI Fertilizer Optimizer', description: 'Get a custom fertilizer plan for your specific crop and soil.' },
-        contractFarming: { title: 'Contract Farming', description: 'Secure your income with verified and transparent contracts.' },
-        weatherAlerts: { title: 'AI Weather Alerts', description: 'Receive hyper-local weather forecasts and crop advisories.' },
-        cropRecommender: { title: 'AI Crop Recommender', description: 'Discover the most profitable crops for your land.' },
-        financialNeeds: { title: 'Financial Needs Advisor', description: 'Find suitable loans, insurance, and government schemes.' },
-        expertGuides: { title: 'Expert Farming Guides', description: 'Access a knowledge base and an AI expert for farming queries.' },
-        marketPrices: { title: 'Market Price Intelligence', description: 'Track live mandi prices and get AI-powered selling advice.' }
+        cropDoctor: { title: 'AI Crop Doctor', description: 'Diagnose crop diseases instantly by uploading a photo.' },
+        marketAccess: { title: 'Direct Market', description: 'Sell your produce directly to buyers, eliminating middlemen.' },
+        fertilizer: { title: 'Fertilizer Optimizer', description: 'Get AI-based recommendations for fertilizer usage.' },
+        contractFarming: { title: 'Contract Farming', description: 'Secure your income with verified farming contracts.' },
+        weatherAlerts: { title: 'Weather & Advisory', description: 'Receive timely weather alerts and AI-powered crop advice.' },
+        cropRecommender: { title: 'Crop Recommender', description: 'Let AI suggest the most profitable crops for your land.' },
+        financialNeeds: { title: 'Financial Advisor', description: 'Find suitable loans, insurance, and schemes for your needs.' },
+        expertGuides: { title: 'Expert Guides', description: 'Access a library of modern farming techniques and guides.' },
+        marketPrices: { title: 'Market Prices', description: 'Track live Mandi prices and get AI-based selling advice.' },
       }
     },
     data: {
         schemes: {
             incomeSupport: {
-                category: 'Income Support & Credit',
+                category: "Income Support & Credit",
                 pmkisan: {
-                    benefit: '₹6,000 per year direct income support',
-                    eligibility: 'All landholding farmer families',
-                    apply1: 'Visit PM-KISAN official portal.',
-                    apply2: 'Click on "New Farmer Registration".',
-                    apply3: 'Enter Aadhaar number and fill the form.',
-                    apply4: 'Upload land documents and submit.'
+                    benefit: "₹6,000 per year in 3 installments",
+                    eligibility: "All landholding farmer families",
+                    apply1: "Visit PM-KISAN official website.",
+                    apply2: "Click on 'New Farmer Registration'.",
+                    apply3: "Enter Aadhaar number and other details.",
+                    apply4: "Upload land documents and submit.",
                 },
                 kcc: {
-                    benefit: 'Short-term credit for cultivation, post-harvest expenses, etc.',
-                    eligibility: 'Farmers, oral lessees, sharecroppers',
-                    apply1: 'Visit your nearest bank branch.',
-                    apply2: 'Fill the KCC application form.',
-                    apply3: 'Submit land documents, identity and address proof.'
+                    benefit: "Low-interest credit for farming needs",
+                    eligibility: "Farmers, animal husbandry, and fisheries",
+                    apply1: "Visit your nearest bank branch.",
+                    apply2: "Fill out the KCC application form.",
+                    apply3: "Submit required documents like land records, ID proof.",
                 }
             },
             cropInsurance: {
-                category: 'Crop Insurance',
+                category: "Crop Insurance & Security",
                 pmfby: {
-                    benefit: 'Insurance coverage against crop failure due to natural calamities',
-                    eligibility: 'All farmers including sharecroppers and tenant farmers',
-                    apply1: 'Contact your nearest bank, insurance company, or CSC.',
-                    apply2: 'Provide details of the crop sown and land records.',
-                    apply3: 'Pay the premium amount.'
+                    benefit: "Insurance cover against crop failure",
+                    eligibility: "All farmers, including sharecroppers and tenant farmers",
+                    apply1: "Contact your nearest bank, insurance company, or CSC.",
+                    apply2: "Enroll at the beginning of the sowing season.",
+                    apply3: "Provide details of crops sown and land records.",
                 }
             },
             fertilizers: {
-                category: 'Fertilizers & Mechanization',
+                category: "Fertilizers & Mechanization",
                 soilHealth: {
-                    benefit: 'Get a detailed report of your soil\'s nutrient status',
-                    eligibility: 'All farmers',
-                    apply1: 'Contact the local agriculture department or Krishi Vigyan Kendra.',
-                    apply2: 'They will collect soil samples from your field.',
-                    apply3: 'Receive the Soil Health Card with recommendations.'
+                    benefit: "Customized fertilizer recommendations",
+                    eligibility: "All farmers",
+                    apply1: "Contact your local agriculture office or Krishi Vigyan Kendra.",
+                    apply2: "Get your soil sample tested.",
+                    apply3: "Receive the Soil Health Card with recommendations.",
                 },
                 smam: {
-                    benefit: 'Subsidy on purchase of agricultural machinery and equipment',
-                    eligibility: 'Individual farmers, SHGs, Co-operative Societies',
-                    apply1: 'Visit the state agriculture department portal.',
-                    apply2: 'Register as a farmer.',
-                    apply3: 'Apply for the desired machinery with required documents.'
+                    benefit: "Subsidy on purchase of farm machinery",
+                    eligibility: "Farmers and farmer groups",
+                    apply1: "Visit the SMAM official website.",
+                    apply2: "Register as a farmer.",
+                    apply3: "Apply for the specific machinery you want to purchase.",
                 }
             }
         }
-    },
-    footer: {
-        tagline: 'Empowering Every Voice of Bharat.',
-        privacy: 'Privacy Policy',
-        copyright: '© {year} Voice of Bharat. All rights reserved.'
     }
-  }
+  },
+  // --- Other languages would go here ---
+  hi: {
+    // Basic translations for demonstration
+    nav: {
+      home: 'होम',
+      news: 'समाचार और ऑफ़र',
+      aiJeevanChakra: 'एआई जीवन चक्र',
+      about: 'हमारे बारे में',
+      contact: 'संपर्क करें',
+    },
+    header: {
+      login: 'लॉग इन करें',
+    },
+  },
+  te: {},
+  ta: {},
+  ur: {},
+  bn: {},
+  mr: {},
+  gu: {},
+  kn: {},
+  or: {},
+  ml: {},
 };

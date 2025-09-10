@@ -42,14 +42,14 @@ const AboutUsPage: React.FC = () => {
   ];
 
   const features = [
+    { icon: '🌟', title: 'AI Sarathi', description: 'Your personal AI guide that proactively finds opportunities and simplifies your digital life.' },
     { icon: '🎓', title: 'Students', description: 'Scholarships, career roadmaps, AI resume builder, project funding, internships' },
     { icon: '👩‍🌾', title: 'Farmers', description: 'PM-KISAN, fertilizer advisory, crop disease detection, direct market access' },
     { icon: '👷', title: 'Workers', description: 'MNREGA, E-Shram, job alerts, insurance, skill development via PMKVY' },
-    { icon: '👩', title: 'Women', description: 'SHG support, Ujjwala Yojana, safety apps (Disha), entrepreneurship, financial literacy' },
+    { icon: '👩', title: 'Women', description: 'SHG support, Ujjwala Yojana, safety apps, entrepreneurship, financial literacy' },
     { icon: '👵', title: 'Senior Citizens', description: 'Pension schemes, Ayushman Bharat, healthcare and discounts' },
-    { icon: '📲', title: 'Voice Assistant', description: 'Available in Telugu, Hindi, and English' },
-    { icon: '🗂️', title: 'Digital Document Vault', description: 'Secure storage of important documents' },
-    { icon: '🌐', title: 'Offline Kiosk Access', description: 'Designed for villages and remote users' },
+    { icon: '📲', title: 'Voice Assistant', description: 'Available in Telugu, Hindi, and English for hands-free navigation.' },
+    { icon: '🗂️', title: 'Digital Document Vault', description: 'Secure storage and easy access to your important documents.' },
   ];
 
   return (
@@ -60,7 +60,7 @@ const AboutUsPage: React.FC = () => {
         <div className="relative z-10">
             <h1 className="text-4xl md:text-5xl font-bold">About Voice of Bharat</h1>
             <p className="text-lg md:text-xl mt-4 max-w-3xl mx-auto text-gray-300">
-            An AI-powered digital empowerment platform for every Indian citizen.
+            India's first all-in-one, AI-powered platform for citizen empowerment.
             </p>
         </div>
       </div>
@@ -72,7 +72,7 @@ const AboutUsPage: React.FC = () => {
             Rupesh Reddy, a final-year Computer Science diploma student at Sree Vidyanikethan Engineering College, has always been deeply aware of the challenges faced by people in rural and underserved areas of India in accessing vital government services. Despite numerous welfare schemes, many struggled due to language barriers, limited literacy, and a lack of digital skills.
           </p>
           <p>
-            Driven by a passion for technology and a desire for social impact, Rupesh envisioned a solution to empower every citizen. He imagined a platform using voice—the most natural form of communication—to bridge the digital divide. This platform would be multilingual, voice-enabled, and mobile-first to ensure inclusivity.
+            Driven by a passion for technology and a desire for social impact, Rupesh envisioned a solution to empower every citizen. He imagined a platform that wouldn't just provide information, but act as a proactive "AI Sarathi" (a digital guide or charioteer) for every user, using voice—the most natural form of communication—to bridge the digital divide.
           </p>
           <p>
             In 2025, Rupesh and his team launched "Voice of Bharat" as their capstone project. Their mission: to build an AI-powered platform connecting people to scholarships, welfare schemes, health services, and career guidance, making opportunities accessible to all, regardless of their digital literacy.
@@ -99,16 +99,10 @@ const AboutUsPage: React.FC = () => {
       <Section title="🌟 Our Vision & Mission">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
           <InfoCard title="Our Vision">
-            <p>To create a digitally inclusive India where every citizen, whether in a remote village or a metro city, can easily access growth opportunities, government schemes, and support services with just their voice.</p>
+            <p>To create a single, intelligent, and proactive digital companion for every Indian, transforming access to governance, opportunities, and essential services into a seamless, personalized experience.</p>
           </InfoCard>
           <InfoCard title="Our Mission">
-            <ul className="list-disc list-inside space-y-2">
-                <li>Government schemes and welfare programs</li>
-                <li>Scholarships, jobs, and skill training</li>
-                <li>Health, pension, and insurance services</li>
-                <li>Agricultural tools and support</li>
-                <li>Document storage and digital identity tools</li>
-            </ul>
+             <p>To integrate all essential citizen services into one AI-driven platform. We aim to empower users with proactive scheme applications, personalized career and financial planning, and instant access to health and civic utilities, all through a simple, voice-first interface.</p>
           </InfoCard>
         </div>
       </Section>

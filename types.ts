@@ -526,3 +526,42 @@ export interface Placement {
     company: string;
     link: string;
 }
+
+// AI Jeevan Chakra Types
+export interface LifeMilestone {
+  name: string;
+  date: string;
+  status: 'completed' | 'current' | 'upcoming';
+  description: string;
+  icon: React.ElementType;
+}
+
+export interface ProactiveAction {
+  title: string;
+  description: string;
+  cta: string;
+  link: string;
+  icon: React.ElementType;
+}
+
+export interface Opportunity {
+  category: 'Scheme' | 'Job' | 'Upskilling' | 'Financial';
+  title: string;
+  description: string;
+  link: string;
+  icon: React.ElementType;
+}
+
+export interface RiskAlert {
+  severity: 'High' | 'Medium' | 'Low';
+  title: string;
+  description: string;
+  recommendation: string;
+  link: string;
+  icon: React.ElementType;
+}
+
+export interface LegalAnalysisResult {
+  generalAdvice: string;
+  legalProvisions: string;
+}

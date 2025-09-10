@@ -1,5 +1,6 @@
+
 import { GoogleGenAI, Type } from "@google/genai";
-import type { ChatMessage, CropDiagnosis, FertilizerRecommendation, SchemeRecommendation, WeatherAlert, CropRecommendation, FinancialProduct, MarketPrice, ResumeData, CareerRoadmap, LearningPath, BudgetPlan, LoanAnalysis, InvestmentGuide, JobSearchParams, Job, WageInfo, AIUpdateResult, GroundingSource, AIOfferResult, VoiceCommandResult, DiseaseInfo, NewsArticle, CategorizedOffer, PortalInfo, ServiceProvider } from '../types';
+import type { ChatMessage, CropDiagnosis, FertilizerRecommendation, SchemeRecommendation, WeatherAlert, CropRecommendation, FinancialProduct, MarketPrice, ResumeData, CareerRoadmap, LearningPath, BudgetPlan, LoanAnalysis, InvestmentGuide, JobSearchParams, Job, WageInfo, AIUpdateResult, GroundingSource, AIOfferResult, VoiceCommandResult, DiseaseInfo, NewsArticle, CategorizedOffer, PortalInfo, ServiceProvider, LegalAnalysisResult } from '../types';
 import { ALL_APP_ROUTES } from '../constants';
 
 if (!process.env.API_KEY) {
@@ -806,19 +807,12 @@ export async function getRealTimeUpdates(topic: string): Promise<AIUpdateResult>
 }
 
 export async function getCategorizedNews(category: string): Promise<NewsArticle[]> {
-  const prompt = `You are an AI news assistant for the "Voice of Bharat" platform. Find the top 6 latest and most relevant news articles in India for the "${category}" category. The information must be from the last 24-48 hours. For each article, provide a concise title, a one or two-sentence summary, the direct URL to the article, and the name of the publication (source).
-
-VERY IMPORTANT: Your entire response must be ONLY a valid JSON array of objects. Do not include any other text, greetings, explanations, or markdown formatting like \`\`\`json. Each object in the array must have the following keys: "title", "summary", "link", "source".
+  const prompt = `You are an AI news assistant for the "Voice of Bharat" platform. Find the top 6 latest and most relevant news articles in India for the "${category}" category. The information must be from the last 24-48 hours. For each article, provide the information in the following format on a new line, using "||" as a separator:
+Title of the article || A concise one or two-sentence summary || The name of the publication (source) || The direct URL to the article
 
 Example format:
-[
-  {
-    "title": "Example News Title 1",
-    "summary": "This is a summary of the first news article.",
-    "link": "https://example.com/news/1",
-    "source": "Example News Site"
-  }
-]
+Example News Title 1 || This is a summary of the first news article. || Example News Site || https://example.com/news/1
+Example News Title 2 || This is a summary of the second article. || Another News Site || https://example.com/news/2
 `;
 
   try {
@@ -831,15 +825,34 @@ Example format:
     });
 
     const textResponse = response.text;
-    try {
-        return parseGeminiJson(textResponse);
-    } catch (e) {
-      console.error("Failed to parse news JSON from AI response:", textResponse, e);
-      throw new Error("The AI returned news in an unexpected format. Please try refreshing.");
+    const articles: NewsArticle[] = textResponse.split('\n')
+      .map(line => line.trim())
+      .filter(line => line.includes('||'))
+      .map(line => {
+        const parts = line.split('||').map(part => part.trim());
+        if (parts.length === 4) {
+            return {
+                title: parts[0],
+                summary: parts[1],
+                source: parts[2],
+                link: parts[3]
+            };
+        }
+        return null;
+    }).filter((article): article is NewsArticle => article !== null);
+
+    if (articles.length === 0 && textResponse.length > 0) {
+        console.error("Failed to parse news from AI response with custom format:", textResponse);
+        throw new Error("The AI returned news in an unexpected format. Please try refreshing.");
     }
+    
+    return articles;
 
   } catch (error) {
     console.error(`Error getting categorized news for ${category}:`, error);
+    if (error instanceof Error && error.message.includes("unexpected format")) {
+        throw error;
+    }
     throw new Error(`Failed to fetch real-time news for ${category}. The service might be temporarily unavailable.`);
   }
 }
@@ -883,21 +896,11 @@ export async function getRealTimeOffers(topic: string): Promise<AIOfferResult> {
 }
 
 export async function getCategorizedOffers(category: string): Promise<CategorizedOffer[]> {
-  const prompt = `You are an AI assistant for the "Voice of Bharat" platform. Find the top 6 latest and most relevant public offers, deals, or subsidies in India for the "${category}" category. For each offer, provide a concise title, a one or two-sentence description, the direct URL to the offer, the name of the provider (source), and if available, the eligibility criteria and expiry date.
-
-VERY IMPORTANT: Your entire response must be ONLY a valid JSON array of objects. Do not include any other text, greetings, explanations, or markdown formatting like \`\`\`json. Each object in the array must have the following keys: "title", "description", "link", "source", "eligibility", "expiry". If eligibility or expiry are not available, use an empty string.
+  const prompt = `You are an AI assistant for the "Voice of Bharat" platform. Find the top 6 latest and most relevant public offers, deals, or subsidies in India for the "${category}" category. For each offer, provide the information in the following format on a new line, using "||" as a separator:
+Title of the offer || A concise one or two-sentence description || The name of the provider (source) || The direct URL to the offer || Eligibility criteria (or empty string) || Expiry date (or empty string)
 
 Example format:
-[
-  {
-    "title": "Example Offer Title 1",
-    "description": "This is a summary of the first offer.",
-    "link": "https://example.com/offer/1",
-    "source": "Example Provider",
-    "eligibility": "For all users.",
-    "expiry": "31 Dec 2024"
-  }
-]
+Example Offer Title 1 || This is a summary of the first offer. || Example Provider || https://example.com/offer/1 || For all users. || 31 Dec 2024
 `;
 
   try {
@@ -910,15 +913,37 @@ Example format:
     });
 
     const textResponse = response.text;
-    try {
-        return parseGeminiJson(textResponse);
-    } catch (e) {
-      console.error("Failed to parse offers JSON from AI response:", textResponse, e);
-      throw new Error("The AI returned offers in an unexpected format. Please try refreshing.");
+    const offers: CategorizedOffer[] = textResponse.split('\n')
+      .map(line => line.trim())
+      .filter(line => line.includes('||'))
+      // FIX: Add explicit return type to the map function to satisfy the type predicate in the filter.
+      .map((line): CategorizedOffer | null => {
+        const parts = line.split('||').map(part => part.trim());
+        if (parts.length === 6) {
+            return {
+                title: parts[0],
+                description: parts[1],
+                source: parts[2],
+                link: parts[3],
+                eligibility: parts[4],
+                expiry: parts[5],
+            };
+        }
+        return null;
+    }).filter((offer): offer is CategorizedOffer => offer !== null);
+
+    if (offers.length === 0 && textResponse.length > 0) {
+        console.error("Failed to parse offers from AI response with custom format:", textResponse);
+        throw new Error("The AI returned offers in an unexpected format. Please try refreshing.");
     }
+    
+    return offers;
 
   } catch (error) {
     console.error(`Error getting categorized offers for ${category}:`, error);
+    if (error instanceof Error && error.message.includes("unexpected format")) {
+        throw error;
+    }
     throw new Error(`Failed to fetch real-time offers for ${category}. The service might be temporarily unavailable.`);
   }
 }
@@ -1169,5 +1194,55 @@ export async function findLocalServices(service: string, location: string): Prom
     } catch (error) {
         console.error("Error finding local services:", error);
         throw new Error("Failed to find local service providers.");
+    }
+}
+
+export async function getLegalAnalysis(issue: string): Promise<LegalAnalysisResult> {
+    const prompt = `You are an AI legal assistant for India. A user has the following issue: "${issue}". 
+    Analyze the problem and provide a response in JSON format. The response should contain two parts:
+    1. 'generalAdvice': A simple, step-by-step explanation of what the user can do, in easy-to-understand language.
+    2. 'legalProvisions': A formal explanation mentioning relevant Indian legal acts and sections (e.g., IPC, CrPC, Consumer Protection Act).
+    
+    Example for "landlord not returning security deposit":
+    generalAdvice: "First, send a written notice. If that fails, approach the Rent Control Board or file a consumer complaint."
+    legalProvisions: "Under the Indian Contract Act, 1872, this is a breach. You can file a case in the Consumer Disputes Redressal Commission (Consumer Protection Act, 2019). IPC Section 403 may also apply."`;
+
+    const responseSchema = {
+        type: Type.OBJECT,
+        properties: {
+            generalAdvice: { type: Type.STRING },
+            legalProvisions: { type: Type.STRING },
+        },
+        required: ['generalAdvice', 'legalProvisions']
+    };
+
+    try {
+        const response = await ai.models.generateContent({
+            model,
+            contents: prompt,
+            config: {
+                responseMimeType: "application/json",
+                responseSchema
+            }
+        });
+        return parseGeminiJson(response.text);
+    } catch (error) {
+        console.error("Error getting legal analysis:", error);
+        throw new Error("Failed to get legal analysis. Please try rephrasing your issue.");
+    }
+}
+
+export async function generateLegalDraft(description: string): Promise<string> {
+    const prompt = `You are an AI legal assistant for India. A user wants to draft a legal document. Based on their description, generate a formal, well-structured draft. The description is: "${description}". The draft should be polite, clear, and include placeholders like [Your Name], [Date], etc., where necessary.`;
+    
+    try {
+        const response = await ai.models.generateContent({
+            model,
+            contents: prompt,
+        });
+        return response.text;
+    } catch (error) {
+        console.error("Error generating legal draft:", error);
+        throw new Error("Failed to generate the legal draft. Please provide more details.");
     }
 }

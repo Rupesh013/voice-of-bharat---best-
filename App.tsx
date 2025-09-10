@@ -42,6 +42,7 @@ import HealthcarePage from './pages/HealthcarePage';
 import MyBharatPage from './pages/MyBharatPage';
 import ServicesPage from './pages/ServicesPage';
 import ProfilePage from './pages/ProfilePage';
+import AiLawyerPage from './pages/AiLawyerPage';
 
 const AppLayout: React.FC = () => {
   const location = useLocation();
@@ -57,7 +58,7 @@ const AppLayout: React.FC = () => {
           <Route path="/" element={<HomePage />} />
           <Route path="/news-and-offers" element={<NewsAndOffersPage />} />
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/my-bharat" element={<MyBharatPage />} />
+          <Route path="/ai-jeevan-chakra" element={<MyBharatPage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/services" element={<ServicesPage />} />
           <Route path="/students" element={<StudentsPage />} />
@@ -88,6 +89,7 @@ const AppLayout: React.FC = () => {
           <Route path="/farmers/market-prices" element={<MarketPricesPage />} />
           <Route path="/entrepreneurs" element={<EntrepreneursPage />} />
           <Route path="/healthcare" element={<HealthcarePage />} />
+          <Route path="/ai-lawyer" element={<AiLawyerPage />} />
           <Route path="/about" element={<AboutUsPage />} />
           <Route path="/contact" element={<ContactUsPage />} />
           <Route path="/privacy" element={<PrivacyPolicyPage />} />
