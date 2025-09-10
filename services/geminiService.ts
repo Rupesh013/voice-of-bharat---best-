@@ -1,7 +1,8 @@
 
+
 import { GoogleGenAI, Type } from "@google/genai";
-import type { ChatMessage, CropDiagnosis, FertilizerRecommendation, SchemeRecommendation, WeatherAlert, CropRecommendation, FinancialProduct, MarketPrice, ResumeData, CareerRoadmap, LearningPath, BudgetPlan, LoanAnalysis, InvestmentGuide, JobSearchParams, Job, WageInfo, AIUpdateResult, GroundingSource, AIOfferResult, VoiceCommandResult, DiseaseInfo, NewsArticle, CategorizedOffer, PortalInfo, ServiceProvider, LegalAnalysisResult } from '../types';
-import { ALL_APP_ROUTES } from '../constants';
+import type { ChatMessage, CropDiagnosis, FertilizerRecommendation, SchemeRecommendation, WeatherAlert, CropRecommendation, FinancialProduct, MarketPrice, ResumeData, CareerRoadmap, LearningPath, BudgetPlan, LoanAnalysis, InvestmentGuide, JobSearchParams, Job, WageInfo, AIUpdateResult, GroundingSource, AIOfferResult, VoiceCommandResult, DiseaseInfo, NewsArticle, CategorizedOffer, PortalInfo, ServiceProvider, LegalAnalysisResult, UserProfile, JeevanChakraSuggestions } from '../types';
+import { ALL_APP_ROUTES, ICONS } from '../constants';
 
 if (!process.env.API_KEY) {
   throw new Error("API_KEY environment variable is not set.");
@@ -1244,5 +1245,86 @@ export async function generateLegalDraft(description: string): Promise<string> {
     } catch (error) {
         console.error("Error generating legal draft:", error);
         throw new Error("Failed to generate the legal draft. Please provide more details.");
+    }
+}
+
+export async function getJeevanChakraSuggestions(profile: UserProfile): Promise<JeevanChakraSuggestions> {
+    const validIconNames = Object.keys(ICONS).join(', ');
+    const validAppRoutes = ALL_APP_ROUTES.map(r => r.path).join(', ');
+    
+    const systemInstruction = `You are an expert AI life-cycle advisor for "Voice of Bharat", an Indian citizen empowerment platform. Your goal is to provide hyper-personalized, actionable guidance.`;
+
+    const prompt = `
+        Based on the following user profile, generate a list of 4 personalized opportunities and 2 potential risks.
+
+        User Profile: ${JSON.stringify(profile, null, 2)}
+
+        Analyze the user's occupation ("${profile.occupation}") and other details to generate highly relevant suggestions.
+        - For Students: suggest specific scholarships based on stream/income, skill courses for career goals, relevant internships.
+        - For Farmers: suggest crop-specific schemes, subsidies for their land size/irrigation, or market access tools.
+        - For Women: suggest empowerment schemes, safety resources, or entrepreneurial grants based on their status/interests.
+        - For Entrepreneurs: suggest startup schemes for their industry/stage, funding opportunities, mentorship links.
+        - For Workers: suggest welfare schemes for their sector, local job matching, or specific skill training programs.
+        - For Senior Citizens: suggest relevant pension benefits, health tips for their conditions, or community engagement programs.
+
+        For each opportunity, provide a category ('Scheme', 'Job', 'Upskilling', 'Financial'), a title, a short description, a relevant internal app link, and an icon name.
+        For each risk, provide a severity ('High', 'Medium', 'Low'), a title, a short description, a practical recommendation, a relevant internal app link, and an icon name.
+
+        You MUST use an icon name from this list: ${validIconNames}.
+        You MUST use an internal app link from this list: ${validAppRoutes}.
+        
+        Return the result in the specified JSON format.
+    `;
+
+    const responseSchema = {
+        type: Type.OBJECT,
+        properties: {
+            opportunities: {
+                type: Type.ARRAY,
+                items: {
+                    type: Type.OBJECT,
+                    properties: {
+                        category: { type: Type.STRING, enum: ['Scheme', 'Job', 'Upskilling', 'Financial'] },
+                        title: { type: Type.STRING },
+                        description: { type: Type.STRING },
+                        link: { type: Type.STRING },
+                        icon: { type: Type.STRING }
+                    },
+                    required: ["category", "title", "description", "link", "icon"]
+                }
+            },
+            risks: {
+                 type: Type.ARRAY,
+                items: {
+                    type: Type.OBJECT,
+                    properties: {
+                        severity: { type: Type.STRING, enum: ['High', 'Medium', 'Low'] },
+                        title: { type: Type.STRING },
+                        description: { type: Type.STRING },
+                        recommendation: { type: Type.STRING },
+                        link: { type: Type.STRING },
+                        icon: { type: Type.STRING }
+                    },
+                    required: ["severity", "title", "description", "recommendation", "link", "icon"]
+                }
+            }
+        },
+        required: ["opportunities", "risks"]
+    };
+
+    try {
+        const response = await ai.models.generateContent({
+            model,
+            contents: prompt,
+            config: {
+                systemInstruction,
+                responseMimeType: "application/json",
+                responseSchema,
+            }
+        });
+        return parseGeminiJson(response.text);
+    } catch (error) {
+        console.error("Error getting Jeevan Chakra suggestions:", error);
+        throw new Error("Failed to generate personalized suggestions. Please ensure your profile is complete.");
     }
 }

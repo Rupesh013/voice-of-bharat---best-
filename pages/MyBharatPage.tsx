@@ -1,12 +1,27 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link }from 'react-router-dom';
 import BackButton from '../components/BackButton';
 import { ICONS } from '../constants';
-import type { LifeMilestone, ProactiveAction, Opportunity, RiskAlert, Document } from '../types';
+import type { LifeMilestone, ProactiveAction, Opportunity, RiskAlert, Document, UserProfile } from '../types';
+import { getJeevanChakraSuggestions } from '../services/geminiService';
 
-const mockUserProfile = {
+const mockUserProfile: UserProfile = {
     fullName: 'Rupesh Reddy',
-    profilePictureUrl: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1976&auto=format&fit=crop'
+    email: 'rupesh.reddy@example.com',
+    phone: '+91 7997401678',
+    dateOfBirth: '2004-05-15',
+    address: { street: '123 Tech Park Road', city: 'Tirupati', state: 'Andhra Pradesh', pincode: '517502' },
+    language: 'en',
+    occupation: 'Student',
+    annualIncome: '₹1-3 Lakh',
+    profilePictureUrl: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1976&auto=format&fit=crop',
+    gender: 'Male',
+    educationLevel: 'College',
+    stream: 'IT',
+    skills: 'Java, Python, React, AI/ML',
+    careerGoal: 'Job',
+    locationType: 'Urban',
+    incomeBackground: 'Middle'
 };
 
 const mockTimeline: LifeMilestone[] = [
@@ -22,20 +37,8 @@ const mockNextStep: ProactiveAction = {
     description: "Based on your final year status, it's the perfect time to build your placement resume and start applying for top tech internships. We've prepared a checklist for you.",
     cta: "Start Transition Plan",
     link: "/students/internships-placements",
-    icon: ICONS.Student,
+    icon: 'Student',
 };
-
-const mockOpportunities: Opportunity[] = [
-    { category: 'Scheme', title: 'AICTE Pragati Scholarship', description: 'You have a 90% eligibility score for this scholarship for diploma students.', link: '/students/scholarships', icon: ICONS.Trophy },
-    { category: 'Upskilling', title: 'Advanced React Course', description: 'To match your "Full Stack Developer" goal, learning React Hooks is the next step.', link: '/students/learning-paths', icon: ICONS.Lightbulb },
-    { category: 'Job', title: 'Jr. Developer Internship', description: 'A new remote internship at TechCorp matches your Java and Python skills.', link: '/students/internships-placements', icon: ICONS.Worker },
-    { category: 'Financial', title: 'Start a ₹500 SIP', description: 'Your savings pattern allows for a small SIP. Potential corpus in 5 years: ₹35,000.', link: '/students/financial-management', icon: ICONS.EarningChat },
-];
-
-const mockRisks: RiskAlert[] = [
-    { severity: 'Medium', title: 'Skill Gap Identified', description: 'The demand for "Cloud Computing" skills in your desired roles is high. Your profile currently lacks this.', recommendation: 'Start a free course on AWS or Azure.', link: '/students/free-resources', icon: ICONS.Services },
-    { severity: 'Low', title: 'Digital Footprint', description: 'Your public project repositories could be better documented to attract recruiters.', recommendation: 'Update your GitHub READMEs.', link: '/students/coding-toolkit', icon: ICONS.GitHub },
-];
 
 const mockDocuments: Document[] = [
     { id: 1, name: "Aadhaar Card", type: "Aadhaar", dateAdded: "2023-01-15" },
@@ -73,50 +76,49 @@ const LifeTimeline: React.FC = () => {
     );
 };
 
-const SarathiNextStep: React.FC<{ action: ProactiveAction }> = ({ action }) => (
-    <div className="bg-gradient-to-br from-orange-500 to-red-500 text-white p-6 rounded-xl shadow-2xl flex flex-col md:flex-row items-center gap-6">
-        <div className="bg-white/20 p-4 rounded-full">
-            <action.icon className="w-12 h-12" />
+const SarathiNextStep: React.FC<{ action: ProactiveAction }> = ({ action }) => {
+    const IconComponent = ICONS[action.icon as keyof typeof ICONS] || ICONS.Lightbulb;
+    return (
+        <div className="bg-gradient-to-br from-orange-500 to-red-500 text-white p-6 rounded-xl shadow-2xl flex flex-col md:flex-row items-center gap-6">
+            <div className="bg-white/20 p-4 rounded-full">
+                <IconComponent className="w-12 h-12" />
+            </div>
+            <div className="flex-grow text-center md:text-left">
+                <h2 className="text-2xl font-bold">{action.title}</h2>
+                <p className="mt-2 text-orange-100">{action.description}</p>
+            </div>
+            <Link to={action.link} className="flex-shrink-0 bg-white text-orange-600 font-bold px-6 py-3 rounded-lg hover:bg-orange-100 transition-transform transform hover:scale-105">
+                {action.cta}
+            </Link>
         </div>
-        <div className="flex-grow text-center md:text-left">
-            <h2 className="text-2xl font-bold">{action.title}</h2>
-            <p className="mt-2 text-orange-100">{action.description}</p>
-        </div>
-        <Link to={action.link} className="flex-shrink-0 bg-white text-orange-600 font-bold px-6 py-3 rounded-lg hover:bg-orange-100 transition-transform transform hover:scale-105">
-            {action.cta}
-        </Link>
-    </div>
-);
+    );
+};
 
-const OpportunityCard: React.FC<{ item: Opportunity }> = ({ item }) => (
-    <div className="bg-white p-4 rounded-lg shadow-md border-l-4 border-green-500 hover:shadow-xl transition-shadow duration-300">
-        <div className="flex items-start gap-3">
-            <item.icon className="w-8 h-8 text-green-500 flex-shrink-0 mt-1" />
-            <div>
-                <span className="text-xs font-bold uppercase text-green-700">{item.category}</span>
-                <h4 className="font-semibold text-gray-800">{item.title}</h4>
-                <p className="text-sm text-gray-600 mt-1">{item.description}</p>
-                <Link to={item.link} className="text-sm text-green-600 font-semibold hover:underline mt-2 inline-block">View &rarr;</Link>
+const OpportunityCard: React.FC<{ item: Opportunity }> = ({ item }) => {
+    const IconComponent = ICONS[item.icon as keyof typeof ICONS] || ICONS.Offers;
+    return (
+        <div className="bg-white p-4 rounded-lg shadow-md border-l-4 border-green-500 hover:shadow-xl transition-shadow duration-300">
+            <div className="flex items-start gap-3">
+                <IconComponent className="w-8 h-8 text-green-500 flex-shrink-0 mt-1" />
+                <div>
+                    <span className="text-xs font-bold uppercase text-green-700">{item.category}</span>
+                    <h4 className="font-semibold text-gray-800">{item.title}</h4>
+                    <p className="text-sm text-gray-600 mt-1">{item.description}</p>
+                    <Link to={item.link} className="text-sm text-green-600 font-semibold hover:underline mt-2 inline-block">View &rarr;</Link>
+                </div>
             </div>
         </div>
-    </div>
-);
+    );
+};
 
 const RiskCard: React.FC<{ item: RiskAlert }> = ({ item }) => {
-    const severityClasses = {
-        High: 'border-red-500',
-        Medium: 'border-yellow-500',
-        Low: 'border-blue-500',
-    };
-    const severityText = {
-        High: 'text-red-700',
-        Medium: 'text-yellow-700',
-        Low: 'text-blue-700',
-    }
+    const severityClasses = { High: 'border-red-500', Medium: 'border-yellow-500', Low: 'border-blue-500' };
+    const severityText = { High: 'text-red-700', Medium: 'text-yellow-700', Low: 'text-blue-700' };
+    const IconComponent = ICONS[item.icon as keyof typeof ICONS] || ICONS.Shield;
     return (
         <div className={`bg-white p-4 rounded-lg shadow-md border-l-4 ${severityClasses[item.severity]} hover:shadow-xl transition-shadow duration-300`}>
             <div className="flex items-start gap-3">
-                <item.icon className={`w-8 h-8 ${severityText[item.severity]} flex-shrink-0 mt-1`} />
+                <IconComponent className={`w-8 h-8 ${severityText[item.severity]} flex-shrink-0 mt-1`} />
                 <div>
                     <span className={`text-xs font-bold uppercase ${severityText[item.severity]}`}>{item.severity} Risk</span>
                     <h4 className="font-semibold text-gray-800">{item.title}</h4>
@@ -165,7 +167,37 @@ const DigiSarathiVault: React.FC = () => (
     </div>
 );
 
+const SuggestionSkeleton: React.FC = () => (
+    <div className="space-y-4 animate-pulse">
+        {Array.from({ length: 2 }).map((_, i) => (
+            <div key={i} className="bg-gray-200 p-4 rounded-lg h-24"></div>
+        ))}
+    </div>
+);
+
 const MyBharatPage: React.FC = () => {
+    const [opportunities, setOpportunities] = useState<Opportunity[]>([]);
+    const [risks, setRisks] = useState<RiskAlert[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState('');
+
+    useEffect(() => {
+        const fetchSuggestions = async () => {
+            setIsLoading(true);
+            setError('');
+            try {
+                const suggestions = await getJeevanChakraSuggestions(mockUserProfile);
+                setOpportunities(suggestions.opportunities);
+                setRisks(suggestions.risks);
+            } catch (err) {
+                setError(err instanceof Error ? err.message : 'An unknown error occurred.');
+            } finally {
+                setIsLoading(false);
+            }
+        };
+        fetchSuggestions();
+    }, []);
+
     return (
         <div className="min-h-screen bg-gray-100">
             <section className="bg-gray-800 text-white py-12">
@@ -191,44 +223,47 @@ const MyBharatPage: React.FC = () => {
                 
                 <div className="bg-blue-100 border-l-4 border-blue-500 text-blue-800 p-4 rounded-md mb-8" role="alert">
                     <p className="font-bold">Profile Calibrated</p>
-                    <p>Your life journey is re-calibrated based on your latest profile details.</p>
+                    <p>Your life journey and suggestions are personalized based on your latest profile details.</p>
                 </div>
 
                 <div className="space-y-12">
-                    {/* Section 1: Life Timeline */}
                     <div className="bg-white p-6 rounded-lg shadow-lg">
                         <h2 className="text-2xl font-bold text-gray-800 mb-4">Your Modern Life Journey</h2>
                         <LifeTimeline />
                     </div>
 
-                    {/* Section 2: Proactive Next Step */}
                     <SarathiNextStep action={mockNextStep} />
 
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-                        {/* Section 3: Opportunities Radar */}
                         <div className="bg-white p-6 rounded-lg shadow-lg">
                             <h2 className="text-2xl font-bold text-gray-800 flex items-center gap-3 mb-4">
                                 <ICONS.Offers className="w-8 h-8 text-green-500" />
                                 Opportunities Radar
                             </h2>
-                            <div className="space-y-4">
-                                {mockOpportunities.map((item, index) => <OpportunityCard key={index} item={item} />)}
-                            </div>
+                            {isLoading && <SuggestionSkeleton />}
+                            {error && <p className="text-red-500 text-center">{error}</p>}
+                            {!isLoading && !error && (
+                                <div className="space-y-4">
+                                    {opportunities.map((item, index) => <OpportunityCard key={index} item={item} />)}
+                                </div>
+                            )}
                         </div>
 
-                        {/* Section 4: Risk Shield */}
                         <div className="bg-white p-6 rounded-lg shadow-lg">
                             <h2 className="text-2xl font-bold text-gray-800 flex items-center gap-3 mb-4">
                                 <ICONS.Shield className="w-8 h-8 text-red-500" />
                                 Risk Shield
                             </h2>
-                             <div className="space-y-4">
-                                {mockRisks.map((item, index) => <RiskCard key={index} item={item} />)}
-                            </div>
+                             {isLoading && <SuggestionSkeleton />}
+                             {error && <p className="text-red-500 text-center">{error}</p>}
+                             {!isLoading && !error && (
+                                <div className="space-y-4">
+                                    {risks.map((item, index) => <RiskCard key={index} item={item} />)}
+                                </div>
+                             )}
                         </div>
                     </div>
                     
-                    {/* Section 5: Digi-Sarathi Vault */}
                     <DigiSarathiVault />
                 </div>
             </main>

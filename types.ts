@@ -14,9 +14,52 @@ export interface UserProfile {
         pincode: string;
     };
     language: Language;
-    occupation: 'Student' | 'Farmer' | 'Worker' | 'Entrepreneur' | 'Senior Citizen' | 'Other';
+    occupation: 'Student' | 'Farmer' | 'Woman' | 'Worker' | 'Entrepreneur' | 'Senior Citizen' | 'Other';
     annualIncome: '< ₹1 Lakh' | '₹1-3 Lakh' | '₹3-5 Lakh' | '₹5-10 Lakh' | '> ₹10 Lakh';
     profilePictureUrl?: string;
+    gender?: 'Male' | 'Female' | 'Other';
+
+    // Student fields
+    educationLevel?: 'School' | 'College' | 'Graduate' | 'Postgraduate';
+    stream?: 'Science' | 'Commerce' | 'Arts' | 'IT' | 'Vocational';
+    skills?: string; // Storing as comma-separated string for simplicity in a form
+    careerGoal?: 'Job' | 'Higher Studies' | 'Entrepreneurship' | 'Govt. Exams';
+    locationType?: 'Urban' | 'Rural';
+    incomeBackground?: 'Low' | 'Middle' | 'High';
+
+    // Farmer fields
+    farmingType?: 'Crop' | 'Livestock' | 'Fisheries' | 'Mixed';
+    cropsLivestock?: string;
+    landSize?: string;
+    irrigationSource?: 'Rainfed' | 'Canal' | 'Borewell' | 'Drip';
+    farmerChallenges?: string;
+
+    // Woman fields (can overlap with other roles)
+    maritalStatus?: 'Single' | 'Married' | 'Widow' | 'Divorced';
+    employmentStatus?: 'Unemployed' | 'Self-employed' | 'Working';
+    interests?: string;
+    womanChallenges?: string;
+
+    // Senior Citizen fields
+    retired?: 'Yes' | 'No';
+    pension?: 'Govt.' | 'Private' | 'None';
+    healthConditions?: string;
+    livingSituation?: 'Alone' | 'With Family' | 'Old Age Home';
+    seniorInterests?: string;
+    
+    // Entrepreneur fields
+    businessStage?: 'Idea' | 'Startup' | 'Growing' | 'Established';
+    industry?: 'Agri' | 'Tech' | 'Retail' | 'Manufacturing' | 'Services';
+    annualTurnover?: string;
+    employeeCount?: string;
+    entrepreneurChallenges?: string;
+    educationBackground?: string;
+
+    // Worker fields
+    workType?: 'Skilled' | 'Semi-skilled' | 'Unskilled';
+    sector?: 'Construction' | 'Factory' | 'Domestic' | 'Transport' | 'Gig Economy' | 'Other';
+    workerSkills?: string;
+    workerChallenges?: string;
 }
 
 export interface VoiceCommandResult {
@@ -541,7 +584,7 @@ export interface ProactiveAction {
   description: string;
   cta: string;
   link: string;
-  icon: React.ElementType;
+  icon: string;
 }
 
 export interface Opportunity {
@@ -549,7 +592,7 @@ export interface Opportunity {
   title: string;
   description: string;
   link: string;
-  icon: React.ElementType;
+  icon: string;
 }
 
 export interface RiskAlert {
@@ -558,7 +601,12 @@ export interface RiskAlert {
   description: string;
   recommendation: string;
   link: string;
-  icon: React.ElementType;
+  icon: string;
+}
+
+export interface JeevanChakraSuggestions {
+    opportunities: Opportunity[];
+    risks: RiskAlert[];
 }
 
 export interface LegalAnalysisResult {
