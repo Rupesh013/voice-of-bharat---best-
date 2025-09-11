@@ -978,7 +978,7 @@ export async function processVoiceCommand(command: string): Promise<VoiceCommand
     *   Set 'responseText' to "Sorry, I didn't understand that. Please try again."
 
 **Available Languages for 'change_language' action:**
-- English (en), Hindi (hi), Telugu (te), Tamil (ta), Urdu (ur), Bengali (bn), Marathi (mr), Gujarati (gu), Kannada (kn), Odia (or), Malayalam (ml)
+- English (en), Hindi (hi), Telugu (te), Tamil (ta), Bengali (bn), Marathi (mr)
 
 **Available Pages for 'navigate' action:**
 ${validRoutes}
@@ -1234,7 +1234,7 @@ export async function getLegalAnalysis(issue: string): Promise<LegalAnalysisResu
 }
 
 export async function generateLegalDraft(description: string): Promise<string> {
-    const prompt = `You are an AI legal assistant for India. A user wants to draft a legal document. Based on their description, generate a formal, well-structured draft. The description is: "${description}". The draft should be polite, clear, and include placeholders like [Your Name], [Date], etc., where necessary.`;
+    const prompt = `You are an AI legal assistant for India. A user wants to draft a legal document. Based on their description, generate a formal, well-structured draft. The draft should be polite, clear, and include placeholders like [Your Name], [Date], etc., where necessary.`;
     
     try {
         const response = await ai.models.generateContent({

@@ -1,6 +1,6 @@
 import React from 'react';
 
-export type Language = 'en' | 'hi' | 'te' | 'ta' | 'ur' | 'bn' | 'mr' | 'gu' | 'kn' | 'or' | 'ml';
+export type Language = 'en' | 'hi' | 'te' | 'ta' | 'bn' | 'mr';
 
 export interface UserProfile {
     fullName: string;

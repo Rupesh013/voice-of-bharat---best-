@@ -16,11 +16,6 @@ const LanguageSwitcher: React.FC = () => {
         { code: 'mr', name: 'मराठी' },
         { code: 'te', name: 'తెలుగు' },
         { code: 'ta', name: 'தமிழ்' },
-        { code: 'gu', name: 'ગુજરાતી' },
-        { code: 'ur', name: 'اردو' },
-        { code: 'kn', name: 'ಕನ್ನಡ' },
-        { code: 'or', name: 'ଓଡ଼ିଆ' },
-        { code: 'ml', name: 'മലയാളം' },
     ];
 
     const handleLanguageChange = (langCode: Language) => {
