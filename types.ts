@@ -571,13 +571,13 @@ export interface Placement {
     link: string;
 }
 
-// AI Jeevan Chakra Types
+// My Bharat (formerly AI Jeevan Chakra) Types
 export interface LifeMilestone {
   name: string;
   date: string;
   status: 'completed' | 'current' | 'upcoming';
   description: string;
-  icon: React.ElementType;
+  icon: string;
 }
 
 export interface ProactiveAction {

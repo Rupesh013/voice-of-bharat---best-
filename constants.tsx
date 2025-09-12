@@ -9,7 +9,7 @@ import type {
 export const NAV_LINKS = [
   { key: 'home', path: '/' },
   { key: 'news', path: '/news-and-offers' },
-  { key: 'aiJeevanChakra', path: '/ai-jeevan-chakra' },
+  { key: 'myBharat', path: '/my-bharat' },
   { key: 'about', path: '/about' },
   { key: 'contact', path: '/contact' },
 ];
@@ -194,7 +194,6 @@ export const ICONS = {
 };
 
 export const SECTIONS = [
-  { key: 'career', path: '/career-copilot', Icon: ICONS.Career },
   { key: 'students', path: '/students', Icon: ICONS.Student },
   { key: 'farmers', path: '/farmers', Icon: ICONS.Farmer },
   { key: 'women', path: '/women-empowerment', Icon: ICONS.Women },

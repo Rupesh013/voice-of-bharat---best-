@@ -36,6 +36,7 @@ import LearningPathsPage from './pages/LearningPathsPage';
 import FinancialManagementPage from './pages/FinancialManagementPage';
 import VoiceControl from './components/VoiceControl';
 import { LanguageProvider } from './contexts/LanguageContext';
+import { UserProfileProvider } from './contexts/UserProfileContext';
 import NewsAndOffersPage from './pages/NewsAndOffersPage';
 import LoginPage from './pages/LoginPage';
 import HealthcarePage from './pages/HealthcarePage';
@@ -43,7 +44,6 @@ import MyBharatPage from './pages/MyBharatPage';
 import ProfilePage from './pages/ProfilePage';
 import AiLawyerPage from './pages/AiLawyerPage';
 import LocalGovernancePage from './pages/LocalGovernancePage';
-import CareerAndSkillingPage from './pages/CareerAndSkillingPage';
 import AiInterviewStudioPage from './pages/AiInterviewStudioPage';
 import FitnessPage from './pages/FitnessPage';
 
@@ -61,10 +61,9 @@ const AppLayout: React.FC = () => {
           <Route path="/" element={<HomePage />} />
           <Route path="/news-and-offers" element={<NewsAndOffersPage />} />
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/ai-jeevan-chakra" element={<MyBharatPage />} />
+          <Route path="/my-bharat" element={<MyBharatPage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/local-governance" element={<LocalGovernancePage />} />
-          <Route path="/career-copilot" element={<CareerAndSkillingPage />} />
           <Route path="/students" element={<StudentsPage />} />
           <Route path="/students/scholarships" element={<ScholarshipsPage />} />
           <Route path="/students/resume-builder" element={<ResumeBuilderPage />} />
@@ -111,9 +110,11 @@ const AppLayout: React.FC = () => {
 const App: React.FC = () => {
   return (
     <LanguageProvider>
-      <HashRouter>
-        <AppLayout />
-      </HashRouter>
+      <UserProfileProvider>
+        <HashRouter>
+          <AppLayout />
+        </HashRouter>
+      </UserProfileProvider>
     </LanguageProvider>
   );
 };

@@ -3,30 +3,7 @@ import BackButton from '../components/BackButton';
 import { ICONS } from '../constants';
 import type { UserProfile } from '../types';
 import { useTranslation } from '../hooks/useTranslation';
-
-const mockUserProfile: UserProfile = {
-    fullName: 'Rupesh Reddy',
-    email: 'rupesh.reddy@example.com',
-    phone: '+91 7997401678',
-    dateOfBirth: '2004-05-15',
-    address: {
-        street: '123 Tech Park Road',
-        city: 'Tirupati',
-        state: 'Andhra Pradesh',
-        pincode: '517502',
-    },
-    language: 'en',
-    occupation: 'Student',
-    annualIncome: '₹1-3 Lakh',
-    profilePictureUrl: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1976&auto=format&fit=crop',
-    gender: 'Male',
-    educationLevel: 'College',
-    stream: 'IT',
-    skills: 'Java, Python, React, AI/ML',
-    careerGoal: 'Job',
-    locationType: 'Urban',
-    incomeBackground: 'Middle'
-};
+import { useUserProfile } from '../contexts/UserProfileContext';
 
 const ProfileSection: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
     <div className="bg-gray-50 p-6 rounded-lg border">
@@ -71,14 +48,14 @@ const ProfileTextarea: React.FC<{ t: (key: string) => string; id: keyof UserProf
 
 const ProfilePage: React.FC = () => {
     const { t } = useTranslation();
-    const [profile, setProfile] = useState<UserProfile>(mockUserProfile);
+    const { userProfile, setUserProfile } = useUserProfile();
     const [isLoading, setIsLoading] = useState(false);
     const [successMessage, setSuccessMessage] = useState('');
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
-        setProfile(prev => ({ ...prev, [name]: value }));
+        setUserProfile(prev => ({ ...prev, [name]: value }));
     };
 
     const handleSave = (e: React.FormEvent) => {
@@ -101,24 +78,24 @@ const ProfilePage: React.FC = () => {
         if (file) {
             const reader = new FileReader();
             reader.onloadend = () => {
-                setProfile(prev => ({ ...prev, profilePictureUrl: reader.result as string }));
+                setUserProfile(prev => ({ ...prev, profilePictureUrl: reader.result as string }));
             };
             reader.readAsDataURL(file);
         }
     };
 
     const renderOccupationSpecificFields = () => {
-        switch (profile.occupation) {
+        switch (userProfile.occupation) {
             case 'Student':
                 return (
                     <ProfileSection title={t('pages.profile.occupationSpecificInfo')}>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <ProfileSelect t={t} id="educationLevel" options={['School', 'College', 'Graduate', 'Postgraduate']} profile={profile} onChange={handleInputChange} />
-                            <ProfileSelect t={t} id="stream" options={['Science', 'Commerce', 'Arts', 'IT', 'Vocational']} profile={profile} onChange={handleInputChange} />
-                            <ProfileInput t={t} id="skills" profile={profile} onChange={handleInputChange} />
-                            <ProfileSelect t={t} id="careerGoal" options={['Job', 'Higher Studies', 'Entrepreneurship', 'Govt. Exams']} profile={profile} onChange={handleInputChange} />
-                            <ProfileSelect t={t} id="locationType" options={['Urban', 'Rural']} profile={profile} onChange={handleInputChange} />
-                            <ProfileSelect t={t} id="incomeBackground" options={['Low', 'Middle', 'High']} profile={profile} onChange={handleInputChange} />
+                            <ProfileSelect t={t} id="educationLevel" options={['School', 'College', 'Graduate', 'Postgraduate']} profile={userProfile} onChange={handleInputChange} />
+                            <ProfileSelect t={t} id="stream" options={['Science', 'Commerce', 'Arts', 'IT', 'Vocational']} profile={userProfile} onChange={handleInputChange} />
+                            <ProfileInput t={t} id="skills" profile={userProfile} onChange={handleInputChange} />
+                            <ProfileSelect t={t} id="careerGoal" options={['Job', 'Higher Studies', 'Entrepreneurship', 'Govt. Exams']} profile={userProfile} onChange={handleInputChange} />
+                            <ProfileSelect t={t} id="locationType" options={['Urban', 'Rural']} profile={userProfile} onChange={handleInputChange} />
+                            <ProfileSelect t={t} id="incomeBackground" options={['Low', 'Middle', 'High']} profile={userProfile} onChange={handleInputChange} />
                         </div>
                     </ProfileSection>
                 );
@@ -126,59 +103,59 @@ const ProfilePage: React.FC = () => {
                  return (
                     <ProfileSection title={t('pages.profile.occupationSpecificInfo')}>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <ProfileSelect t={t} id="farmingType" options={['Crop', 'Livestock', 'Fisheries', 'Mixed']} profile={profile} onChange={handleInputChange} />
-                            <ProfileInput t={t} id="cropsLivestock" profile={profile} onChange={handleInputChange} />
-                            <ProfileInput t={t} id="landSize" profile={profile} onChange={handleInputChange} />
-                            <ProfileSelect t={t} id="irrigationSource" options={['Rainfed', 'Canal', 'Borewell', 'Drip']} profile={profile} onChange={handleInputChange} />
+                            <ProfileSelect t={t} id="farmingType" options={['Crop', 'Livestock', 'Fisheries', 'Mixed']} profile={userProfile} onChange={handleInputChange} />
+                            <ProfileInput t={t} id="cropsLivestock" profile={userProfile} onChange={handleInputChange} />
+                            <ProfileInput t={t} id="landSize" profile={userProfile} onChange={handleInputChange} />
+                            <ProfileSelect t={t} id="irrigationSource" options={['Rainfed', 'Canal', 'Borewell', 'Drip']} profile={userProfile} onChange={handleInputChange} />
                         </div>
-                         <ProfileTextarea t={t} id="farmerChallenges" profile={profile} onChange={handleInputChange} />
+                         <ProfileTextarea t={t} id="farmerChallenges" profile={userProfile} onChange={handleInputChange} />
                     </ProfileSection>
                 );
             case 'Woman':
                 return (
                     <ProfileSection title={t('pages.profile.occupationSpecificInfo')}>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <ProfileSelect t={t} id="maritalStatus" options={['Single', 'Married', 'Widow', 'Divorced']} profile={profile} onChange={handleInputChange} />
-                            <ProfileSelect t={t} id="employmentStatus" options={['Unemployed', 'Self-employed', 'Working']} profile={profile} onChange={handleInputChange} />
-                             <ProfileInput t={t} id="interests" profile={profile} onChange={handleInputChange} />
+                            <ProfileSelect t={t} id="maritalStatus" options={['Single', 'Married', 'Widow', 'Divorced']} profile={userProfile} onChange={handleInputChange} />
+                            <ProfileSelect t={t} id="employmentStatus" options={['Unemployed', 'Self-employed', 'Working']} profile={userProfile} onChange={handleInputChange} />
+                             <ProfileInput t={t} id="interests" profile={userProfile} onChange={handleInputChange} />
                         </div>
-                        <ProfileTextarea t={t} id="womanChallenges" profile={profile} onChange={handleInputChange} />
+                        <ProfileTextarea t={t} id="womanChallenges" profile={userProfile} onChange={handleInputChange} />
                     </ProfileSection>
                 );
             case 'Senior Citizen':
                  return (
                     <ProfileSection title={t('pages.profile.occupationSpecificInfo')}>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <ProfileSelect t={t} id="retired" options={['Yes', 'No']} profile={profile} onChange={handleInputChange} />
-                            <ProfileSelect t={t} id="pension" options={['Govt.', 'Private', 'None']} profile={profile} onChange={handleInputChange} />
-                            <ProfileSelect t={t} id="livingSituation" options={['Alone', 'With Family', 'Old Age Home']} profile={profile} onChange={handleInputChange} />
-                            <ProfileInput t={t} id="healthConditions" profile={profile} onChange={handleInputChange} />
+                            <ProfileSelect t={t} id="retired" options={['Yes', 'No']} profile={userProfile} onChange={handleInputChange} />
+                            <ProfileSelect t={t} id="pension" options={['Govt.', 'Private', 'None']} profile={userProfile} onChange={handleInputChange} />
+                            <ProfileSelect t={t} id="livingSituation" options={['Alone', 'With Family', 'Old Age Home']} profile={userProfile} onChange={handleInputChange} />
+                            <ProfileInput t={t} id="healthConditions" profile={userProfile} onChange={handleInputChange} />
                         </div>
-                         <ProfileTextarea t={t} id="seniorInterests" profile={profile} onChange={handleInputChange} />
+                         <ProfileTextarea t={t} id="seniorInterests" profile={userProfile} onChange={handleInputChange} />
                     </ProfileSection>
                 );
             case 'Entrepreneur':
                 return (
                     <ProfileSection title={t('pages.profile.occupationSpecificInfo')}>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <ProfileSelect t={t} id="businessStage" options={['Idea', 'Startup', 'Growing', 'Established']} profile={profile} onChange={handleInputChange} />
-                            <ProfileSelect t={t} id="industry" options={['Agri', 'Tech', 'Retail', 'Manufacturing', 'Services']} profile={profile} onChange={handleInputChange} />
-                             <ProfileInput t={t} id="annualTurnover" profile={profile} onChange={handleInputChange} />
-                             <ProfileInput t={t} id="employeeCount" profile={profile} onChange={handleInputChange} />
-                             <ProfileInput t={t} id="educationBackground" profile={profile} onChange={handleInputChange} />
+                            <ProfileSelect t={t} id="businessStage" options={['Idea', 'Startup', 'Growing', 'Established']} profile={userProfile} onChange={handleInputChange} />
+                            <ProfileSelect t={t} id="industry" options={['Agri', 'Tech', 'Retail', 'Manufacturing', 'Services']} profile={userProfile} onChange={handleInputChange} />
+                             <ProfileInput t={t} id="annualTurnover" profile={userProfile} onChange={handleInputChange} />
+                             <ProfileInput t={t} id="employeeCount" profile={userProfile} onChange={handleInputChange} />
+                             <ProfileInput t={t} id="educationBackground" profile={userProfile} onChange={handleInputChange} />
                         </div>
-                        <ProfileTextarea t={t} id="entrepreneurChallenges" profile={profile} onChange={handleInputChange} />
+                        <ProfileTextarea t={t} id="entrepreneurChallenges" profile={userProfile} onChange={handleInputChange} />
                     </ProfileSection>
                 );
             case 'Worker':
                  return (
                     <ProfileSection title={t('pages.profile.occupationSpecificInfo')}>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                             <ProfileSelect t={t} id="workType" options={['Skilled', 'Semi-skilled', 'Unskilled']} profile={profile} onChange={handleInputChange} />
-                             <ProfileSelect t={t} id="sector" options={['Construction', 'Factory', 'Domestic', 'Transport', 'Gig Economy', 'Other']} profile={profile} onChange={handleInputChange} />
-                             <ProfileInput t={t} id="workerSkills" profile={profile} onChange={handleInputChange} />
+                             <ProfileSelect t={t} id="workType" options={['Skilled', 'Semi-skilled', 'Unskilled']} profile={userProfile} onChange={handleInputChange} />
+                             <ProfileSelect t={t} id="sector" options={['Construction', 'Factory', 'Domestic', 'Transport', 'Gig Economy', 'Other']} profile={userProfile} onChange={handleInputChange} />
+                             <ProfileInput t={t} id="workerSkills" profile={userProfile} onChange={handleInputChange} />
                         </div>
-                        <ProfileTextarea t={t} id="workerChallenges" profile={profile} onChange={handleInputChange} />
+                        <ProfileTextarea t={t} id="workerChallenges" profile={userProfile} onChange={handleInputChange} />
                     </ProfileSection>
                 );
             default:
@@ -189,7 +166,7 @@ const ProfilePage: React.FC = () => {
     return (
         <div className="min-h-screen bg-gray-100 py-12">
             <div className="container mx-auto px-6 max-w-4xl">
-                <BackButton to="/ai-jeevan-chakra" className="mb-8" />
+                <BackButton to="/my-bharat" className="mb-8" />
                 <div className="bg-white p-8 rounded-xl shadow-lg">
                     <div className="text-center mb-8">
                         <h1 className="text-3xl font-bold text-gray-800">{t('pages.profile.title')}</h1>
@@ -198,7 +175,7 @@ const ProfilePage: React.FC = () => {
 
                     <form onSubmit={handleSave} className="space-y-8">
                         <div className="flex flex-col items-center space-y-4">
-                            <img src={profile.profilePictureUrl} alt="Profile" className="w-32 h-32 rounded-full object-cover ring-4 ring-orange-200" />
+                            <img src={userProfile.profilePictureUrl} alt="Profile" className="w-32 h-32 rounded-full object-cover ring-4 ring-orange-200" />
                             <input type="file" ref={fileInputRef} onChange={handlePhotoChange} className="hidden" accept="image/*" />
                             <button type="button" onClick={handleUploadClick} className="text-sm font-semibold text-orange-600 hover:underline">
                                 {t('pages.profile.uploadPhoto')}
@@ -207,18 +184,18 @@ const ProfilePage: React.FC = () => {
                         
                         <ProfileSection title={t('pages.profile.personalInfo')}>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <ProfileInput t={t} id="fullName" profile={profile} onChange={handleInputChange} />
-                                <ProfileInput t={t} id="email" profile={profile} onChange={handleInputChange} readOnly />
-                                <ProfileInput t={t} id="phone" profile={profile} onChange={handleInputChange} />
-                                <ProfileInput t={t} id="dateOfBirth" type="date" profile={profile} onChange={handleInputChange} />
-                                <ProfileSelect t={t} id="gender" options={['Male', 'Female', 'Other']} profile={profile} onChange={handleInputChange} />
+                                <ProfileInput t={t} id="fullName" profile={userProfile} onChange={handleInputChange} />
+                                <ProfileInput t={t} id="email" profile={userProfile} onChange={handleInputChange} readOnly />
+                                <ProfileInput t={t} id="phone" profile={userProfile} onChange={handleInputChange} />
+                                <ProfileInput t={t} id="dateOfBirth" type="date" profile={userProfile} onChange={handleInputChange} />
+                                <ProfileSelect t={t} id="gender" options={['Male', 'Female', 'Other']} profile={userProfile} onChange={handleInputChange} />
                             </div>
                         </ProfileSection>
 
                         <ProfileSection title={t('pages.profile.demographicInfo')}>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <ProfileSelect t={t} id="occupation" options={['Student', 'Farmer', 'Woman', 'Worker', 'Entrepreneur', 'Senior Citizen', 'Other']} profile={profile} onChange={handleInputChange} />
-                                <ProfileSelect t={t} id="annualIncome" options={['< ₹1 Lakh', '₹1-3 Lakh', '₹3-5 Lakh', '₹5-10 Lakh', '> ₹10 Lakh']} profile={profile} onChange={handleInputChange} />
+                                <ProfileSelect t={t} id="occupation" options={['Student', 'Farmer', 'Woman', 'Worker', 'Entrepreneur', 'Senior Citizen', 'Other']} profile={userProfile} onChange={handleInputChange} />
+                                <ProfileSelect t={t} id="annualIncome" options={['< ₹1 Lakh', '₹1-3 Lakh', '₹3-5 Lakh', '₹5-10 Lakh', '> ₹10 Lakh']} profile={userProfile} onChange={handleInputChange} />
                             </div>
                         </ProfileSection>
 
@@ -237,7 +214,7 @@ const ProfilePage: React.FC = () => {
                             >
                                 {isLoading ? (
                                     <>
-                                        <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w.3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                        <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                                             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                                         </svg>

@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from '../hooks/useTranslation';
@@ -9,6 +10,7 @@ const LoginPage: React.FC = () => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [notification, setNotification] = useState('');
+    const [formMode, setFormMode] = useState<'login' | 'forgotPassword' | 'signup'>('login');
 
     const handleLogin = (e: React.FormEvent) => {
         e.preventDefault();
@@ -25,14 +27,178 @@ const LoginPage: React.FC = () => {
         }
     };
 
-    const handleLinkClick = (e: React.MouseEvent, feature: string) => {
+    const handleForgotPassword = (e: React.FormEvent) => {
         e.preventDefault();
         setError('');
-        setNotification(`${feature} feature is coming soon!`);
+        setNotification(`If an account exists for ${email}, a password reset link has been sent.`);
         setTimeout(() => {
+            setFormMode('login');
             setNotification('');
-        }, 4000); // Hide notification after 4 seconds
+            resetFormState();
+        }, 4000);
     };
+
+    const handleSignUp = (e: React.FormEvent) => {
+        e.preventDefault();
+        setError('');
+        setNotification('Account created successfully! Logging you in and redirecting...');
+        // In a real app, you would register the user and then log them in.
+        // Here we'll just simulate a successful signup and redirect.
+        setTimeout(() => {
+            navigate('/');
+        }, 2000);
+    };
+    
+    const resetFormState = () => {
+        setError('');
+        setNotification('');
+        setEmail('');
+        setPassword('');
+    };
+
+    if (formMode === 'signup') {
+        return (
+             <div className="min-h-screen flex items-center justify-center bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
+                <div className="max-w-md w-full space-y-8 bg-white p-10 rounded-xl shadow-lg">
+                    <div>
+                        <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+                            Create a New Account
+                        </h2>
+                    </div>
+                    <form className="mt-8 space-y-6" onSubmit={handleSignUp}>
+                        <div className="rounded-md shadow-sm -space-y-px">
+                            <div>
+                                <label htmlFor="email-address-signup" className="sr-only">
+                                    Email address
+                                </label>
+                                <input
+                                    id="email-address-signup"
+                                    name="email"
+                                    type="email"
+                                    autoComplete="email"
+                                    required
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    className="appearance-none rounded-none relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 bg-white text-black rounded-t-md focus:outline-none focus:ring-orange-500 focus:border-orange-500 focus:z-10 sm:text-sm"
+                                    placeholder="Email address"
+                                />
+                            </div>
+                            <div>
+                                <label htmlFor="password-signup" className="sr-only">
+                                    Password
+                                </label>
+                                <input
+                                    id="password-signup"
+                                    name="password"
+                                    type="password"
+                                    autoComplete="new-password"
+                                    required
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    className="appearance-none rounded-none relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 bg-white text-black rounded-b-md focus:outline-none focus:ring-orange-500 focus:border-orange-500 focus:z-10 sm:text-sm"
+                                    placeholder="Password"
+                                />
+                            </div>
+                        </div>
+                        {error && (
+                            <div className="text-center p-3 rounded-md bg-red-100 text-red-800 text-sm" role="alert">
+                                {error}
+                            </div>
+                        )}
+                        {notification && !error && (
+                            <div className={`text-center p-3 rounded-md text-sm ${notification.includes('successful') ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800'}`} role="alert">
+                                {notification}
+                            </div>
+                        )}
+                        <div>
+                            <button
+                                type="submit"
+                                className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500"
+                            >
+                                Sign Up
+                            </button>
+                        </div>
+                    </form>
+                    <div className="text-sm text-center">
+                        <p className="text-gray-600">
+                            Already have an account?
+                            {' '}
+                            <button
+                                onClick={() => { setFormMode('login'); resetFormState(); }}
+                                className="font-medium text-orange-600 hover:text-orange-500"
+                            >
+                                Log In
+                            </button>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    if (formMode === 'forgotPassword') {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
+                <div className="max-w-md w-full space-y-8 bg-white p-10 rounded-xl shadow-lg">
+                    <div>
+                        <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+                            Forgot Password
+                        </h2>
+                        <p className="mt-2 text-center text-sm text-gray-600">
+                            Enter your email address and we will send you a link to reset your password.
+                        </p>
+                    </div>
+                    <form className="mt-8 space-y-6" onSubmit={handleForgotPassword}>
+                        <div className="rounded-md shadow-sm -space-y-px">
+                            <div>
+                                <label htmlFor="email-address-forgot" className="sr-only">
+                                    Email address
+                                </label>
+                                <input
+                                    id="email-address-forgot"
+                                    name="email"
+                                    type="email"
+                                    autoComplete="email"
+                                    required
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    className="appearance-none rounded-md relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 bg-white text-black focus:outline-none focus:ring-orange-500 focus:border-orange-500 focus:z-10 sm:text-sm"
+                                    placeholder="Email address"
+                                />
+                            </div>
+                        </div>
+
+                         {notification && (
+                            <div className="text-center p-3 rounded-md bg-green-100 text-green-800 text-sm" role="alert">
+                                {notification}
+                            </div>
+                        )}
+
+                        <div>
+                            <button
+                                type="submit"
+                                className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500"
+                            >
+                                Send Password Reset Link
+                            </button>
+                        </div>
+                    </form>
+                    <div className="text-sm text-center">
+                        <p className="text-gray-600">
+                            Remember your password?
+                            {' '}
+                            <button
+                                onClick={() => { setFormMode('login'); resetFormState(); }}
+                                className="font-medium text-orange-600 hover:text-orange-500"
+                            >
+                                Back to Login
+                            </button>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
@@ -91,13 +257,12 @@ const LoginPage: React.FC = () => {
 
                     <div className="flex items-center justify-end">
                         <div className="text-sm">
-                            <a 
-                                href="#" 
-                                onClick={(e) => handleLinkClick(e, 'Forgot Password')}
+                            <button
+                                onClick={(e) => { e.preventDefault(); setFormMode('forgotPassword'); resetFormState(); }}
                                 className="font-medium text-orange-600 hover:text-orange-500"
                             >
                                 {t('pages.login.forgotPassword')}
-                            </a>
+                            </button>
                         </div>
                     </div>
 
@@ -123,7 +288,11 @@ const LoginPage: React.FC = () => {
                 <div>
                     <button
                         type="button"
-                        onClick={(e) => handleLinkClick(e, 'Google Login')}
+                        onClick={() => {
+                            setError('');
+                            setNotification('Google Login feature is coming soon!');
+                            setTimeout(() => setNotification(''), 4000);
+                        }}
                         className="w-full inline-flex justify-center py-3 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50"
                     >
                          <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 48 48">
@@ -137,13 +306,15 @@ const LoginPage: React.FC = () => {
                     <p className="text-gray-600">
                         {t('pages.login.signupPrompt')}
                         {' '}
-                        <Link 
-                            to="#" 
-                            onClick={(e) => handleLinkClick(e, 'Sign Up')}
+                        <button
+                            onClick={() => {
+                                setFormMode('signup');
+                                resetFormState();
+                            }}
                             className="font-medium text-orange-600 hover:text-orange-500"
                         >
                             {t('pages.login.signupLink')}
-                        </Link>
+                        </button>
                     </p>
                 </div>
             </div>

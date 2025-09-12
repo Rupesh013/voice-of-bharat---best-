@@ -1,7 +1,7 @@
 
 
 import { GoogleGenAI, Type, Chat } from "@google/genai";
-import type { ChatMessage, CropDiagnosis, FertilizerRecommendation, SchemeRecommendation, WeatherAlert, CropRecommendation, FinancialProduct, MarketPrice, ResumeData, CareerRoadmap, LearningPath, BudgetPlan, LoanAnalysis, InvestmentGuide, JobSearchParams, Job, WageInfo, AIUpdateResult, GroundingSource, AIOfferResult, VoiceCommandResult, DiseaseInfo, NewsArticle, CategorizedOffer, PortalInfo, ServiceProvider, LegalAnalysisResult, UserProfile, JeevanChakraSuggestions, CivicIssueAnalysis, CareerPathResult, InterviewConfig, InterviewReport, FitnessPlan } from '../types';
+import type { ChatMessage, CropDiagnosis, FertilizerRecommendation, SchemeRecommendation, WeatherAlert, CropRecommendation, FinancialProduct, MarketPrice, ResumeData, CareerRoadmap, LearningPath, BudgetPlan, LoanAnalysis, InvestmentGuide, JobSearchParams, Job, WageInfo, AIUpdateResult, GroundingSource, AIOfferResult, VoiceCommandResult, DiseaseInfo, NewsArticle, CategorizedOffer, PortalInfo, ServiceProvider, LegalAnalysisResult, UserProfile, JeevanChakraSuggestions, CivicIssueAnalysis, CareerPathResult, InterviewConfig, InterviewReport, FitnessPlan, LifeMilestone } from '../types';
 import { ALL_APP_ROUTES, ICONS } from '../constants';
 
 if (!process.env.API_KEY) {
@@ -1248,7 +1248,7 @@ export async function generateLegalDraft(description: string): Promise<string> {
     }
 }
 
-export async function getJeevanChakraSuggestions(profile: UserProfile): Promise<JeevanChakraSuggestions> {
+export async function getMyBharatSuggestions(profile: UserProfile): Promise<JeevanChakraSuggestions> {
     const validIconNames = Object.keys(ICONS).join(', ');
     const validAppRoutes = ALL_APP_ROUTES.map(r => r.path).join(', ');
     
@@ -1324,7 +1324,7 @@ export async function getJeevanChakraSuggestions(profile: UserProfile): Promise<
         });
         return parseGeminiJson(response.text);
     } catch (error) {
-        console.error("Error getting Jeevan Chakra suggestions:", error);
+        console.error("Error getting My Bharat suggestions:", error);
         throw new Error("Failed to generate personalized suggestions. Please ensure your profile is complete.");
     }
 }
@@ -1545,5 +1545,50 @@ ${JSON.stringify(transcript, null, 2)}
     } catch (error) {
         console.error("Error generating interview report:", error);
         throw new Error("Failed to generate the interview report.");
+    }
+}
+
+export async function generateLifeTimeline(profile: UserProfile): Promise<LifeMilestone[]> {
+    const systemInstruction = `You are an AI life-cycle advisor for "Voice of Bharat". Your goal is to generate a realistic, linear life timeline for an Indian citizen based on their profile.`;
+
+    const prompt = `
+        Based on the provided user profile, generate a JSON array of 5 key life milestones.
+        The milestones should be a logical progression based on their age, occupation, and goals.
+        Include past, current, and upcoming milestones.
+        - For 'status', use one of: 'completed', 'current', 'upcoming'.
+        - For 'icon', you MUST use a valid icon name from this list: ${Object.keys(ICONS).join(', ')}.
+
+        User Profile: ${JSON.stringify(profile, null, 2)}
+    `;
+
+    const responseSchema = {
+        type: Type.ARRAY,
+        items: {
+            type: Type.OBJECT,
+            properties: {
+                name: { type: Type.STRING },
+                date: { type: Type.STRING, description: "A date or date range, e.g., 'Completed 2020', '2023 - 2026'" },
+                status: { type: Type.STRING, enum: ['completed', 'current', 'upcoming'] },
+                description: { type: Type.STRING },
+                icon: { type: Type.STRING, description: `An icon name from the provided list.` }
+            },
+            required: ["name", "date", "status", "description", "icon"]
+        }
+    };
+
+    try {
+        const response = await ai.models.generateContent({
+            model,
+            contents: prompt,
+            config: {
+                systemInstruction,
+                responseMimeType: "application/json",
+                responseSchema,
+            }
+        });
+        return parseGeminiJson(response.text);
+    } catch (error) {
+        console.error("Error generating life timeline:", error);
+        throw new Error("Failed to generate a personalized life timeline.");
     }
 }

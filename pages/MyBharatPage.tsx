@@ -2,35 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Link }from 'react-router-dom';
 import BackButton from '../components/BackButton';
 import { ICONS } from '../constants';
-import type { LifeMilestone, ProactiveAction, Opportunity, RiskAlert, Document, UserProfile } from '../types';
-import { getJeevanChakraSuggestions } from '../services/geminiService';
-
-const mockUserProfile: UserProfile = {
-    fullName: 'Rupesh Reddy',
-    email: 'rupesh.reddy@example.com',
-    phone: '+91 7997401678',
-    dateOfBirth: '2004-05-15',
-    address: { street: '123 Tech Park Road', city: 'Tirupati', state: 'Andhra Pradesh', pincode: '517502' },
-    language: 'en',
-    occupation: 'Student',
-    annualIncome: '₹1-3 Lakh',
-    profilePictureUrl: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1976&auto=format&fit=crop',
-    gender: 'Male',
-    educationLevel: 'College',
-    stream: 'IT',
-    skills: 'Java, Python, React, AI/ML',
-    careerGoal: 'Job',
-    locationType: 'Urban',
-    incomeBackground: 'Middle'
-};
-
-const mockTimeline: LifeMilestone[] = [
-    { name: 'Secondary Education', date: 'Completed 2020', status: 'completed', description: 'Completed SSC with a focus on science and mathematics.', icon: ICONS.Services },
-    { name: 'Diploma in CSE', date: '2023 - 2026', status: 'current', description: 'Currently in the final year, specializing in AI and full-stack development.', icon: ICONS.Student },
-    { name: 'First Internship', date: 'Predicted: 2025', status: 'upcoming', description: 'AI suggests applying for internships at product-based startups.', icon: ICONS.Worker },
-    { name: 'Graduation', date: 'Predicted: 2026', status: 'upcoming', description: 'Projected to graduate with a first-class distinction.', icon: ICONS.Student },
-    { name: 'First Job', date: 'Predicted: 2026', status: 'upcoming', description: 'Targeting a Software Development Engineer role in a leading tech company.', icon: ICONS.Worker },
-];
+import type { LifeMilestone, ProactiveAction, Opportunity, RiskAlert, Document } from '../types';
+import { getMyBharatSuggestions, generateLifeTimeline } from '../services/geminiService';
+import { useUserProfile } from '../contexts/UserProfileContext';
 
 const mockNextStep: ProactiveAction = {
     title: "Your 'Campus to Corporate' plan is ready",
@@ -46,7 +20,7 @@ const mockDocuments: Document[] = [
     { id: 3, name: "Diploma Certificate", type: "Other", dateAdded: "2023-06-10" }
 ];
 
-const LifeTimeline: React.FC = () => {
+const LifeTimeline: React.FC<{ timeline: LifeMilestone[] }> = ({ timeline }) => {
     const statusConfig = {
         completed: { bg: 'bg-green-500', border: 'border-green-600', text: 'text-green-700' },
         current: { bg: 'bg-orange-500', border: 'border-orange-600', text: 'text-orange-700' },
@@ -55,12 +29,13 @@ const LifeTimeline: React.FC = () => {
     
     return (
         <div className="relative border-l-2 border-orange-200 ml-6 pl-10 py-4">
-            {mockTimeline.map((milestone, index) => {
+            {timeline.map((milestone, index) => {
                 const config = statusConfig[milestone.status];
+                const IconComponent = ICONS[milestone.icon as keyof typeof ICONS] || ICONS.Lightbulb;
                 return (
-                    <div key={index} className={`relative ${index < mockTimeline.length - 1 ? 'pb-12' : ''}`}>
+                    <div key={index} className={`relative ${index < timeline.length - 1 ? 'pb-12' : ''}`}>
                         <div className={`absolute -left-[54px] top-0 w-12 h-12 rounded-full ${config.bg} flex items-center justify-center ring-4 ring-white`}>
-                            <milestone.icon className="w-6 h-6 text-white" />
+                            <IconComponent className="w-6 h-6 text-white" />
                         </div>
                         <div className="bg-gray-50 p-4 rounded-lg shadow-sm">
                              <div className="flex justify-between items-center">
@@ -175,28 +150,42 @@ const SuggestionSkeleton: React.FC = () => (
     </div>
 );
 
+const TimelineSkeleton: React.FC = () => (
+     <div className="space-y-4 animate-pulse">
+        {Array.from({ length: 3 }).map((_, i) => (
+            <div key={i} className="bg-gray-200 p-4 rounded-lg h-20"></div>
+        ))}
+    </div>
+);
+
 const MyBharatPage: React.FC = () => {
+    const { userProfile } = useUserProfile();
+    const [timeline, setTimeline] = useState<LifeMilestone[]>([]);
     const [opportunities, setOpportunities] = useState<Opportunity[]>([]);
     const [risks, setRisks] = useState<RiskAlert[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState('');
 
     useEffect(() => {
-        const fetchSuggestions = async () => {
+        const fetchAllData = async () => {
             setIsLoading(true);
             setError('');
             try {
-                const suggestions = await getJeevanChakraSuggestions(mockUserProfile);
+                const [suggestions, timelineData] = await Promise.all([
+                    getMyBharatSuggestions(userProfile),
+                    generateLifeTimeline(userProfile)
+                ]);
                 setOpportunities(suggestions.opportunities);
                 setRisks(suggestions.risks);
+                setTimeline(timelineData);
             } catch (err) {
                 setError(err instanceof Error ? err.message : 'An unknown error occurred.');
             } finally {
                 setIsLoading(false);
             }
         };
-        fetchSuggestions();
-    }, []);
+        fetchAllData();
+    }, [userProfile]);
 
     return (
         <div className="min-h-screen bg-gray-100">
@@ -204,10 +193,10 @@ const MyBharatPage: React.FC = () => {
                  <div className="container mx-auto px-6">
                     <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4">
                         <div className="flex items-center gap-4">
-                            <img src={mockUserProfile.profilePictureUrl} alt="User Profile" className="w-16 h-16 rounded-full border-4 border-orange-400" />
+                            <img src={userProfile.profilePictureUrl} alt="User Profile" className="w-16 h-16 rounded-full border-4 border-orange-400" />
                             <div>
-                                <h1 className="text-3xl font-bold">AI Jeevan Chakra</h1>
-                                <p className="text-gray-300">Your proactive life-cycle dashboard, {mockUserProfile.fullName}.</p>
+                                <h1 className="text-3xl font-bold">My Bharat</h1>
+                                <p className="text-gray-300">Your proactive life-cycle dashboard, {userProfile.fullName}.</p>
                             </div>
                         </div>
                         <Link to="/profile" className="flex items-center gap-2 px-4 py-2 bg-gray-700 text-white text-sm font-semibold rounded-md hover:bg-gray-600 transition-colors">
@@ -229,7 +218,9 @@ const MyBharatPage: React.FC = () => {
                 <div className="space-y-12">
                     <div className="bg-white p-6 rounded-lg shadow-lg">
                         <h2 className="text-2xl font-bold text-gray-800 mb-4">Your Modern Life Journey</h2>
-                        <LifeTimeline />
+                        {isLoading && <TimelineSkeleton />}
+                        {!isLoading && error && <p className="text-red-500 text-center">{error}</p>}
+                        {!isLoading && !error && <LifeTimeline timeline={timeline} />}
                     </div>
 
                     <SarathiNextStep action={mockNextStep} />
@@ -241,7 +232,7 @@ const MyBharatPage: React.FC = () => {
                                 Opportunities Radar
                             </h2>
                             {isLoading && <SuggestionSkeleton />}
-                            {error && <p className="text-red-500 text-center">{error}</p>}
+                            {!isLoading && error && <p className="text-red-500 text-center">{error}</p>}
                             {!isLoading && !error && (
                                 <div className="space-y-4">
                                     {opportunities.map((item, index) => <OpportunityCard key={index} item={item} />)}
@@ -255,7 +246,7 @@ const MyBharatPage: React.FC = () => {
                                 Risk Shield
                             </h2>
                              {isLoading && <SuggestionSkeleton />}
-                             {error && <p className="text-red-500 text-center">{error}</p>}
+                             {!isLoading && error && <p className="text-red-500 text-center">{error}</p>}
                              {!isLoading && !error && (
                                 <div className="space-y-4">
                                     {risks.map((item, index) => <RiskCard key={index} item={item} />)}
