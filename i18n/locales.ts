@@ -268,41 +268,6 @@ export const translations = {
             startOver: "Start a New Interview"
         }
       },
-      career: {
-        heroTitle: "AI Career & Skilling Co-Pilot",
-        heroSubtitle: "Your personal guide to chart a course from your current skills to your dream job, with AI-powered analysis, learning plans, and interview practice.",
-        form: {
-            title: "Chart Your Career Path",
-            placeholder: "Enter your dream job or field (e.g., Data Analyst, Digital Marketing)",
-            button: "✨ Generate My Path",
-            loading: "Generating Your Personalized Path..."
-        },
-        results: {
-            title: "Your Personalized Roadmap",
-            summary: "AI Summary",
-            skillGap: {
-                title: "Skill Gap Analysis",
-                have: "Skills You Have",
-                need: "Skills You Need",
-                gap: "Skills to Learn"
-            },
-            learningPlan: {
-                title: "Your Personalized Learning Plan",
-                step: "Step",
-                resources: "Key Resources"
-            },
-            interviewPrep: {
-                title: "AI Interview Studio",
-                intro: "Practice these common questions for your target role. Use the voice button to start a mock interview!",
-                start: "Start AI Mock Interview"
-            },
-            jobMatches: {
-                title: "Live Job Opportunities",
-                description: "We found these current job openings that match your career goal:"
-            },
-            error: "Could not generate a career path. Please ensure your profile is up-to-date and try a more specific job title."
-        }
-      },
       localGovernance: {
         heroTitle: "AI Nagar Palak",
         heroSubtitle: "Your AI-powered tool to report local issues and improve your community.",
@@ -977,9 +942,189 @@ export const translations = {
       }
     }
   },
-  hi: {},
-  te: {},
-  ta: {},
-  bn: {},
-  mr: {},
+  hi: {
+    nav: {
+      home: 'होम',
+      news: 'समाचार और ऑफ़र',
+      myBharat: 'मेरा भारत',
+      about: 'हमारे बारे में',
+      contact: 'संपर्क करें',
+    },
+    header: {
+      login: 'लॉग इन करें',
+    },
+    footer: {
+      tagline: 'भारत की हर आवाज़ को सशक्त बनाना।',
+      privacy: 'गोपनीयता नीति',
+      copyright: '© {year} वॉयस ऑफ भारत। सर्वाधिकार सुरक्षित।',
+    },
+    home: {
+      heroTitle: 'भारत की हर आवाज़ को सशक्त बनाना',
+      heroSubtitle: 'एक बहुभाषी, आवाज-सक्षम डिजिटल प्लेटफॉर्म जो नागरिकों को अवसरों, सेवाओं और सरकारी योजनाओं से जोड़ता है।',
+      exploreServices: 'सेवाएं देखें',
+      joinCommunity: 'समुदाय में शामिल हों',
+      servicesTitle: 'हमारी सेवाएं',
+      servicesSubtitle: 'हर नागरिक की जरूरतों के लिए विशेष संसाधन।',
+    },
+    sections: {
+      students: { title: 'छात्र' },
+      women: { title: 'महिला सशक्तिकरण' },
+      farmers: { title: 'किसान' },
+      workers: { title: 'श्रमिक और मजदूर' },
+      seniors: { title: 'वरिष्ठ नागरिक' },
+      entrepreneurs: { title: 'उद्यमी' },
+      nagarPalak: { title: 'एआई नगर पालक' },
+      healthcare: { title: 'स्वास्थ्य सेवा' },
+      fitness: { title: 'एआई फिटनेस हब' },
+      aiLawyer: { title: 'एआई वकील सहायक' },
+    }
+  },
+  te: {
+    nav: {
+      home: 'హోమ్',
+      news: 'వార్తలు & ఆఫర్లు',
+      myBharat: 'నా భారత్',
+      about: 'మా గురించి',
+      contact: 'సంప్రదించండి',
+    },
+    header: {
+      login: 'లాగిన్',
+    },
+    footer: {
+      tagline: 'ప్రతి భారతీయుని గొంతుకు సాధికారత.',
+      privacy: 'గోప్యతా విధానం',
+      copyright: '© {year} వాయిస్ ఆఫ్ భారత్. అన్ని హక్కులు ప్రత్యేకించబడ్డాయి.',
+    },
+     home: {
+      heroTitle: 'ప్రతి భారతీయుని గొంతుకు సాధికారత',
+      heroSubtitle: 'పౌరులను అవకాశాలు, సేవలు మరియు ప్రభుత్వ పథకాలకు అనుసంధానించే బహుభాషా, వాయిస్-ఎనేబుల్డ్ డిజిటల్ ప్లాట్‌ఫారమ్.',
+      exploreServices: 'సేవలను అన్వేషించండి',
+      joinCommunity: 'సంఘంలో చేరండి',
+      servicesTitle: 'మా సేవలు',
+      servicesSubtitle: 'ప్రతి పౌరుడి అవసరాలకు అనుగుణంగా వనరులు.',
+    },
+    sections: {
+      students: { title: 'విద్యార్థులు' },
+      women: { title: 'మహిళా సాధికారత' },
+      farmers: { title: 'రైతులు' },
+      workers: { title: 'కార్మికులు & శ్రామికులు' },
+      seniors: { title: 'సీనియర్ సిటిజన్లు' },
+      entrepreneurs: { title: 'పారిశ్రామికవేత్తలు' },
+      nagarPalak: { title: 'ఏఐ నగర్ పాలక్' },
+      healthcare: { title: 'ఆరోగ్య సంరక్షణ' },
+      fitness: { title: 'ఏఐ ఫిట్‌నెస్ హబ్' },
+      aiLawyer: { title: 'ఏఐ న్యాయవాది సహాయకుడు' },
+    }
+  },
+  ta: {
+    nav: {
+      home: 'முகப்பு',
+      news: 'செய்திகள் & சலுகைகள்',
+      myBharat: 'என் பாரத்',
+      about: 'எங்களைப் பற்றி',
+      contact: 'தொடர்பு',
+    },
+    header: {
+      login: 'உள்நுழைய',
+    },
+    footer: {
+      tagline: 'பாரதத்தின் ஒவ்வொரு குரலுக்கும் அதிகாரம்.',
+      privacy: 'தனியுரிமைக் கொள்கை',
+      copyright: '© {year} வாய்ஸ் ஆஃப் பாரத். அனைத்து உரிமைகளும் பாதுகாக்கப்பட்டவை.',
+    },
+     home: {
+      heroTitle: 'பாரதத்தின் ஒவ்வொரு குரலுக்கும் அதிகாரம்',
+      heroSubtitle: 'குடிமக்களை வாய்ப்புகள், சேவைகள் மற்றும் அரசாங்க திட்டங்களுடன் இணைக்கும் ஒரு பன்மொழி, குரல்-இயக்கப்பட்ட டிஜிட்டல் தளம்.',
+      exploreServices: 'சேவைகளை ஆராயுங்கள்',
+      joinCommunity: 'சமூகத்தில் சேரவும்',
+      servicesTitle: 'எங்கள் சேவைகள்',
+      servicesSubtitle: 'ஒவ்வொரு குடிமகனின் தேவைகளுக்கும் ஏற்ப உருவாக்கப்பட்ட வளங்கள்.',
+    },
+    sections: {
+      students: { title: 'மாணவர்கள்' },
+      women: { title: 'பெண்கள் அதிகாரமளித்தல்' },
+      farmers: { title: 'விவசாயிகள்' },
+      workers: { title: 'தொழிலாளர்கள்' },
+      seniors: { title: 'மூத்த குடிமக்கள்' },
+      entrepreneurs: { title: 'தொழில்முனைவோர்' },
+      nagarPalak: { title: 'ஏஐ நகர் பாலக்' },
+      healthcare: { title: 'சுகாதாரம்' },
+      fitness: { title: 'ஏஐ உடற்பயிற்சி மையம்' },
+      aiLawyer: { title: 'ஏஐ வழக்கறிஞர் உதவியாளர்' },
+    }
+  },
+  bn: {
+    nav: {
+      home: 'হোম',
+      news: 'খবর ও অফার',
+      myBharat: 'আমার ভারত',
+      about: 'আমাদের সম্পর্কে',
+      contact: 'যোগাযোগ',
+    },
+    header: {
+      login: 'লগইন',
+    },
+    footer: {
+      tagline: 'ভারতের প্রতিটি কণ্ঠকে শক্তিশালী করা।',
+      privacy: 'গোপনীয়তা নীতি',
+      copyright: '© {year} ভয়েস অফ ভারত। সর্বস্বত্ব সংরক্ষিত।',
+    },
+     home: {
+      heroTitle: 'ভারতের প্রতিটি কণ্ঠকে শক্তিশালী করা',
+      heroSubtitle: 'একটি বহুভাষিক, ভয়েস-সক্ষম ডিজিটাল প্ল্যাটফর্ম যা নাগরিকদের সুযোগ, পরিষেবা এবং সরকারি প্রকল্পের সাথে সংযুক্ত করে।',
+      exploreServices: 'পরিষেবাগুলি অন্বেষণ করুন',
+      joinCommunity: 'সম্প্রদায়ে যোগ দিন',
+      servicesTitle: 'আমাদের পরিষেবা',
+      servicesSubtitle: 'প্রতিটি নাগরিকের প্রয়োজনের জন্য উপযুক্ত সম্পদ।',
+    },
+    sections: {
+      students: { title: 'ছাত্রছাত্রী' },
+      women: { title: 'নারী सशक्तিকরণ' },
+      farmers: { title: 'কৃষক' },
+      workers: { title: 'শ্রমিক' },
+      seniors: { title: 'প্রবীণ নাগরিক' },
+      entrepreneurs: { title: 'উদ্যোক্তা' },
+      nagarPalak: { title: 'এআই নগর পালক' },
+      healthcare: { title: 'স্বাস্থ্যসেবা' },
+      fitness: { title: 'এআই ফিটনেস হাব' },
+      aiLawyer: { title: 'এআই আইনজীবী সহকারী' },
+    }
+  },
+  mr: {
+    nav: {
+      home: 'होम',
+      news: 'बातम्या आणि ऑफर्स',
+      myBharat: 'माझा भारत',
+      about: 'आमच्याबद्दल',
+      contact: 'संपर्क',
+    },
+    header: {
+      login: 'लॉगिन',
+    },
+    footer: {
+      tagline: 'भारताच्या प्रत्येक आवाजाला सशक्त करणे।',
+      privacy: 'गोपनीयता धोरण',
+      copyright: '© {year} व्हॉईस ऑफ भारत. सर्व हक्क राखीव।',
+    },
+     home: {
+      heroTitle: 'भारताच्या प्रत्येक आवाजाला सशक्त करणे',
+      heroSubtitle: 'एक बहुभाषिक, व्हॉइस-सक्षम डिजिटल प्लॅटफॉर्म जे नागरिकांना संधी, सेवा आणि सरकारी योजनांशी जोडते.',
+      exploreServices: 'सेवा एक्सप्लोर करा',
+      joinCommunity: 'समुदायात सामील व्हा',
+      servicesTitle: 'आमच्या सेवा',
+      servicesSubtitle: 'प्रत्येक नागरिकाच्या गरजेनुसार तयार केलेली संसाधने.',
+    },
+    sections: {
+      students: { title: 'विद्यार्थी' },
+      women: { title: 'महिला सक्षमीकरण' },
+      farmers: { title: 'शेतकरी' },
+      workers: { title: 'कामगार' },
+      seniors: { title: 'ज्येष्ठ नागरिक' },
+      entrepreneurs: { title: 'उद्योजक' },
+      nagarPalak: { title: 'एआय नगर पालक' },
+      healthcare: { title: 'आरोग्यसेवा' },
+      fitness: { title: 'एआय फिटनेस हब' },
+      aiLawyer: { title: 'एआय वकील सहाय्यक' },
+    }
+  },
 };

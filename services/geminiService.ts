@@ -1,7 +1,8 @@
 
 
+
 import { GoogleGenAI, Type, Chat } from "@google/genai";
-import type { ChatMessage, CropDiagnosis, FertilizerRecommendation, SchemeRecommendation, WeatherAlert, CropRecommendation, FinancialProduct, MarketPrice, ResumeData, CareerRoadmap, LearningPath, BudgetPlan, LoanAnalysis, InvestmentGuide, JobSearchParams, Job, WageInfo, AIUpdateResult, GroundingSource, AIOfferResult, VoiceCommandResult, DiseaseInfo, NewsArticle, CategorizedOffer, PortalInfo, ServiceProvider, LegalAnalysisResult, UserProfile, JeevanChakraSuggestions, CivicIssueAnalysis, CareerPathResult, InterviewConfig, InterviewReport, FitnessPlan, LifeMilestone } from '../types';
+import type { ChatMessage, CropDiagnosis, FertilizerRecommendation, SchemeRecommendation, WeatherAlert, CropRecommendation, FinancialProduct, MarketPrice, ResumeData, CareerRoadmap, LearningPath, BudgetPlan, LoanAnalysis, InvestmentGuide, JobSearchParams, Job, WageInfo, AIUpdateResult, GroundingSource, AIOfferResult, VoiceCommandResult, DiseaseInfo, NewsArticle, CategorizedOffer, PortalInfo, ServiceProvider, LegalAnalysisResult, UserProfile, JeevanChakraSuggestions, CivicIssueAnalysis, InterviewConfig, InterviewReport, FitnessPlan, LifeMilestone, CareerPathResult } from '../types';
 import { ALL_APP_ROUTES, ICONS } from '../constants';
 
 if (!process.env.API_KEY) {
@@ -1329,6 +1330,97 @@ export async function getMyBharatSuggestions(profile: UserProfile): Promise<Jeev
     }
 }
 
+// FIX: Add missing generateCareerPath function.
+export async function generateCareerPath(profile: UserProfile, dreamJob: string): Promise<CareerPathResult> {
+    const prompt = `
+        You are an expert AI career coach for Indian students. Based on the user's profile and their dream job, create a comprehensive and actionable career path.
+
+        User Profile: ${JSON.stringify(profile, null, 2)}
+        Dream Job: "${dreamJob}"
+
+        Your response MUST be in the specified JSON format.
+        - Analyze the user's skills against the required skills for the dream job and identify the gaps.
+        - Create a step-by-step learning path with realistic durations and links to FREE high-quality resources (prefer official docs, free courses from platforms like Coursera/NPTEL, or top YouTube channels).
+        - Suggest 5-7 relevant interview questions.
+        - Find 3-5 example entry-level job listings that match the career path. These can be representative examples.
+    `;
+
+    const responseSchema = {
+        type: Type.OBJECT,
+        properties: {
+            roadmapTitle: { type: Type.STRING, description: "e.g., 'Your Roadmap to Becoming a Machine Learning Engineer'" },
+            summary: { type: Type.STRING, description: "A brief, encouraging summary of the career path." },
+            skillAnalysis: {
+                type: Type.OBJECT,
+                properties: {
+                    userSkills: { type: Type.ARRAY, items: { type: Type.STRING } },
+                    requiredSkills: { type: Type.ARRAY, items: { type: Type.STRING } },
+                    gapSkills: { type: Type.ARRAY, items: { type: Type.STRING } }
+                },
+                required: ["userSkills", "requiredSkills", "gapSkills"]
+            },
+            learningPath: {
+                type: Type.ARRAY,
+                items: {
+                    type: Type.OBJECT,
+                    properties: {
+                        step: { type: Type.NUMBER },
+                        title: { type: Type.STRING },
+                        duration: { type: Type.STRING },
+                        description: { type: Type.STRING },
+                        resources: {
+                            type: Type.ARRAY,
+                            items: {
+                                type: Type.OBJECT,
+                                properties: {
+                                    name: { type: Type.STRING },
+                                    link: { type: Type.STRING },
+                                    type: { type: Type.STRING, enum: ['Govt. Free Course', 'YouTube', 'Article', 'Practice Platform'] }
+                                },
+                                required: ["name", "link", "type"]
+                            }
+                        }
+                    },
+                    required: ["step", "title", "duration", "description", "resources"]
+                }
+            },
+            interviewQuestions: { type: Type.ARRAY, items: { type: Type.STRING } },
+            suggestedJobs: {
+                type: Type.ARRAY,
+                items: {
+                    type: Type.OBJECT,
+                    properties: {
+                        title: { type: Type.STRING },
+                        company: { type: Type.STRING },
+                        location: { type: Type.STRING },
+                        link: { type: Type.STRING },
+                        type: { type: Type.STRING, enum: ['Full-time', 'Part-time', 'Skilled', 'Daily Wage'] },
+                        wage: { type: Type.STRING, description: "e.g., 'Competitive Salary' or '₹4-6 LPA'" },
+                        contact: { type: Type.STRING, description: "A placeholder like 'Apply via link'" }
+                    },
+                    required: ["title", "company", "location", "link", "type", "wage", "contact"]
+                }
+            }
+        },
+        required: ["roadmapTitle", "summary", "skillAnalysis", "learningPath", "interviewQuestions", "suggestedJobs"]
+    };
+
+    try {
+        const response = await ai.models.generateContent({
+            model,
+            contents: prompt,
+            config: {
+                responseMimeType: "application/json",
+                responseSchema,
+            }
+        });
+        return parseGeminiJson(response.text);
+    } catch (error) {
+        console.error("Error generating career path:", error);
+        throw new Error("Failed to generate a career path. Please try again.");
+    }
+}
+
 export async function analyzeCivicIssue(base64Image: string, mimeType: string, description: string): Promise<CivicIssueAnalysis> {
   const imagePart = { inlineData: { data: base64Image, mimeType } };
   const textPart = { text: `Analyze the attached image and the user's description of a civic issue in India.
@@ -1356,99 +1448,6 @@ export async function analyzeCivicIssue(base64Image: string, mimeType: string, d
     console.error("Error analyzing civic issue:", error);
     throw new Error("Failed to analyze the civic issue with AI. The image might be unclear or the issue unrecognizable.");
   }
-}
-
-export async function generateCareerPath(profile: UserProfile, dreamJob: string): Promise<CareerPathResult> {
-    const systemInstruction = `You are an expert AI Career Co-Pilot for Indian citizens. Your goal is to provide a comprehensive, actionable, and encouraging career roadmap. You must heavily prioritize free and government-provided resources like SWAYAM, NPTEL, and Skill India Portal.`;
-
-    const prompt = `
-        Based on the user's profile and their dream job, generate a complete career path.
-        User Profile: ${JSON.stringify(profile, null, 2)}
-        Dream Job: "${dreamJob}"
-
-        Follow these steps:
-        1.  **Skill Gap Analysis**: Compare the user's listed skills with the typical skills required for the dream job in India. Clearly list what they have and what they need to learn.
-        2.  **Personalized Learning Path**: Create a step-by-step learning plan to acquire the "gap skills". For each step, suggest specific, FREE resources, prioritizing Indian government portals (SWAYAM, NPTEL, DIKSHA, Skill India). Also include high-quality YouTube or article links.
-        3.  **Interview Preparation**: List 5-7 common technical and HR interview questions for this role in India.
-        4.  **Job Matching**: Use Google Search to find 3-4 current, real job listings for this role in India. Provide the title, company, location, and a direct link.
-    `;
-
-    const responseSchema = {
-        type: Type.OBJECT,
-        properties: {
-            roadmapTitle: { type: Type.STRING, description: `A motivational title, e.g., "Your AI-Powered Roadmap to Becoming a ${dreamJob}"` },
-            summary: { type: Type.STRING, description: "A brief, encouraging summary of the career path." },
-            skillAnalysis: {
-                type: Type.OBJECT,
-                properties: {
-                    requiredSkills: { type: Type.ARRAY, items: { type: Type.STRING } },
-                    userSkills: { type: Type.ARRAY, items: { type: Type.STRING } },
-                    gapSkills: { type: Type.ARRAY, items: { type: Type.STRING } }
-                },
-                required: ["requiredSkills", "userSkills", "gapSkills"]
-            },
-            learningPath: {
-                type: Type.ARRAY,
-                items: {
-                    type: Type.OBJECT,
-                    properties: {
-                        step: { type: Type.NUMBER },
-                        title: { type: Type.STRING },
-                        description: { type: Type.STRING },
-                        duration: { type: Type.STRING },
-                        resources: {
-                            type: Type.ARRAY,
-                            items: {
-                                type: Type.OBJECT,
-                                properties: {
-                                    name: { type: Type.STRING },
-                                    link: { type: Type.STRING },
-                                    type: { type: Type.STRING, enum: ['Govt. Free Course', 'Video', 'Article', 'Practice'] }
-                                },
-                                required: ["name", "link", "type"]
-                            }
-                        }
-                    },
-                    required: ["step", "title", "description", "duration", "resources"]
-                }
-            },
-            interviewQuestions: { type: Type.ARRAY, items: { type: Type.STRING } },
-            suggestedJobs: {
-                type: Type.ARRAY,
-                items: {
-                    type: Type.OBJECT,
-                    properties: {
-                        title: { type: Type.STRING },
-                        company: { type: Type.STRING },
-                        location: { type: Type.STRING },
-                        link: { type: Type.STRING },
-                        wage: { type: Type.STRING }, // Added for consistency
-                        type: { type: Type.STRING }, // Added for consistency
-                        contact: { type: Type.STRING }, // Added for consistency
-                    },
-                    required: ["title", "company", "location", "link"]
-                }
-            }
-        },
-        required: ["roadmapTitle", "summary", "skillAnalysis", "learningPath", "interviewQuestions", "suggestedJobs"]
-    };
-    
-    try {
-        const response = await ai.models.generateContent({
-            model,
-            contents: prompt,
-            config: {
-                systemInstruction,
-                responseMimeType: "application/json",
-                responseSchema,
-                tools: [{ googleSearch: {} }],
-            }
-        });
-        return parseGeminiJson(response.text);
-    } catch (error) {
-        console.error("Error generating career path:", error);
-        throw new Error("Failed to generate a personalized career path. Please ensure your profile is up-to-date and try again.");
-    }
 }
 
 export async function generateFitnessPlan(age: string, fitnessLevel: string, goals: string): Promise<FitnessPlan> {

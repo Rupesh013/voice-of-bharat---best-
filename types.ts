@@ -1,3 +1,4 @@
+
 import React from 'react';
 
 export type Language = 'en' | 'hi' | 'te' | 'ta' | 'bn' | 'mr';
@@ -610,6 +611,30 @@ export interface JeevanChakraSuggestions {
     risks: RiskAlert[];
 }
 
+// FIX: Define the missing CareerPathResult type.
+export interface CareerPathResult {
+  roadmapTitle: string;
+  summary: string;
+  skillAnalysis: {
+    userSkills: string[];
+    requiredSkills: string[];
+    gapSkills: string[];
+  };
+  learningPath: {
+    step: number;
+    title: string;
+    duration: string;
+    description: string;
+    resources: {
+      name: string;
+      link: string;
+      type: 'Govt. Free Course' | 'YouTube' | 'Article' | 'Practice Platform';
+    }[];
+  }[];
+  interviewQuestions: string[];
+  suggestedJobs: Job[];
+}
+
 export interface LegalAnalysisResult {
   generalAdvice: string;
   legalProvisions: string;
@@ -628,34 +653,6 @@ export interface CivicIssueReport extends CivicIssueAnalysis {
   image: string; // data URL for display
   dateReported: string;
   status: 'Submitted' | 'In Review' | 'Resolved';
-}
-
-// AI Career Co-Pilot Types
-export interface SkillGapAnalysis {
-  requiredSkills: string[];
-  userSkills: string[];
-  gapSkills: string[];
-}
-
-export interface PersonalizedLearningStep {
-  step: number;
-  title: string;
-  description: string;
-  duration: string;
-  resources: {
-    name: string;
-    link: string;
-    type: 'Govt. Free Course' | 'Video' | 'Article' | 'Practice';
-  }[];
-}
-
-export interface CareerPathResult {
-  roadmapTitle: string;
-  summary: string;
-  skillAnalysis: SkillGapAnalysis;
-  learningPath: PersonalizedLearningStep[];
-  interviewQuestions: string[];
-  suggestedJobs: Job[];
 }
 
 // AI Interview Studio Types
