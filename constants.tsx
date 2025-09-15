@@ -3,7 +3,7 @@ import type {
   Contract, MarketPrice, ExpertGuide, Scholarship, ScholarshipDetail, 
   AbroadScholarship, EducationLoan, CounselingCenter, VisaStep, EarningMethod, CashbackApp, 
   CryptoApp, StudentBankAccount, StudentLoanOffer, StudentCard, StudentDeal, ReferralApp, Project,
-  PlatformInfo, Article, SmartApp, EducationResource, Update, Offer, Internship, PopularInternship, Placement
+  PlatformInfo, Article, SmartApp, EducationResource, Update, Offer, Internship, PopularInternship, Placement, ProduceListing
 } from './types';
 
 export const NAV_LINKS = [
@@ -263,21 +263,21 @@ export const CATEGORIZED_SCHEMES = [
     },
 ];
 
-export const MOCK_PRODUCE_LISTINGS = [
-  { id: 1, name: 'Fresh Tomatoes', price: '₹35 / kg', quantity: '50 kg available', seller: 'Ram Singh', location: 'Nashik, Maharashtra', image: 'https://images.unsplash.com/photo-1561155749-d6b9a4a2e499?q=80&w=1974&auto.format&fit=crop' },
-  { id: 2, name: 'Organic Mangoes', price: '₹120 / kg', quantity: '100 kg available', seller: 'Sita Devi', location: 'Anantapur, AP', image: 'https://images.unsplash.com/photo-1591078440058-c2a412a8319f?q=80&w=1974&auto.format&fit=crop' },
-  { id: 3, name: 'Basmati Rice', price: '₹90 / kg', quantity: '500 kg available', seller: 'Gurpreet Singh', location: 'Amritsar, Punjab', image: 'https://images.unsplash.com/photo-1586201375761-83865758e5d3?q=80&w=1974&auto.format&fit=crop' },
-  { id: 4, name: 'Potatoes', price: '₹25 / kg', quantity: '200 kg available', seller: 'M. Reddy', location: 'Chittoor, AP', image: 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?q=80&w=2070&auto=format&fit=crop' },
+export const MOCK_PRODUCE_LISTINGS: ProduceListing[] = [
+  { id: 1, name: 'Fresh Tomatoes', price: '₹35 / kg', quantity: '50 kg available', seller: 'Ram Singh', location: 'Nashik, Maharashtra', image: 'https://images.unsplash.com/photo-1561155749-d6b9a4a2e499?q=80&w=1974&auto.format&fit=crop', paymentMethods: ['UPI', 'Cash on Delivery'], logistics: ['Self-pickup from farm'] },
+  { id: 2, name: 'Organic Mangoes', price: '₹120 / kg', quantity: '100 kg available', seller: 'Sita Devi', location: 'Anantapur, AP', image: 'https://images.unsplash.com/photo-1591078440058-c2a412a8319f?q=80&w=1974&auto.format&fit=crop', paymentMethods: ['UPI only'], logistics: ['Local delivery available (charges apply)'] },
+  { id: 3, name: 'Basmati Rice', price: '₹90 / kg', quantity: '500 kg available', seller: 'Gurpreet Singh', location: 'Amritsar, Punjab', image: 'https://images.unsplash.com/photo-1586201375761-83865758e5d3?q=80&w=1974&auto.format&fit=crop', paymentMethods: ['Bank Transfer', 'UPI'], logistics: ['Pan-India shipping available'] },
+  { id: 4, name: 'Potatoes', price: '₹25 / kg', quantity: '200 kg available', seller: 'M. Reddy', location: 'Chittoor, AP', image: 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?q=80&w=2070&auto=format&fit=crop', paymentMethods: ['Cash on Delivery'], logistics: ['Self-pickup only'] },
 ];
 
 export const AVAILABLE_CONTRACTS: Contract[] = [
-  { id: 1, title: 'Corporate Bulk Purchase', buyerName: 'FreshHarvest Pvt. Ltd.', buyerVerified: true, crop: 'High-Grade Tomatoes', quantity: '5 Tons', price: '₹22,000 / Ton', timeline: { startDate: '01 Oct 2024', endDate: '31 Dec 2024' }, status: 'Pending', fullText: 'Full contract text here...', paymentStatus: 'Pending' },
-  { id: 2, title: 'Export Quality Mangoes', buyerName: 'Global Fruits Inc.', buyerVerified: true, crop: 'Alphonso Mangoes', quantity: '10 Tons', price: '₹80,000 / Ton', timeline: { startDate: '01 Apr 2025', endDate: '30 Jun 2025' }, status: 'Pending', fullText: 'Full contract text here...', paymentStatus: 'Pending' },
+  { id: 1, title: 'Corporate Bulk Purchase', buyerName: 'FreshHarvest Pvt. Ltd.', buyerVerified: true, crop: 'High-Grade Tomatoes', quantity: '5 Tons', price: '₹22,000 / Ton', timeline: { startDate: '01 Oct 2024', endDate: '31 Dec 2024' }, status: 'Pending', fullText: 'Detailed contract for supply of Grade A tomatoes...', paymentStatus: 'Pending', produceSpecs: 'Grade A, minimum 5cm diameter, no blemishes.', logistics: 'Buyer to arrange pickup from farm gate.', disputeResolution: 'In case of dispute, a neutral third-party arbitrator from the local Mandi board will be appointed.' },
+  { id: 2, title: 'Export Quality Mangoes', buyerName: 'Global Fruits Inc.', buyerVerified: true, crop: 'Alphonso Mangoes', quantity: '10 Tons', price: '₹80,000 / Ton', timeline: { startDate: '01 Apr 2025', endDate: '30 Jun 2025' }, status: 'Pending', fullText: 'Contract for export quality Alphonso mangoes...', paymentStatus: 'Pending', produceSpecs: 'Export quality, minimum weight 250g per fruit, specific color and ripeness standards apply.', logistics: 'Farmer to deliver to the nearest packaging facility in Ratnagiri.', disputeResolution: 'Arbitration under the Indian Arbitration and Conciliation Act, 1996.' },
 ];
 
 export const MY_CONTRACTS: Contract[] = [
-  { id: 3, title: 'Organic Wheat Supply', buyerName: 'SafeFoods Retail', buyerVerified: true, crop: 'Organic Wheat', quantity: '2 Tons', price: '₹35,000 / Ton', timeline: { startDate: '15 Aug 2024', endDate: '15 Nov 2024' }, status: 'Active', fullText: 'Full contract text here...', paymentStatus: 'Pending' },
-  { id: 4, title: 'Premium Cotton', buyerName: 'National Textiles', buyerVerified: false, crop: 'Long-staple Cotton', quantity: '5 Tons', price: '₹70,000 / Ton', timeline: { startDate: '01 Jul 2024', endDate: '30 Sep 2024' }, status: 'Harvesting', fullText: 'Full contract text here...', paymentStatus: 'Paid' },
+  { id: 3, title: 'Organic Wheat Supply', buyerName: 'SafeFoods Retail', buyerVerified: true, crop: 'Organic Wheat', quantity: '2 Tons', price: '₹35,000 / Ton', timeline: { startDate: '15 Aug 2024', endDate: '15 Nov 2024' }, status: 'Active', fullText: 'Full contract text here...', paymentStatus: 'Pending', produceSpecs: 'Certified organic, moisture content below 12%.', logistics: 'Delivered to SafeFoods warehouse in Pune.', disputeResolution: 'Mediation followed by arbitration if unresolved.' },
+  { id: 4, title: 'Premium Cotton', buyerName: 'National Textiles', buyerVerified: false, crop: 'Long-staple Cotton', quantity: '5 Tons', price: '₹70,000 / Ton', timeline: { startDate: '01 Jul 2024', endDate: '30 Sep 2024' }, status: 'Harvesting', fullText: 'Full contract text here...', paymentStatus: 'Paid', produceSpecs: 'Staple length minimum 30mm, low trash content.', logistics: 'Buyer pickup from farm.', disputeResolution: 'As per local textile association guidelines.' },
 ];
 
 export const MOCK_EXPERT_GUIDES: ExpertGuide[] = [
@@ -291,6 +291,17 @@ export const MOCK_MARKET_PRICES: MarketPrice[] = [
     { crop: 'Onion', price: '₹1,800 / quintal', market: 'Lasalgaon', trend: 'stable' },
     { crop: 'Potato', price: '₹1,500 / quintal', market: 'Agra', trend: 'down' },
     { crop: 'Wheat', price: '₹2,100 / quintal', market: 'Ludhiana', trend: 'stable' },
+    { crop: 'Paddy (Dhan)', price: '₹1,950 / quintal', market: 'Karnal', trend: 'up' },
+    { crop: 'Cotton', price: '₹7,500 / quintal', market: 'Adilabad', trend: 'down' },
+    { crop: 'Soybean', price: '₹4,800 / quintal', market: 'Indore', trend: 'stable' },
+    { crop: 'Maize', price: '₹1,850 / quintal', market: 'Davangere', trend: 'up' },
+    { crop: 'Turmeric', price: '₹8,000 / quintal', market: 'Erode', trend: 'stable' },
+    { crop: 'Chilli', price: '₹15,000 / quintal', market: 'Guntur', trend: 'up' },
+    { crop: 'Apple', price: '₹9,000 / quintal', market: 'Shimla', trend: 'down' },
+    { crop: 'Mustard', price: '₹5,500 / quintal', market: 'Jaipur', trend: 'stable' },
+    { crop: 'Gram (Chana)', price: '₹5,200 / quintal', market: 'Bikaner', trend: 'up' },
+    { crop: 'Mango', price: '₹6,000 / quintal', market: 'Ratnagiri', trend: 'up' },
+    { crop: 'Sugarcane', price: '₹350 / quintal', market: 'Kolhapur', trend: 'stable' },
 ];
 
 // --- START OF MISSING DATA ---

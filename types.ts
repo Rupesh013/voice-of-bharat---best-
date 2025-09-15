@@ -1,4 +1,3 @@
-
 import React from 'react';
 
 export type Language = 'en' | 'hi' | 'te' | 'ta' | 'bn' | 'mr';
@@ -117,6 +116,9 @@ export interface Contract {
   status: 'Pending' | 'Active' | 'Harvesting' | 'Completed' | 'Disputed';
   fullText: string;
   paymentStatus: 'Pending' | 'Paid';
+  produceSpecs: string;
+  logistics: string;
+  disputeResolution: string;
 }
 
 export interface SchemeRecommendation {
@@ -694,4 +696,16 @@ export interface FitnessPlan {
   };
   dietTips: string[];
   disclaimer: string;
+}
+
+export interface ProduceListing {
+  id: number;
+  name: string;
+  price: string;
+  quantity: string;
+  seller: string;
+  location: string;
+  image: string;
+  paymentMethods: string[];
+  logistics: string[];
 }

@@ -47,18 +47,33 @@ const ContractDetailModal: React.FC<ContractDetailModalProps> = ({ contract, isO
             <button onClick={handleClose} className="text-gray-500 hover:text-gray-800 text-3xl font-light">&times;</button>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-3 text-sm mb-6 bg-gray-50 p-4 rounded-lg">
-            <p><strong className="font-medium text-gray-600">{t('components.contractCard.by')}</strong> {contract.buyerName} {contract.buyerVerified && <span className="text-green-600 font-semibold">({t('components.contractCard.verified')})</span>}</p>
-            <p><strong className="font-medium text-gray-600">{t('components.contractCard.crop')}</strong> {contract.crop}</p>
-            <p><strong className="font-medium text-gray-600">{t('components.contractCard.quantity')}</strong> {contract.quantity}</p>
-            <p><strong className="font-medium text-gray-600">{t('components.contractCard.price')}</strong> <span className="font-bold text-green-700">{contract.price}</span></p>
-            <p><strong className="font-medium text-gray-600">Start Date:</strong> {contract.timeline.startDate}</p>
-            <p><strong className="font-medium text-gray-600">End Date:</strong> {contract.timeline.endDate}</p>
+        {/* Key Terms */}
+        <div className="mb-6">
+            <h3 className="text-lg font-semibold text-gray-700 border-b pb-2 mb-3">Key Terms</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-3 text-sm">
+                <p><strong className="font-medium text-gray-600">{t('components.contractCard.by')}</strong> {contract.buyerName} {contract.buyerVerified && <span className="text-green-600 font-semibold">({t('components.contractCard.verified')})</span>}</p>
+                <p><strong className="font-medium text-gray-600">{t('components.contractCard.crop')}</strong> {contract.crop}</p>
+                <p><strong className="font-medium text-gray-600">{t('components.contractCard.quantity')}</strong> {contract.quantity}</p>
+                <p><strong className="font-medium text-gray-600">{t('components.contractCard.price')}</strong> <span className="font-bold text-green-700">{contract.price}</span></p>
+                <p><strong className="font-medium text-gray-600">Start Date:</strong> {contract.timeline.startDate}</p>
+                <p><strong className="font-medium text-gray-600">End Date:</strong> {contract.timeline.endDate}</p>
+            </div>
         </div>
+
+        {/* Additional Clauses */}
+        <div className="mb-6">
+             <h3 className="text-lg font-semibold text-gray-700 border-b pb-2 mb-3">Additional Clauses</h3>
+             <div className="space-y-3 text-sm">
+                <p><strong className="font-medium text-gray-600">Produce Specifications:</strong> {contract.produceSpecs}</p>
+                <p><strong className="font-medium text-gray-600">Logistics & Delivery:</strong> {contract.logistics}</p>
+                <p><strong className="font-medium text-gray-600">Dispute Handling:</strong> {contract.disputeResolution}</p>
+             </div>
+        </div>
+
 
         <div className="bg-gray-50 p-4 rounded-lg">
             <div className="flex flex-col sm:flex-row justify-between sm:items-center mb-2">
-                <h3 className="font-semibold text-lg">Contract Terms</h3>
+                <h3 className="font-semibold text-lg">Full Contract Text</h3>
                 <button onClick={handleSimplify} disabled={isLoadingSummary} className="text-sm bg-orange-100 text-orange-700 px-3 py-1 rounded-full hover:bg-orange-200 disabled:opacity-50 mt-2 sm:mt-0">
                     {isLoadingSummary ? t('components.contractDetailModal.analyzing') : `✨ ${t('components.contractDetailModal.simplify')}`}
                 </button>
@@ -74,7 +89,7 @@ const ContractDetailModal: React.FC<ContractDetailModalProps> = ({ contract, isO
             {isLoadingSummary && <p className="text-gray-600 text-sm my-2 animate-pulse">Our AI is reading the contract for you...</p>}
 
 
-            <div className="text-xs text-gray-600 bg-gray-100 p-3 rounded mt-2 max-h-48 overflow-y-auto border">
+            <div className="text-xs text-gray-600 bg-white p-3 rounded mt-2 max-h-48 overflow-y-auto border">
                 <p className="whitespace-pre-wrap">{contract.fullText}</p>
             </div>
         </div>

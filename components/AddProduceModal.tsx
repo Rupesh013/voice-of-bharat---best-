@@ -46,8 +46,13 @@ const AddProduceModal: React.FC<AddProduceModalProps> = ({ isOpen, onClose, onAd
   
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Logic to add produce would go here
-    console.log({ name, description, price, quantity, image });
+    onAddProduce({ name, description, price, quantity, image });
+    // Reset state for next time
+    setName('');
+    setDescription('');
+    setPrice('');
+    setQuantity('');
+    setImage(null);
     onClose();
   };
 
