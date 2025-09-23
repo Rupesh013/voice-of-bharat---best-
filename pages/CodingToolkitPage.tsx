@@ -1,5 +1,3 @@
-
-
 import React, { useState } from 'react';
 import BackButton from '../components/BackButton';
 
@@ -336,22 +334,16 @@ const LeetCodeContent = () => (
 
 // --- GITHUB CONTENT ---
 
-// Helper function to extract YouTube video ID and create embed URL
-const getYoutubeEmbedUrl = (url: string) => {
-    let videoId = '';
-    try {
-        const urlObj = new URL(url);
-        if (urlObj.hostname === 'youtu.be') {
-            videoId = urlObj.pathname.slice(1);
-        } else if (urlObj.hostname.includes('youtube.com')) {
-            videoId = urlObj.searchParams.get('v') || '';
-        }
-    } catch (e) {
-        console.error("Invalid YouTube URL:", url);
-        return '';
-    }
-    return videoId ? `https://www.youtube.com/embed/${videoId}` : '';
-};
+const githubYoutubeVideos = [
+    { title: 'Git & GitHub Crash Course – Traversy Media', link: 'https://www.youtube.com/watch?v=SWYqp7iY_Tc' },
+    { title: 'GitHub Explained in 100 Seconds – Fireship', link: 'https://www.youtube.com/watch?v=0fKg7e37bQE' },
+    { title: 'GitHub for Students – Full Guide by Kunal Kushwaha', link: 'https://www.youtube.com/watch?v=apGV9Kg7ics' },
+    { title: 'GitHub Student Pack – Tools Explained – CodeWithHarry', link: 'https://www.youtube.com/watch?v=w-gSld3q4-A' },
+    { title: 'How to Use GitHub Like a Pro – The Primeagen', link: 'https://www.youtube.com/watch?v=3-A7R-0N_8c' },
+    { title: 'GitHub Actions in 100 Seconds – Fireship', link: 'https://www.youtube.com/watch?v=R8_veQiY-ac' },
+    { title: 'GitHub Copilot Full Tutorial – freeCodeCamp', link: 'https://www.youtube.com/watch?v=71-n_A-1mtk' },
+    { title: 'GitHub Pages Website Hosting – Kevin Powell', link: 'https://www.youtube.com/watch?v=QyFcl_Fba-k' }
+];
 
 // New Codeblock component for displaying shell commands
 const CodeBlock: React.FC<{ children: React.ReactNode }> = ({ children }) => (
@@ -369,18 +361,8 @@ const CodeBlock: React.FC<{ children: React.ReactNode }> = ({ children }) => (
     </div>
 );
 
-const githubYoutubeVideos = [
-    { title: 'Git & GitHub Crash Course – Traversy Media', link: 'https://www.youtube.com/watch?v=SWYqp7iY_Tc' },
-    { title: 'GitHub Explained in 100 Seconds – Fireship', link: 'https://www.youtube.com/watch?v=0fKg7e37bQE' },
-    { title: 'GitHub for Students – Full Guide by Kunal Kushwaha', link: 'https://www.youtube.com/watch?v=apGV9Kg7ics' },
-    { title: 'GitHub Student Pack – Tools Explained – CodeWithHarry', link: 'https://www.youtube.com/watch?v=w-gSld3q4-A' },
-    { title: 'How to Use GitHub Like a Pro – The Primeagen', link: 'https://www.youtube.com/watch?v=3-A7R-0N_8c' },
-    { title: 'GitHub Actions in 100 Seconds – Fireship', link: 'https://www.youtube.com/watch?v=R8_veQiY-ac' },
-    { title: 'GitHub Copilot Full Tutorial – freeCodeCamp', link: 'https://www.youtube.com/watch?v=71-n_A-1mtk' },
-    { title: 'GitHub Pages Website Hosting – Kevin Powell', link: 'https://www.youtube.com/watch?v=QyFcl_Fba-k' }
-];
 
-const GitHubContent: React.FC<{ openVideoModal: (url: string) => void }> = ({ openVideoModal }) => (
+const GitHubContent: React.FC = () => (
     <div className="animate-fade-in text-white">
         <div className="bg-gray-800 p-6 rounded-lg shadow-lg mb-8 text-center">
             <h1 className="text-3xl font-bold mb-4">Welcome to your journey with GitHub</h1>
@@ -431,13 +413,15 @@ const GitHubContent: React.FC<{ openVideoModal: (url: string) => void }> = ({ op
         <Section title="🎥 Top YouTube Videos for GitHub Beginners">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {githubYoutubeVideos.map(video => (
-                    <button 
+                    <a 
                         key={video.title} 
-                        onClick={() => openVideoModal(getYoutubeEmbedUrl(video.link))}
+                        href={video.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="block bg-gray-700 p-4 rounded-md hover:bg-gray-600 transition-colors text-left w-full"
                     >
                         <h4 className="font-semibold text-white">📹 {video.title}</h4>
-                    </button>
+                    </a>
                 ))}
             </div>
         </Section>
@@ -455,7 +439,7 @@ const GitHubContent: React.FC<{ openVideoModal: (url: string) => void }> = ({ op
     </div>
 );
 
-const VSCodeCursorContent: React.FC<{ openVideoModal: (url: string) => void }> = ({ openVideoModal }) => (
+const VSCodeCursorContent: React.FC = () => (
     <div className="animate-fade-in text-white">
         {/* VS Code Section */}
         <Section title="🖥️ Visual Studio Code (VS Code)">
@@ -593,11 +577,11 @@ const VSCodeCursorContent: React.FC<{ openVideoModal: (url: string) => void }> =
              </div>
              <h3 className="text-xl font-semibold mt-8 mb-4">🎥 Must-Watch Videos</h3>
              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <button onClick={() => openVideoModal(getYoutubeEmbedUrl('https://youtu.be/HJxxGKtdEpU'))} className="block bg-gray-700 p-4 rounded-md hover:bg-gray-600 text-left w-full">📹 VS Code Master</button>
-                <button onClick={() => openVideoModal(getYoutubeEmbedUrl('https://youtu.be/lxRAj1Gijic'))} className="block bg-gray-700 p-4 rounded-md hover:bg-gray-600 text-left w-full">📹 Ultimate VS Code Setup</button>
-                <button onClick={() => openVideoModal(getYoutubeEmbedUrl('https://youtu.be/uKTNaJRVvzw'))} className="block bg-gray-700 p-4 rounded-md hover:bg-gray-600 text-left w-full">📹 VS Code Tips</button>
-                <button onClick={() => openVideoModal(getYoutubeEmbedUrl('https://youtu.be/Vn0LYZ8Qepc'))} className="block bg-gray-700 p-4 rounded-md hover:bg-gray-600 text-left w-full">📹 How to Use Git and GitHub with VSCode</button>
-                <button onClick={() => openVideoModal(getYoutubeEmbedUrl('https://youtu.be/jXp5D5ZnxGM'))} className="block bg-gray-700 p-4 rounded-md hover:bg-gray-600 text-left w-full">📹 GitHub Copilot</button>
+                <a href="https://youtu.be/HJxxGKtdEpU" target="_blank" rel="noopener noreferrer" className="block bg-gray-700 p-4 rounded-md hover:bg-gray-600">📹 VS Code Master</a>
+                <a href="https://youtu.be/lxRAj1Gijic" target="_blank" rel="noopener noreferrer" className="block bg-gray-700 p-4 rounded-md hover:bg-gray-600">📹 Ultimate VS Code Setup</a>
+                <a href="https://youtu.be/uKTNaJRVvzw" target="_blank" rel="noopener noreferrer" className="block bg-gray-700 p-4 rounded-md hover:bg-gray-600">📹 VS Code Tips</a>
+                <a href="https://youtu.be/Vn0LYZ8Qepc" target="_blank" rel="noopener noreferrer" className="block bg-gray-700 p-4 rounded-md hover:bg-gray-600">📹 How to Use Git and GitHub with VSCode</a>
+                <a href="https://youtu.be/jXp5D5ZnxGM" target="_blank" rel="noopener noreferrer" className="block bg-gray-700 p-4 rounded-md hover:bg-gray-600">📹 GitHub Copilot</a>
              </div>
         </Section>
         
@@ -621,38 +605,6 @@ const VSCodeCursorContent: React.FC<{ openVideoModal: (url: string) => void }> =
 
 const CodingToolkitPage: React.FC = () => {
     const [activeTab, setActiveTab] = useState('Master LeetCode');
-    const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
-    const [currentVideoUrl, setCurrentVideoUrl] = useState('');
-
-    const handleOpenVideoModal = (url: string) => {
-        if (url) {
-            setCurrentVideoUrl(url);
-            setIsVideoModalOpen(true);
-        }
-    };
-
-    const handleCloseVideoModal = () => {
-        setIsVideoModalOpen(false);
-        setCurrentVideoUrl('');
-    };
-    
-    const VideoModal = ({ url, onClose }: { url: string; onClose: () => void; }) => (
-        <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50" onClick={onClose}>
-            <div className="bg-gray-900 p-2 md:p-4 rounded-lg shadow-xl relative w-full max-w-4xl" onClick={(e) => e.stopPropagation()}>
-                <button onClick={onClose} className="absolute -top-3 -right-3 bg-white text-black rounded-full h-8 w-8 flex items-center justify-center font-bold text-xl">&times;</button>
-                <div style={{paddingBottom: '56.25%', position: 'relative', height: 0}}>
-                    <iframe 
-                        src={url} 
-                        title="YouTube video player" 
-                        frameBorder="0" 
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                        allowFullScreen
-                        className="absolute top-0 left-0 w-full h-full rounded"
-                    ></iframe>
-                </div>
-            </div>
-        </div>
-    );
 
     return (
         <div className="min-h-screen bg-gray-900 text-gray-200">
@@ -674,13 +626,12 @@ const CodingToolkitPage: React.FC = () => {
                     </div>
                     <div className="p-4 md:p-8">
                         {activeTab === 'Master LeetCode' && <LeetCodeContent />}
-                        {activeTab === 'GitHub Toolkit' && <GitHubContent openVideoModal={handleOpenVideoModal} />}
+                        {activeTab === 'GitHub Toolkit' && <GitHubContent />}
                         {activeTab === 'LinkedIn' && <LinkedInContent />}
-                        {activeTab === 'VS Code & Cursor' && <VSCodeCursorContent openVideoModal={handleOpenVideoModal} />}
+                        {activeTab === 'VS Code & Cursor' && <VSCodeCursorContent />}
                     </div>
                 </div>
             </div>
-            {isVideoModalOpen && <VideoModal url={currentVideoUrl} onClose={handleCloseVideoModal} />}
         </div>
     );
 };

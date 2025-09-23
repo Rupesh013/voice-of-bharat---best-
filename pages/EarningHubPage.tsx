@@ -38,6 +38,16 @@ const EarningMethodCard: React.FC<{ item: EarningMethod }> = ({ item }) => (
                 </div>
             </div>
         )}
+        {item.videos && item.videos.length > 0 && (
+            <div className="mt-3">
+                <h4 className="font-semibold text-sm">🎥 Watch & Learn:</h4>
+                <div className="flex flex-wrap gap-2 mt-1">
+                    {item.videos.map(v => (
+                        <a key={v.title} href={v.link} target="_blank" rel="noopener noreferrer" className="text-xs bg-red-100 text-red-800 px-2 py-1 rounded-full hover:bg-red-200">{v.title}</a>
+                    ))}
+                </div>
+            </div>
+        )}
     </div>
 );
 

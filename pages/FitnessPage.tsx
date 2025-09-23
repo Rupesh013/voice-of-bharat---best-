@@ -25,19 +25,19 @@ const AccordionItem: React.FC<{ title: string; children: React.ReactNode; isOpen
 );
 
 const VideoCard: React.FC<{ title: string; youtubeId: string }> = ({ title, youtubeId }) => (
-    <div className="bg-white p-4 rounded-lg shadow-sm border">
-        <div className="aspect-w-16 aspect-h-9" style={{paddingBottom: '56.25%', position: 'relative', height: 0}}>
-            <iframe
-                src={`https://www.youtube.com/embed/${youtubeId}`}
-                title={title}
-                frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-                className="absolute top-0 left-0 w-full h-full rounded-md"
-            ></iframe>
+    <a href={`https://www.youtube.com/watch?v=${youtubeId}`} target="_blank" rel="noopener noreferrer" className="block bg-white p-4 rounded-lg shadow-sm border group hover:shadow-lg hover:-translate-y-1 transition-transform duration-300">
+        <div className="relative" style={{paddingBottom: '56.25%', height: 0}}>
+            <img 
+                src={`https://img.youtube.com/vi/${youtubeId}/hqdefault.jpg`} 
+                alt={title}
+                className="absolute top-0 left-0 w-full h-full rounded-md object-cover" 
+            />
+            <div className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <svg className="w-16 h-16 text-white" fill="currentColor" viewBox="0 0 20 20"><path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"></path></svg>
+            </div>
         </div>
-        <h4 className="font-semibold text-gray-800 mt-3">{title}</h4>
-    </div>
+        <h4 className="font-semibold text-gray-800 mt-3 group-hover:text-orange-600">{title}</h4>
+    </a>
 );
 
 const FitnessPage: React.FC = () => {

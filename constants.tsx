@@ -209,8 +209,8 @@ export const SECTIONS = [
 export const STUDENT_FEATURES = [
     { path: '/students/scholarships', titleKey: 'features.student.scholarships.title', descriptionKey: 'features.student.scholarships.description', Icon: ICONS.Student },
     { path: '/students/resume-builder', titleKey: 'features.student.resume.title', descriptionKey: 'features.student.resume.description', Icon: ICONS.Lightbulb },
-    { path: '/students/career-roadmaps', titleKey: 'features.student.roadmaps.title', descriptionKey: 'features.student.roadmaps.description', Icon: ICONS.Farmer },
-    { path: '/students/learning-paths', titleKey: 'features.student.learningPaths.title', descriptionKey: 'features.student.learningPaths.description', Icon: ICONS.Entrepreneur },
+    { path: '/students/career-roadmaps', titleKey: 'features.student.roadmaps.title', descriptionKey: 'features.student.roadmaps.description', Icon: ICONS.Career },
+    { path: '/students/learning-paths', titleKey: 'features.student.learningPaths.title', descriptionKey: 'features.student.learningPaths.description', Icon: ICONS.Farmer },
     { path: '/students/interview-studio', titleKey: 'features.student.interviewStudio.title', descriptionKey: 'features.student.interviewStudio.description', Icon: ICONS.Interview },
     { path: '/students/financial-management', titleKey: 'features.student.financialManagement.title', descriptionKey: 'features.student.financialManagement.description', Icon: ICONS.MyBharat },
     { path: '/students/coding-toolkit', titleKey: 'features.student.coding.title', descriptionKey: 'features.student.coding.description', Icon: ICONS.Services },
@@ -303,8 +303,6 @@ export const MOCK_MARKET_PRICES: MarketPrice[] = [
     { crop: 'Mango', price: '₹6,000 / quintal', market: 'Ratnagiri', trend: 'up' },
     { crop: 'Sugarcane', price: '₹350 / quintal', market: 'Kolhapur', trend: 'stable' },
 ];
-
-// --- START OF MISSING DATA ---
 
 // EARNING HUB DATA
 export const EARNING_METHODS: EarningMethod[] = [
@@ -437,8 +435,6 @@ export const WOMEN_APPS: SmartApp[] = [
 export const ENVIRONMENT_APPS: SmartApp[] = [
     { name: 'Sameer', purpose: 'Air quality index monitoring', appLink: '#' },
 ];
-
-// --- END OF MISSING DATA ---
 
 export const ALL_APP_ROUTES = [
   ...NAV_LINKS.map(l => ({ path: l.path, description: `Navigate to ${l.key} page`})),
